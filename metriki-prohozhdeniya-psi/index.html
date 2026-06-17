@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Метрики прохождения ПСИ</title>
+  <style>
+    :root {
+      --bg: #eef2f4;
+      --panel: #ffffff;
+      --line: #d6dde3;
+      --text: #16212b;
+      --muted: #61707f;
+      --brand: #143a56;
+      --brand-soft: #e9f0f5;
+      --accent: #b86a18;
+      --accent-soft: #fff0df;
+      --ok: #1f6a45;
+      --ok-soft: #eaf6ee;
+      --risk: #aa2f2f;
+      --risk-soft: #fdecec;
+      --shadow: 0 14px 34px rgba(22, 33, 43, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(20, 58, 86, 0.08), transparent 28%),
+        linear-gradient(180deg, #f7f9fb 0%, var(--bg) 100%);
+      color: var(--text);
+      font: 15px/1.58 "Segoe UI", Arial, sans-serif;
+    }
+
+    .page {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 26px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      padding: 30px 32px;
+    }
+
+    .eyebrow,
+    .section-label,
+    .meta-label,
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    h1 {
+      margin-top: 12px;
+      font-size: 36px;
+      line-height: 1.12;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    h3 {
+      font-size: 18px;
+    }
+
+    .lead {
+      margin-top: 14px;
+      max-width: 880px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .chip-brand { background: var(--brand-soft); color: var(--brand); }
+    .chip-accent { background: var(--accent-soft); color: var(--accent); }
+    .chip-ok { background: var(--ok-soft); color: var(--ok); }
+    .chip-risk { background: var(--risk-soft); color: var(--risk); }
+
+    .meta-grid,
+    .summary-grid,
+    .two-col,
+    .group-grid,
+    .compact-grid,
+    .focus-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .two-col {
+      grid-template-columns: 1fr 1fr;
+      margin-top: 16px;
+    }
+
+    .group-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .compact-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .focus-grid {
+      grid-template-columns: 1.2fr 1fr 1fr;
+      margin-top: 16px;
+    }
+
+    .card,
+    .metric,
+    .box,
+    .group-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcfd;
+      padding: 18px 20px;
+    }
+
+    .meta-value,
+    .group-title {
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      margin-top: 10px;
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .metric {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand), rgba(20, 58, 86, 0.15));
+    }
+
+    .note,
+    .group-note,
+    .metric-note,
+    .box p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .section {
+      margin-top: 16px;
+      padding: 24px 26px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .focus-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px 22px;
+      min-height: 100%;
+    }
+
+    .focus-card.brand {
+      background: linear-gradient(180deg, rgba(20, 58, 86, 0.08), rgba(20, 58, 86, 0.02));
+    }
+
+    .focus-card.accent {
+      background: linear-gradient(180deg, rgba(184, 106, 24, 0.10), rgba(184, 106, 24, 0.03));
+    }
+
+    .focus-card.risk {
+      background: linear-gradient(180deg, rgba(170, 47, 47, 0.10), rgba(170, 47, 47, 0.03));
+    }
+
+    .focus-card h3 {
+      margin-top: 8px;
+    }
+
+    .focus-card p,
+    .focus-card ul {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+
+    .callout {
+      border-left: 4px solid var(--brand);
+      border-radius: 18px;
+      background: linear-gradient(90deg, rgba(20, 58, 86, 0.06), transparent 55%);
+      padding: 16px 18px;
+      color: var(--text);
+    }
+
+    .callout p {
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcfd;
+    }
+
+    .table-wrap table {
+      min-width: 980px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f5f8fa;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(246, 249, 251, 0.55);
+    }
+
+    tbody tr:hover td {
+      background: rgba(233, 240, 245, 0.72);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .metric-id {
+      white-space: nowrap;
+      font-weight: 600;
+      color: var(--brand);
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .ribbon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #f4f7fa;
+      color: var(--brand);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .summary-grid,
+      .group-grid,
+      .compact-grid,
+      .two-col,
+      .focus-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-note {
+        margin-top: 8px;
+        text-align: left;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        max-width: none;
+        padding: 0;
+      }
+
+      .panel {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="panel hero">
+      <div>
+        <div class="eyebrow">PMO / ПСИ / Управленческие метрики</div>
+        <h1>Метрики прохождения ПСИ</h1>
+        <p class="lead">
+          Набор метрик для оценки качества входа в <strong>ПСИ</strong>, хода приемки, качества замечаний,
+          дисциплины сторон и надежности перехода от формально успешного тестирования к реальной готовности банка к запуску.
+        </p>
+        <div class="chips">
+          <span class="chip chip-brand">Полный набор: 22 метрики</span>
+          <span class="chip chip-accent">5 логических групп</span>
+          <span class="chip chip-ok">Подходит для PMO и KPI менеджеров</span>
+          <span class="chip chip-risk">Закрывает риск разрыва ПСИ → go-live</span>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="card">
+          <div class="meta-label">Назначение</div>
+          <div class="meta-value">Статус-контроль, аналитика причин срывов и оценка управленческой зрелости менеджера</div>
+        </div>
+        <div class="card">
+          <div class="meta-label">Основа</div>
+          <div class="meta-value">Регламент ПСИ и повторяющиеся кейсы из проектного контура</div>
+        </div>
+        <div class="card">
+          <div class="meta-label">Главный фокус</div>
+          <div class="meta-value">Не просто “ПСИ прошел”, а насколько этап был управляемым и надежным</div>
+        </div>
+        <div class="card">
+          <div class="meta-label">Результат</div>
+          <div class="meta-value">Основание для статусов PMO, сравнения менеджеров и решений перед запуском</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="summary-grid">
+      <div class="panel metric">
+        <div class="section-label">Готовность</div>
+        <div class="metric-value">4</div>
+        <div class="metric-note">Проверяют качество входа в ПСИ</div>
+      </div>
+      <div class="panel metric">
+        <div class="section-label">Прогресс</div>
+        <div class="metric-value">4</div>
+        <div class="metric-note">Показывают движение клиентской приемки</div>
+      </div>
+      <div class="panel metric">
+        <div class="section-label">Качество</div>
+        <div class="metric-value">5</div>
+        <div class="metric-note">Отражают плотность, тяжесть и природу замечаний</div>
+      </div>
+      <div class="panel metric">
+        <div class="section-label">Управляемость</div>
+        <div class="metric-value">6</div>
+        <div class="metric-note">Показывают дисциплину команды и клиента</div>
+      </div>
+      <div class="panel metric">
+        <div class="section-label">Запуск</div>
+        <div class="metric-value">3</div>
+        <div class="metric-note">Ловят разрыв между ПСИ и go-live</div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Логика набора</div>
+          <h2>Что именно должен показывать набор метрик</h2>
+        </div>
+        <div class="section-note">Метрики нужны не только для отчета, но и для управленческого вывода</div>
+      </div>
+
+      <div class="callout">
+        <p>
+          Набор должен отвечать не на вопрос “ПСИ прошел или не прошел”, а на пять более полезных вопросов:
+          стартовал ли этап подготовленно, идет ли приемка, какого качества поставка, держит ли менеджер контур под контролем,
+          и действительно ли положительные результаты ПСИ конвертируются в готовность к запуску.
+        </p>
+      </div>
+
+      <div class="focus-grid">
+        <div class="focus-card brand">
+          <div class="section-label">Главный смысл</div>
+          <h3>ПСИ как управленческий контур</h3>
+          <p>Метрики должны показывать не только результат тестирования, но и качество подготовки, качество реакции команды и надежность перехода к запуску.</p>
+        </div>
+        <div class="focus-card accent">
+          <div class="section-label">PMO-фокус</div>
+          <h3>Где ловить ранний сигнал</h3>
+          <ul>
+            <li>вход в ПСИ на неподготовленном контуре;</li>
+            <li>рост плотности замечаний;</li>
+            <li>зависание КП без результата;</li>
+            <li>поздние изменения перед go-live.</li>
+          </ul>
+        </div>
+        <div class="focus-card risk">
+          <div class="section-label">Особый риск</div>
+          <h3>Разрыв ПСИ → запуск</h3>
+          <p>После последних кейсов отдельный управленческий фокус нужен на том, остаются ли положительные результаты ПСИ актуальными к дате старта.</p>
+        </div>
+      </div>
+
+      <div class="group-grid">
+        <div class="group-card">
+          <div class="section-label">Группа 1</div>
+          <div class="group-title">Готовность к старту ПСИ</div>
+          <div class="group-note">Метрики `1-4` оценивают, стартует ли этап на реально подготовленном контуре.</div>
+        </div>
+        <div class="group-card">
+          <div class="section-label">Группа 2</div>
+          <div class="group-title">Прогресс прохождения ПСИ</div>
+          <div class="group-note">Метрики `5-8` показывают, движется ли приемка и где возникают зависания.</div>
+        </div>
+        <div class="group-card">
+          <div class="section-label">Группа 3</div>
+          <div class="group-title">Качество поставки и замечаний</div>
+          <div class="group-note">Метрики `9-13` отделяют рабочую шлифовку от слабого качества поставки.</div>
+        </div>
+        <div class="group-card">
+          <div class="section-label">Группа 4</div>
+          <div class="group-title">Управляемость этапа</div>
+          <div class="group-note">Метрики `14-19` отражают скорость реакции, дисциплину и простои по вине клиента.</div>
+        </div>
+        <div class="group-card">
+          <div class="section-label">Группа 5</div>
+          <div class="group-title">Стык ПСИ и запуска</div>
+          <div class="group-note">Метрики `20-22` ловят риск срыва старта после формально успешного ПСИ.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Минимальный вывод</div>
+          <h2>Какие причины срывов покрывает набор метрик</h2>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="box">
+          <div class="section-label">Классические провалы ПСИ</div>
+          <ul>
+            <li>неготовность среды, доступов и данных;</li>
+            <li>слабый тестовый контур;</li>
+            <li>большой объем замечаний уже на клиентской приемке;</li>
+            <li>смещение реального тестирования на заказчика;</li>
+            <li>позднее выявление новых требований.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="section-label">Срывы на стыке ПСИ и запуска</div>
+          <ul>
+            <li>поздние изменения после успешного тестирования;</li>
+            <li>разрыв между положительными протоколами и фактической готовностью клиента;</li>
+            <li>отсутствие функционального чек-листа банка перед запуском;</li>
+            <li>неконтролируемые внутренние блокеры клиента вне `TS`.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Каталог метрик</div>
+          <h2>Полный состав метрик по группам</h2>
+        </div>
+        <div class="section-note">Нумерация сохранена как в рабочем документе</div>
+      </div>
+
+      <div class="ribbon">Большая таблица сведена в один экранный каталог для PMO и руководства</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Метрика</th>
+              <th>Группа</th>
+              <th>Что показывает</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="metric-id">1</td><td>Доля проектов, вошедших в ПСИ без нарушений входных условий</td><td>Готовность</td><td>Насколько ПСИ стартует на реально подготовленном контуре</td></tr>
+            <tr><td class="metric-id">2</td><td>Доля согласованных КП до старта ПСИ</td><td>Готовность</td><td>Зафиксирован ли объем приемки до начала этапа</td></tr>
+            <tr><td class="metric-id">3</td><td>Доля проектов, где доступы и среда готовы в срок</td><td>Готовность</td><td>Не уходит ли ПСИ в организационную раскачку</td></tr>
+            <tr><td class="metric-id">4</td><td>Доля проектов, где миграция данных достаточна для ПСИ</td><td>Готовность</td><td>Можно ли реально проверять сценарии, а не имитировать приемку</td></tr>
+            <tr><td class="metric-id">5</td><td>Процент прохождения ПСИ по КП</td><td>Прогресс</td><td>Фактический прогресс клиентской приемки</td></tr>
+            <tr><td class="metric-id">6</td><td>Отклонение фактической длительности ПСИ от плана</td><td>Прогресс</td><td>Удерживается ли этап в сроках</td></tr>
+            <tr><td class="metric-id">7</td><td>Скорость прохождения КП клиентом</td><td>Прогресс</td><td>Интенсивность клиентской приемки по неделям</td></tr>
+            <tr><td class="metric-id">8</td><td>Доля КП без результата более N рабочих дней</td><td>Прогресс</td><td>Зависшие сценарии и потребность в эскалации</td></tr>
+            <tr><td class="metric-id">9</td><td>Плотность замечаний на ПСИ</td><td>Качество</td><td>Насколько качественно решение было подготовлено до передачи клиенту</td></tr>
+            <tr><td class="metric-id">10</td><td>Доля блокирующих и критических замечаний</td><td>Качество</td><td>Тяжесть замечаний, а не только их количество</td></tr>
+            <tr><td class="metric-id">11</td><td>Доля повторных замечаний после исправления</td><td>Качество</td><td>Качество патчей и уровень доверия клиента к исправлениям</td></tr>
+            <tr><td class="metric-id">12</td><td>Доля замечаний, которые устраняются без разработки</td><td>Качество</td><td>Доля настроек и консультаций относительно реальных дефектов</td></tr>
+            <tr><td class="metric-id">13</td><td>Доля новых требований, выявленных на ПСИ</td><td>Качество</td><td>Не используется ли ПСИ как поздний этап сбора требований</td></tr>
+            <tr><td class="metric-id">14</td><td>SLA первичного назначения замечаний в работу</td><td>Управляемость</td><td>Скорость первичной реакции команды на замечания</td></tr>
+            <tr><td class="metric-id">15</td><td>SLA устранения замечаний ПСИ</td><td>Управляемость</td><td>Дисциплина отработки и соблюдение сроков устранения</td></tr>
+            <tr><td class="metric-id">16</td><td>Доля недель ПСИ с актуальным статусом</td><td>Управляемость</td><td>Дисциплина управления этапом со стороны менеджера</td></tr>
+            <tr><td class="metric-id">17</td><td>Доля недель, где клиент формально зафиксировал результаты КП</td><td>Управляемость</td><td>Идет ли приемка формально или только обсуждается на словах</td></tr>
+            <tr><td class="metric-id">18</td><td>Срок от фактического завершения КП до подписания акта ПСИ</td><td>Управляемость</td><td>Бюрократический хвост после фактического завершения приемки</td></tr>
+            <tr><td class="metric-id">19</td><td>Доля простоев ПСИ по вине клиента</td><td>Управляемость</td><td>Не смешиваются ли проблемы поставки с дисциплиной заказчика</td></tr>
+            <tr><td class="metric-id">20</td><td>Доля проектов, где есть функциональный чек-лист подтверждения клиента перед запуском</td><td>ПСИ → запуск</td><td>Разложено ли общее подтверждение клиента на конкретные сценарии</td></tr>
+            <tr><td class="metric-id">21</td><td>Доля проектов, где подтверждена актуальность результатов тестирования на дату запуска</td><td>ПСИ → запуск</td><td>Сохраняют ли результаты ПСИ силу к моменту go-live</td></tr>
+            <tr><td class="metric-id">22</td><td>Доля проектов с неконтролируемыми изменениями после последнего цикла тестирования</td><td>ПСИ → запуск</td><td>Риск разрыва между формально успешным ПСИ и фактической готовностью к запуску</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Практика PMO</div>
+          <h2>Как использовать набор в регулярной работе</h2>
+        </div>
+        <div class="section-note">Сводка по источникам, периодичности и владельцам расчета</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Диапазон</th>
+              <th>Блок метрик</th>
+              <th>Основные источники данных</th>
+              <th>Периодичность</th>
+              <th>Кто считает</th>
+              <th>Как читать результат</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="metric-id">1-4</td>
+              <td>Готовность к старту ПСИ</td>
+              <td>План проекта, чек-лист входа в ПСИ, реестр КП, доступы, подтверждение среды, отчет о миграции</td>
+              <td>На старте ПСИ</td>
+              <td>Менеджер проекта, PMO, техлид, аналитик</td>
+              <td>Показывает, стартует ли этап как приемка, а не как дособирание контура</td>
+            </tr>
+            <tr>
+              <td class="metric-id">5-8</td>
+              <td>Прогресс прохождения ПСИ</td>
+              <td>Реестр КП, статусы, протоколы результатов, журнал приемки</td>
+              <td>Еженедельно</td>
+              <td>Менеджер проекта, PMO</td>
+              <td>Показывает движение клиентской приемки и зависшие сценарии</td>
+            </tr>
+            <tr>
+              <td class="metric-id">9-13</td>
+              <td>Качество поставки и замечаний</td>
+              <td>`TS`, реестр замечаний, журнал дефектов, change request, журнал требований</td>
+              <td>Еженедельно и по завершении ПСИ</td>
+              <td>PMO, менеджер проекта, QA, аналитик, внедрение</td>
+              <td>Позволяет отделить слабую поставку от обычной рабочей шлифовки</td>
+            </tr>
+            <tr>
+              <td class="metric-id">14-19</td>
+              <td>Управляемость этапа и дисциплина сторон</td>
+              <td>`TS`, статус-отчеты, журнал блокеров, протоколы совещаний, письма клиента</td>
+              <td>Еженедельно и по завершении ПСИ</td>
+              <td>Менеджер проекта, PMO, разработка</td>
+              <td>Показывает скорость реакции, дисциплину контура и долю клиентских простоев</td>
+            </tr>
+            <tr>
+              <td class="metric-id">20-22</td>
+              <td>Стык ПСИ и запуска</td>
+              <td>Чек-лист актуальности готовности банка, `go-live readiness review`, протоколы тестирования, журнал изменений</td>
+              <td>Перед запуском и по завершении запуска</td>
+              <td>Менеджер проекта, PMO, техлид</td>
+              <td>Ловит риск ситуации, когда успешное ПСИ не превращается в реальную готовность к старту</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Режим применения</div>
+          <h2>Какой набор использовать в зависимости от задачи</h2>
+        </div>
+      </div>
+
+      <div class="compact-grid">
+        <div class="box">
+          <div class="section-label">Статус-контроль</div>
+          <h3>8-10 метрик</h3>
+          <p>Достаточно для еженедельного контура PMO, если нужно быстро видеть прогресс, качество и зависания приемки.</p>
+        </div>
+        <div class="box">
+          <div class="section-label">Оценка менеджеров</div>
+          <h3>Полный набор</h3>
+          <p>Нужен, если задача состоит в сравнении менеджеров, выявлении системных слабых зон и разборе повторяющихся причин срывов.</p>
+        </div>
+        <div class="box">
+          <div class="section-label">Риск запуска</div>
+          <h3>ПСИ → go-live</h3>
+          <p>Метрики `20-22` обязательны, если важно не только пройти ПСИ, но и избежать срыва запуска после положительных протоколов.</p>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Документ подготовлен как HTML-презентация по файлу «Метрики прохождения ПСИ» с учетом рабочих кейсов по срыву запуска и материала по чек-листу актуальности готовности банка к запуску.
+      </div>
+    </section>
+  </div>
+</body>
+</html>
