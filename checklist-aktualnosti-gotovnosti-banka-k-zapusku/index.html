@@ -53,7 +53,7 @@
     .page {
       position: relative;
       z-index: 1;
-      max-width: 1540px;
+      max-width: 1560px;
       margin: 0 auto;
       padding: 28px;
     }
@@ -84,9 +84,7 @@
       width: 460px;
       height: 460px;
       border: 1px solid rgba(1, 172, 255, 0.22);
-      box-shadow:
-        0 0 0 28px rgba(1, 172, 255, 0.05),
-        0 0 0 56px rgba(1, 172, 255, 0.03);
+      box-shadow: 0 0 0 28px rgba(1, 172, 255, 0.05), 0 0 0 56px rgba(1, 172, 255, 0.03);
     }
 
     .shell::after {
@@ -156,7 +154,7 @@
     }
 
     h3 {
-      font-size: 22px;
+      font-size: 24px;
       line-height: 1.06;
     }
 
@@ -200,14 +198,16 @@
     .risk { background: rgba(255, 123, 123, 0.14); color: var(--risk); }
 
     .summary-grid,
-    .focus-grid {
+    .cards-grid,
+    .result-grid {
       display: grid;
       gap: 16px;
       margin-top: 22px;
     }
 
     .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .focus-grid { grid-template-columns: 1.2fr 1fr 1fr; }
+    .cards-grid { grid-template-columns: 1.2fr 1fr 1fr; }
+    .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .metric,
     .card,
@@ -251,7 +251,8 @@
     .section-note,
     .metric-note,
     .card p,
-    .card ul {
+    .card ul,
+    .footer-note {
       margin: 10px 0 0;
       color: var(--muted);
     }
@@ -275,7 +276,7 @@
 
     table {
       width: 100%;
-      min-width: 1120px;
+      min-width: 1100px;
       border-collapse: collapse;
     }
 
@@ -300,21 +301,35 @@
       border-bottom: none;
     }
 
+    .narrow {
+      min-width: 880px;
+    }
+
+    .wide {
+      min-width: 1240px;
+    }
+
+    .metric-id {
+      color: var(--cyan);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
     ul {
       padding-left: 18px;
     }
 
     li + li { margin-top: 8px; }
 
-    .footer-note {
-      margin-top: 14px;
-      color: var(--muted-2);
-      font-size: 13px;
+    code {
+      color: var(--cyan);
+      font-family: Consolas, monospace;
     }
 
     @media (max-width: 1180px) {
       .summary-grid,
-      .focus-grid {
+      .cards-grid,
+      .result-grid {
         grid-template-columns: 1fr;
       }
 
@@ -350,11 +365,11 @@
             <div class="eyebrow">PMO / Go-Live / Контроль актуальности</div>
             <h1>Чек-лист нужен, чтобы подтвердить: успешные тесты и прошлые решения о запуске <span class="accent">по-прежнему актуальны на дату старта</span>.</h1>
             <p class="lead">
-              Документ используется за 1-5 рабочих дней до запуска и не заменяет протоколы тестирования или финальное решение go / no-go.
-              Его задача другая: проверить, не появился ли после ПСИ разрыв между формально успешным результатом и фактической готовностью банка к запуску.
+              Документ используется за <code>1-5</code> рабочих дней до запуска. Его задача не заменить протоколы тестирования и не заменить решение
+              <code>go / no-go</code>, а подтвердить, что ранее сданные результаты тестирования и ранее принятое решение о запуске остаются актуальными на дату старта.
             </p>
           </div>
-          <div class="badge">Шаблон перед go-live</div>
+          <div class="badge">Рабочий шаблон перед go-live</div>
         </div>
 
         <div class="chips">
@@ -383,7 +398,7 @@
           <article class="metric">
             <div class="label">Цель</div>
             <div class="metric-value">1</div>
-            <div class="metric-note">Убрать ситуацию, когда положительные протоколы не конвертируются в реальный запуск.</div>
+            <div class="metric-note">Убрать разрыв между положительными протоколами и реальной готовностью банка к запуску.</div>
           </article>
         </div>
       </section>
@@ -394,80 +409,328 @@
             <div class="label">Правила использования</div>
             <h2>Как работать с чек-листом</h2>
           </div>
-          <div class="section-note">Документ нужен не для бюрократии, а для защиты решения о запуске</div>
+          <div class="section-note">Документ нужен не для обзора, а для реального заполнения</div>
         </div>
 
-        <div class="focus-grid">
+        <div class="cards-grid">
           <article class="card">
             <div class="label">Статусы</div>
             <h3>Единая трактовка</h3>
             <div class="status-line">
-              <span class="status-pill ok">Да — подтверждено</span>
+              <span class="status-pill ok">Да — подтверждено и актуально</span>
               <span class="status-pill warn">Частично — нужен go with conditions</span>
               <span class="status-pill risk">Нет — блокер или высокий риск</span>
             </div>
-            <p class="note">Все пункты со статусом `Нет` или `Частично` должны отдельно попадать в список рисков запуска.</p>
+            <p class="note">Все пункты со статусом <code>Нет</code> или <code>Частично</code> должны быть вынесены в отдельный список рисков к запуску.</p>
           </article>
           <article class="card">
             <div class="label">Когда особенно нужен</div>
             <h3>Рискованные условия</h3>
             <ul>
-              <li>Банк сам меняет настройки</li>
-              <li>Часть проверки остается внутри банка</li>
-              <li>Есть разрыв между тестированием и запуском</li>
-              <li>Возможны поздние изменения данных, маршрутов или прав</li>
+              <li>Банк самостоятельно выполняет часть настроек</li>
+              <li>Банк сам проводит часть функциональной проверки</li>
+              <li>Есть временной разрыв между тестированием и запуском</li>
+              <li>Возможны поздние изменения настроек, данных, маршрутов или прав</li>
             </ul>
           </article>
           <article class="card">
             <div class="label">Принцип заполнения</div>
             <h3>Совместное подтверждение</h3>
             <ul>
-              <li>Менеджер проекта заполняет вместе с банком</li>
-              <li>У каждого пункта есть владелец со стороны банка</li>
-              <li>По спорным пунктам сразу формируется управленческое решение</li>
+              <li>Чек-лист заполняется менеджером проекта совместно с представителем банка</li>
+              <li>По каждому пункту должен быть владелец со стороны банка</li>
+              <li>По спорным вопросам сразу формируется управленческое решение</li>
             </ul>
           </article>
         </div>
 
         <div class="callout">
-          <p><strong>Управленческий смысл:</strong> если банк не подтверждает актуальность результатов тестирования на дату запуска, это уже самостоятельный риск, даже если протоколы ПСИ были положительными.</p>
+          <p><strong>Ключевой смысл:</strong> даже положительные результаты ПСИ сами по себе не гарантируют запуск. Нужна подтвержденная актуальность этих результатов на дату go-live.</p>
         </div>
       </section>
 
       <section class="section">
         <div class="section-head">
           <div>
-            <div class="label">Каркас документа</div>
-            <h2>Какие блоки обязательно должны быть заполнены</h2>
+            <div class="label">Карточка запуска</div>
+            <h2>Заполняется первой</h2>
           </div>
-          <div class="section-note">Полная логика шаблона перед финальным go / no-go</div>
+          <div class="section-note">Контекст, участники и предварительное решение</div>
         </div>
 
         <div class="table-wrap">
-          <table>
+          <table class="narrow">
             <thead>
-              <tr>
-                <th>Раздел</th>
-                <th>Что проверяется</th>
-                <th>Зачем это нужно</th>
-              </tr>
+              <tr><th>Поле</th><th>Значение</th></tr>
             </thead>
             <tbody>
-              <tr><td>Карточка запуска</td><td>Проект, банк, дата запуска, версия, участники, предварительное решение</td><td>Фиксирует контекст и управленческую ответственность</td></tr>
-              <tr><td>1. Актуальность завершенного тестирования</td><td>Действуют ли протоколы и не обнулены ли результаты последующими изменениями</td><td>Проверяет, сохраняют ли тесты силу на дату запуска</td></tr>
-              <tr><td>2. Изменения после тестирования</td><td>Были ли критичные изменения и перепроверены ли затронутые сценарии</td><td>Отсекает поздние изменения без контроля</td></tr>
-              <tr><td>3. Внутренние замечания банка</td><td>Есть ли блокеры бизнеса и ИТ вне TS</td><td>Убирает ложную картину, когда TS чистый, а внутри банка уже накопились проблемы</td></tr>
-              <tr><td>4. Критичные функциональные контуры</td><td>Платежи, международка, AML, роли, интеграции, кастомизации и другие контуры</td><td>Превращает общее подтверждение в набор конкретных проверок</td></tr>
-              <tr><td>5. Готовность операционного запуска</td><td>Подразделения, ответственные, рабочие места, порядок дня запуска и эскалации</td><td>Показывает, готов ли банк работать в продуктиве, а не только тестировать</td></tr>
-              <tr><td>6. Данные, среда, техника</td><td>Среда запуска, миграция, данные, интеграции, регламентные задания</td><td>Снимает риск технического разрыва между тестом и продуктивом</td></tr>
-              <tr><td>7. Управленческое подтверждение банка</td><td>Кто принимает решение, видит ли он риски и зафиксировано ли решение письменно</td><td>Защищает команду от отката решения на финальном совещании</td></tr>
-              <tr><td>8. Открытые вопросы и условия запуска</td><td>Список рисков, их влияние, план закрытия, срок и владелец</td><td>Переводит спорные пункты в управляемый список</td></tr>
-              <tr><td>9-10. Заключение и подтверждение сторон</td><td>Вывод менеджера и фиксация решения со стороны банка и подрядчика</td><td>Формирует финальную письменную точку go / no-go</td></tr>
+              <tr><td>Проект</td><td></td></tr>
+              <tr><td>Банк</td><td></td></tr>
+              <tr><td>Плановая дата запуска</td><td></td></tr>
+              <tr><td>Дата заполнения чек-листа</td><td></td></tr>
+              <tr><td>Версия чек-листа</td><td></td></tr>
+              <tr><td>Менеджер проекта</td><td></td></tr>
+              <tr><td>Представитель банка</td><td></td></tr>
+              <tr><td>Решение по итогам</td><td><code>Go / Go with conditions / No-Go</code></td></tr>
             </tbody>
           </table>
         </div>
+      </section>
 
-        <p class="footer-note">Полная детализация контрольных вопросов и таблиц сохраняется в markdown-версии шаблона и используется как рабочая основа для заполнения.</p>
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">1</div>
+            <h2>Актуальность ранее завершенного тестирования</h2>
+          </div>
+          <div class="section-note">Проверка действительности прошлых результатов</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">1.1</td><td>Подтверждено, что протоколы тестирования по всем направлениям остаются актуальными на дату запуска</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">1.2</td><td>После последнего цикла тестирования не было изменений, которые обнуляют результаты ранее сданных тест-кейсов</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">1.3</td><td>По направлениям, где были изменения после тестирования, выполнена повторная проверка</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">1.4</td><td>По <code>AML</code>, если модуль в контуре запуска, подтверждено, что результаты тестирования актуальны</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">1.5</td><td>По другим критичным направлениям банка подтверждено отсутствие новых замечаний после завершения тестов</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">2</div>
+            <h2>Изменения после завершения тестирования</h2>
+          </div>
+          <div class="section-note">Контроль поздних изменений перед запуском</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">2.1</td><td>После завершения тестирования не менялись критичные настройки маршрутизации, обработки, лимитов, ролей или интеграций</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">2.2</td><td>Если изменения были, по ним есть перечень, дата, причина и владелец</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">2.3</td><td>Все изменения после тестирования были согласованы сторонами</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">2.4</td><td>По изменениям после тестирования проведена повторная проверка затронутых сценариев</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">2.5</td><td>Нет незарегистрированных или экспериментальных изменений, выполненных банком "точечно перед запуском"</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">3</div>
+            <h2>Внутренние замечания банка</h2>
+          </div>
+          <div class="section-note">Блокеры, которые могут не попасть в TS</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">3.1</td><td>У банка нет внутренних блокирующих замечаний бизнеса, не отраженных в <code>TS</code></td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">3.2</td><td>У банка нет внутренних блокирующих замечаний ИТ, не отраженных в <code>TS</code></td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">3.3</td><td>Все замечания, которые могут повлиять на запуск, классифицированы как блокирующие или неблокирующие</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">3.4</td><td>По всем неблокирующим замечаниям зафиксировано, почему они не мешают запуску</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">3.5</td><td>Нет новых массовых замечаний, появившихся после последнего цикла тестирования</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">4</div>
+            <h2>Подтверждение по критичным функциональным контурам</h2>
+          </div>
+          <div class="section-note">Контуры, по которым должно быть отдельное подтверждение</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Контур / направление</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">4.1</td><td>Платежи</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.2</td><td>Международные операции</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.3</td><td><code>AML</code> / комплаенс</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.4</td><td>Операционный блок</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.5</td><td>Нестандартные маршруты</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.6</td><td>Кастомизации банка</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.7</td><td>Интеграции в контуре запуска</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.8</td><td>Права, роли, доступы</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.9</td><td>Отчетность / печатные формы / выгрузки</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4.10</td><td>Иные критичные контуры проекта</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">5</div>
+            <h2>Готовность операционного запуска</h2>
+          </div>
+          <div class="section-note">Готовность бизнеса и ИТ банка к работе в продуктиве</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">5.1</td><td>Банк подтверждает готовность операционных подразделений к работе в продуктиве</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">5.2</td><td>Назначены ответственные на день запуска со стороны бизнеса и ИТ банка</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">5.3</td><td>Подтверждены доступы, роли и рабочие места для участников запуска</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">5.4</td><td>Подтвержден порядок действий в день запуска и после запуска</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">5.5</td><td>Подтвержден порядок эскалации при инцидентах в день запуска</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">6</div>
+            <h2>Данные, среда и техническая готовность банка</h2>
+          </div>
+          <div class="section-note">Проверка технического контура запуска</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">6.1</td><td>Среда, в которой будет запуск, соответствует среде, где подтверждалось тестирование, либо различия формально зафиксированы</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">6.2</td><td>Миграция данных завершена в требуемом объеме</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">6.3</td><td>Нет известных проблем с качеством данных, блокирующих запуск</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">6.4</td><td>Интеграционные каналы, обмены и регламентные задания готовы к запуску</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">6.5</td><td>У банка нет технических ограничений, из-за которых запуск должен быть перенесен</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">7</div>
+            <h2>Управленческое подтверждение банка</h2>
+          </div>
+          <div class="section-note">Кто принимает решение и как оно фиксируется</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">7.1</td><td>Подтверждено, кто принимает финальное решение о запуске со стороны банка</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">7.2</td><td>Указанное лицо ознакомлено с актуальным статусом проекта и открытыми рисками</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">7.3</td><td>Указанное лицо подтверждает, что на текущий момент запуск возможен</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">7.4</td><td>Если запуск возможен с условиями, эти условия явно перечислены и согласованы</td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">7.5</td><td>Решение банка по запуску зафиксировано письменно</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">8</div>
+            <h2>Открытые вопросы и условия запуска</h2>
+          </div>
+          <div class="section-note">Список рисков, влияющих на решение</div>
+        </div>
+        <div class="table-wrap">
+          <table class="wide">
+            <thead><tr><th>№</th><th>Вопрос / риск</th><th>Блокирует запуск</th><th>План закрытия</th><th>Срок</th><th>Владелец</th></tr></thead>
+            <tbody>
+              <tr><td class="metric-id">1</td><td></td><td><code>Да / Нет</code></td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">2</td><td></td><td><code>Да / Нет</code></td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">3</td><td></td><td><code>Да / Нет</code></td><td></td><td></td><td></td></tr>
+              <tr><td class="metric-id">4</td><td></td><td><code>Да / Нет</code></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">9</div>
+            <h2>Итоговое заключение менеджера проекта</h2>
+          </div>
+          <div class="section-note">Финальная позиция перед go / no-go</div>
+        </div>
+
+        <div class="result-grid">
+          <article class="card">
+            <div class="label">Краткий вывод</div>
+            <ul>
+              <li>Ранее сданные результаты тестирования на дату запуска: <code>актуальны / актуальны с условиями / неактуальны</code></li>
+              <li>Внутренние блокеры банка: <code>отсутствуют / есть</code></li>
+              <li>Изменения после тестирования: <code>отсутствуют / есть контролируемые / есть неконтролируемые</code></li>
+              <li>Рекомендация менеджера: <code>Go / Go with conditions / No-Go</code></li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="label">Комментарий менеджера</div>
+            <p><code>Заполняется коротким текстом на 5-10 строк: что подтверждено, какие есть риски, почему запуск рекомендуется или не рекомендуется.</code></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">10</div>
+            <h2>Подтверждение сторон</h2>
+          </div>
+          <div class="section-note">Финальная письменная фиксация решения</div>
+        </div>
+        <div class="table-wrap">
+          <table class="narrow">
+            <thead><tr><th>Сторона</th><th>ФИО</th><th>Роль</th><th>Решение</th><th>Дата</th></tr></thead>
+            <tbody>
+              <tr><td>Банк</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Подрядчик</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">Интерпретация</div>
+            <h2>Практическое правило принятия решения</h2>
+          </div>
+          <div class="section-note">Как трактовать результаты заполнения</div>
+        </div>
+
+        <div class="cards-grid">
+          <article class="card">
+            <div class="label">Правила</div>
+            <ul>
+              <li>Если есть хотя бы один статус <code>Нет</code> в блоках <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> или <code>7</code>, запуск должен отдельно выноситься на решение <code>No-Go</code> или <code>Go with conditions</code>.</li>
+              <li>Если протоколы тестирования положительные, но по внутренним замечаниям банка нет прозрачности, чек-лист не считается пройденным.</li>
+              <li>Если после тестирования были изменения, но нет подтверждения повторной проверки, чек-лист не считается пройденным.</li>
+              <li>Если банк не готов письменно подтвердить актуальность своих результатов тестирования, это считается отдельным риском запуска.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="label">Короткая форма вывода</div>
+            <p>По состоянию на дату проверки банк подтверждает или не подтверждает, что ранее согласованная готовность к запуску остается актуальной.</p>
+            <p>Решение принимается не только по факту прохождения тестов в прошлом, но и по подтвержденной актуальности этих результатов на текущий момент.</p>
+          </article>
+          <article class="card">
+            <div class="label">Управленческий смысл</div>
+            <p>Этот шаблон защищает команду от ситуации, когда формально успешный ПСИ уже завершен, но на дату запуска банк внутренне не готов подтвердить собственное решение о старте.</p>
+          </article>
+        </div>
       </section>
     </main>
   </div>
