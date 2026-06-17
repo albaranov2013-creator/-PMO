@@ -4,635 +4,472 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Шаблон чек-листа актуальности готовности банка к запуску</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #eef2f4;
-      --panel: #ffffff;
-      --line: #d6dde3;
-      --text: #16212b;
-      --muted: #61707f;
-      --brand: #143a56;
-      --brand-soft: #e9f0f5;
-      --accent: #b86a18;
-      --accent-soft: #fff0df;
-      --ok: #1f6a45;
-      --ok-soft: #eaf6ee;
-      --risk: #aa2f2f;
-      --risk-soft: #fdecec;
-      --shadow: 0 14px 34px rgba(22, 33, 43, 0.08);
+      --bg-deep: #031224;
+      --bg-main: #051b32;
+      --bg-side: #014997;
+      --panel: rgba(7, 33, 60, 0.72);
+      --panel-strong: rgba(4, 22, 42, 0.88);
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #ffffff;
+      --muted: #d9d9d9;
+      --muted-2: #b4b4b4;
+      --cyan: #01acff;
+      --ok: #5be0a3;
+      --warn: #ffbf5f;
+      --risk: #ff7b7b;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background:
-        radial-gradient(circle at top right, rgba(20, 58, 86, 0.08), transparent 28%),
-        linear-gradient(180deg, #f7f9fb 0%, var(--bg) 100%);
+      min-height: 100vh;
       color: var(--text);
-      font: 15px/1.58 "Segoe UI", Arial, sans-serif;
+      font: 15px/1.58 "Roboto", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 82% 14%, rgba(1, 172, 255, 0.18), transparent 18%),
+        radial-gradient(circle at 88% 78%, rgba(20, 99, 174, 0.24), transparent 24%),
+        linear-gradient(118deg, var(--bg-deep) 0%, var(--bg-main) 56%, var(--bg-side) 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 34px 34px;
     }
 
     .page {
+      position: relative;
+      z-index: 1;
       max-width: 1540px;
       margin: 0 auto;
-      padding: 26px;
+      padding: 28px;
     }
 
-    .panel {
-      background: var(--panel);
+    .shell {
+      position: relative;
+      overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: 24px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 78% 16%, rgba(1, 172, 255, 0.14), transparent 16%),
+        radial-gradient(circle at 84% 82%, rgba(20, 99, 174, 0.22), transparent 20%),
+        linear-gradient(118deg, rgba(3,18,36,0.96) 0%, rgba(5,27,50,0.95) 58%, rgba(1,73,151,0.92) 100%);
       box-shadow: var(--shadow);
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 24px;
-      padding: 30px 32px;
+    .shell::before,
+    .shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .shell::before {
+      right: -160px;
+      top: -160px;
+      width: 460px;
+      height: 460px;
+      border: 1px solid rgba(1, 172, 255, 0.22);
+      box-shadow:
+        0 0 0 28px rgba(1, 172, 255, 0.05),
+        0 0 0 56px rgba(1, 172, 255, 0.03);
+    }
+
+    .shell::after {
+      right: -220px;
+      bottom: -250px;
+      width: 520px;
+      height: 520px;
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      padding: 34px 38px;
+    }
+
+    .section + .section {
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
     .eyebrow,
-    .section-label,
-    .meta-label,
+    .label,
     th {
       color: var(--muted);
       font-size: 11px;
-      letter-spacing: 0.16em;
       text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .hero-top,
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(1, 172, 255, 0.24);
+      background: rgba(1, 172, 255, 0.12);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 500;
     }
 
     h1, h2, h3 {
       margin: 0;
-      font-weight: 600;
+      font-family: "Barlow Condensed", "Roboto Condensed", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.01em;
     }
 
     h1 {
       margin-top: 12px;
-      font-size: 36px;
-      line-height: 1.12;
+      max-width: 1100px;
+      font-size: 44px;
+      line-height: 1.02;
     }
 
-    h2 { font-size: 24px; }
-    h3 { font-size: 18px; }
+    h2 {
+      font-size: 32px;
+      line-height: 1.04;
+    }
+
+    h3 {
+      font-size: 22px;
+      line-height: 1.06;
+    }
 
     .lead {
-      margin-top: 14px;
-      max-width: 890px;
+      margin: 16px 0 0;
+      max-width: 980px;
       color: var(--muted);
-      font-size: 16px;
+      font-size: 19px;
+      line-height: 1.34;
     }
 
+    .accent { color: var(--cyan); }
+
     .chips,
-    .status-legend {
+    .status-line {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 20px;
     }
 
-    .chip {
+    .chip,
+    .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      border-radius: 999px;
       padding: 8px 12px;
+      border-radius: 999px;
       font-size: 12px;
       font-weight: 600;
     }
 
-    .chip-brand { background: var(--brand-soft); color: var(--brand); }
-    .chip-accent { background: var(--accent-soft); color: var(--accent); }
-    .chip-ok { background: var(--ok-soft); color: var(--ok); }
-    .chip-risk { background: var(--risk-soft); color: var(--risk); }
-
-    .meta-grid,
-    .summary-grid,
-    .two-col,
-    .triple-grid,
-    .compact-grid {
-      display: grid;
-      gap: 14px;
+    .chip {
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-weight: 500;
     }
 
-    .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 16px; }
-    .two-col { grid-template-columns: 1fr 1fr; margin-top: 16px; }
-    .triple-grid { grid-template-columns: 1.15fr 1fr 1fr; margin-top: 16px; }
-    .compact-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 16px; }
+    .ok { background: rgba(91, 224, 163, 0.14); color: var(--ok); }
+    .warn { background: rgba(255, 191, 95, 0.14); color: var(--warn); }
+    .risk { background: rgba(255, 123, 123, 0.14); color: var(--risk); }
 
-    .card,
+    .summary-grid,
+    .focus-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .focus-grid { grid-template-columns: 1.2fr 1fr 1fr; }
+
     .metric,
-    .box,
-    .legend-card {
+    .card,
+    .callout {
       border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fbfcfd;
-      padding: 18px 20px;
+      border-radius: 22px;
+      background: var(--panel);
+      backdrop-filter: blur(8px);
+    }
+
+    .metric,
+    .card {
+      padding: 20px 22px;
     }
 
     .metric {
       position: relative;
       overflow: hidden;
+      min-height: 168px;
     }
 
     .metric::before {
       content: "";
       position: absolute;
-      inset: 0 auto auto 0;
+      left: 0;
+      top: 0;
       width: 100%;
       height: 4px;
-      background: linear-gradient(90deg, var(--brand), rgba(20, 58, 86, 0.18));
-    }
-
-    .meta-value,
-    .value-strong {
-      margin-top: 8px;
-      font-weight: 600;
+      background: linear-gradient(90deg, var(--cyan), rgba(1, 172, 255, 0.10));
     }
 
     .metric-value {
-      margin-top: 10px;
-      font-size: 30px;
-      font-weight: 600;
-      line-height: 1;
+      margin-top: 14px;
+      font-family: "Barlow Condensed", "Roboto Condensed", sans-serif;
+      font-size: 50px;
+      line-height: 0.95;
+      color: var(--cyan);
     }
 
+    .note,
+    .section-note,
     .metric-note,
-    .box p,
-    .note {
+    .card p,
+    .card ul {
       margin: 10px 0 0;
       color: var(--muted);
     }
 
-    .section {
-      margin-top: 16px;
-      padding: 24px 26px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 18px;
-      margin-bottom: 16px;
-    }
-
-    .section-note {
-      color: var(--muted);
-      font-size: 13px;
-      text-align: right;
-    }
-
     .callout {
-      border-left: 4px solid var(--brand);
-      border-radius: 18px;
-      background: linear-gradient(90deg, rgba(20, 58, 86, 0.06), transparent 55%);
-      padding: 16px 18px;
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--cyan);
+      background: linear-gradient(90deg, rgba(1,172,255,0.10), rgba(7,33,60,0.52) 58%);
     }
 
     .callout p { margin: 0; }
 
     .table-wrap {
+      margin-top: 18px;
       overflow-x: auto;
       border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fbfcfd;
+      border-radius: 22px;
+      background: rgba(4, 22, 42, 0.78);
     }
 
     table {
       width: 100%;
+      min-width: 1120px;
       border-collapse: collapse;
-      min-width: 980px;
     }
 
-    th,
-    td {
-      border-bottom: 1px solid var(--line);
-      padding: 14px 12px;
+    th, td {
+      padding: 14px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       text-align: left;
       vertical-align: top;
     }
 
-    th { background: #f5f8fa; }
+    th {
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-weight: 500;
+    }
 
     tbody tr:nth-child(even) td {
-      background: rgba(246, 249, 251, 0.55);
+      background: rgba(255,255,255,0.02);
     }
 
     tbody tr:last-child td {
       border-bottom: none;
     }
 
-    .metric-id {
-      white-space: nowrap;
-      font-weight: 600;
-      color: var(--brand);
-    }
-
     ul {
-      margin: 10px 0 0;
       padding-left: 18px;
     }
 
     li + li { margin-top: 8px; }
 
     .footer-note {
-      margin-top: 16px;
-      color: var(--muted);
+      margin-top: 14px;
+      color: var(--muted-2);
       font-size: 13px;
     }
 
-    .ribbon {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 14px;
-      border-radius: 999px;
-      padding: 8px 12px;
-      background: #f4f7fa;
-      color: var(--brand);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
     @media (max-width: 1180px) {
-      .hero,
-      .meta-grid,
       .summary-grid,
-      .two-col,
-      .triple-grid,
-      .compact-grid {
+      .focus-grid {
         grid-template-columns: 1fr;
       }
 
+      .hero-top,
       .section-head {
         display: block;
       }
 
+      .badge,
       .section-note {
-        margin-top: 8px;
-        text-align: left;
+        margin-top: 12px;
       }
+
+      h1 { font-size: 36px; }
+      h2 { font-size: 28px; }
     }
 
-    @media print {
-      body { background: #ffffff; }
-      .page { max-width: none; padding: 0; }
-      .panel { box-shadow: none; }
+    @media (max-width: 720px) {
+      .page { padding: 14px; }
+      .hero, .section { padding: 24px 20px; }
+      h1 { font-size: 31px; }
+      .lead { font-size: 17px; }
+      .metric-value { font-size: 42px; }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <section class="panel hero">
-      <div>
-        <div class="eyebrow">PMO / Go-Live / Контроль актуальности готовности</div>
-        <h1>Шаблон чек-листа актуальности готовности банка к запуску</h1>
-        <p class="lead">
-          Рабочий инструмент на <strong>1-5</strong> рабочих дней до старта. Чек-лист не заменяет
-          протоколы тестирования и решение <strong>go / no-go</strong>, а проверяет, что ранее сданные
-          результаты и ранее принятое решение о запуске по-прежнему актуальны на дату старта.
-        </p>
+    <main class="shell">
+      <section class="hero">
+        <div class="hero-top">
+          <div>
+            <div class="eyebrow">PMO / Go-Live / Контроль актуальности</div>
+            <h1>Чек-лист нужен, чтобы подтвердить: успешные тесты и прошлые решения о запуске <span class="accent">по-прежнему актуальны на дату старта</span>.</h1>
+            <p class="lead">
+              Документ используется за 1-5 рабочих дней до запуска и не заменяет протоколы тестирования или финальное решение go / no-go.
+              Его задача другая: проверить, не появился ли после ПСИ разрыв между формально успешным результатом и фактической готовностью банка к запуску.
+            </p>
+          </div>
+          <div class="badge">Шаблон перед go-live</div>
+        </div>
+
         <div class="chips">
-          <span class="chip chip-brand">Контур: ПСИ → запуск</span>
-          <span class="chip chip-accent">Заполняется с банком</span>
-          <span class="chip chip-ok">Проверяет актуальность, а не факт прошлых тестов</span>
-          <span class="chip chip-risk">Ловит скрытые блокеры вне TS</span>
+          <span class="chip">Заполняется совместно с банком</span>
+          <span class="chip">Владелец по каждому пункту обязателен</span>
+          <span class="chip">Нет / Частично выносится в риски запуска</span>
+          <span class="chip">Используется после ПСИ и перед финальным решением</span>
         </div>
-      </div>
 
-      <div class="meta-grid">
-        <div class="card">
-          <div class="meta-label">Когда применять</div>
-          <div class="meta-value">За 1-5 рабочих дней до продуктивного старта</div>
+        <div class="summary-grid">
+          <article class="metric">
+            <div class="label">Разделы</div>
+            <div class="metric-value">10</div>
+            <div class="metric-note">От карточки запуска до подтверждения сторон.</div>
+          </article>
+          <article class="metric">
+            <div class="label">Ключевые проверки</div>
+            <div class="metric-value">7</div>
+            <div class="metric-note">Тесты, изменения, внутренние блокеры, контуры, операционный и технический старт, решение банка.</div>
+          </article>
+          <article class="metric">
+            <div class="label">Логика статусов</div>
+            <div class="metric-value">3</div>
+            <div class="metric-note">Да, Частично, Нет — с обязательной фиксацией комментария и владельца.</div>
+          </article>
+          <article class="metric">
+            <div class="label">Цель</div>
+            <div class="metric-value">1</div>
+            <div class="metric-note">Убрать ситуацию, когда положительные протоколы не конвертируются в реальный запуск.</div>
+          </article>
         </div>
-        <div class="card">
-          <div class="meta-label">Кто заполняет</div>
-          <div class="meta-value">Менеджер проекта совместно с представителем банка</div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">Правила использования</div>
+            <h2>Как работать с чек-листом</h2>
+          </div>
+          <div class="section-note">Документ нужен не для бюрократии, а для защиты решения о запуске</div>
         </div>
-        <div class="card">
-          <div class="meta-label">Ключевой результат</div>
-          <div class="meta-value">Подтверждение, что готовность банка остается актуальной на дату запуска</div>
+
+        <div class="focus-grid">
+          <article class="card">
+            <div class="label">Статусы</div>
+            <h3>Единая трактовка</h3>
+            <div class="status-line">
+              <span class="status-pill ok">Да — подтверждено</span>
+              <span class="status-pill warn">Частично — нужен go with conditions</span>
+              <span class="status-pill risk">Нет — блокер или высокий риск</span>
+            </div>
+            <p class="note">Все пункты со статусом `Нет` или `Частично` должны отдельно попадать в список рисков запуска.</p>
+          </article>
+          <article class="card">
+            <div class="label">Когда особенно нужен</div>
+            <h3>Рискованные условия</h3>
+            <ul>
+              <li>Банк сам меняет настройки</li>
+              <li>Часть проверки остается внутри банка</li>
+              <li>Есть разрыв между тестированием и запуском</li>
+              <li>Возможны поздние изменения данных, маршрутов или прав</li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="label">Принцип заполнения</div>
+            <h3>Совместное подтверждение</h3>
+            <ul>
+              <li>Менеджер проекта заполняет вместе с банком</li>
+              <li>У каждого пункта есть владелец со стороны банка</li>
+              <li>По спорным пунктам сразу формируется управленческое решение</li>
+            </ul>
+          </article>
         </div>
-        <div class="card">
-          <div class="meta-label">Когда особенно нужен</div>
-          <div class="meta-value">Если банк сам настраивает, сам проверяет и между тестами и стартом есть разрыв</div>
+
+        <div class="callout">
+          <p><strong>Управленческий смысл:</strong> если банк не подтверждает актуальность результатов тестирования на дату запуска, это уже самостоятельный риск, даже если протоколы ПСИ были положительными.</p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="summary-grid">
-      <div class="panel metric">
-        <div class="section-label">Блоки проверки</div>
-        <div class="metric-value">7</div>
-        <div class="metric-note">От тестов и изменений до управленческого подтверждения банка</div>
-      </div>
-      <div class="panel metric">
-        <div class="section-label">Риск-блок</div>
-        <div class="metric-value">1</div>
-        <div class="metric-note">Открытые вопросы и условия запуска</div>
-      </div>
-      <div class="panel metric">
-        <div class="section-label">Итог менеджера</div>
-        <div class="metric-value">1</div>
-        <div class="metric-note">Go / Go with conditions / No-Go</div>
-      </div>
-      <div class="panel metric">
-        <div class="section-label">Подтверждение</div>
-        <div class="metric-value">2</div>
-        <div class="metric-note">Банк и подрядчик фиксируют решение письменно</div>
-      </div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <div>
-          <div class="section-label">Правила использования</div>
-          <h2>Как читать статусы и когда чек-лист считается непройденным</h2>
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="label">Каркас документа</div>
+            <h2>Какие блоки обязательно должны быть заполнены</h2>
+          </div>
+          <div class="section-note">Полная логика шаблона перед финальным go / no-go</div>
         </div>
-      </div>
 
-      <div class="two-col">
-        <div class="box">
-          <div class="section-label">Правила заполнения</div>
-          <ul>
-            <li>по каждому пункту должен быть владелец со стороны банка;</li>
-            <li>статус <strong>Да</strong> означает подтверждено и актуально на дату проверки;</li>
-            <li>статус <strong>Нет</strong> означает блокер или высокий риск;</li>
-            <li>статус <strong>Частично</strong> означает необходимость решения <strong>Go with conditions</strong>.</li>
-          </ul>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Раздел</th>
+                <th>Что проверяется</th>
+                <th>Зачем это нужно</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Карточка запуска</td><td>Проект, банк, дата запуска, версия, участники, предварительное решение</td><td>Фиксирует контекст и управленческую ответственность</td></tr>
+              <tr><td>1. Актуальность завершенного тестирования</td><td>Действуют ли протоколы и не обнулены ли результаты последующими изменениями</td><td>Проверяет, сохраняют ли тесты силу на дату запуска</td></tr>
+              <tr><td>2. Изменения после тестирования</td><td>Были ли критичные изменения и перепроверены ли затронутые сценарии</td><td>Отсекает поздние изменения без контроля</td></tr>
+              <tr><td>3. Внутренние замечания банка</td><td>Есть ли блокеры бизнеса и ИТ вне TS</td><td>Убирает ложную картину, когда TS чистый, а внутри банка уже накопились проблемы</td></tr>
+              <tr><td>4. Критичные функциональные контуры</td><td>Платежи, международка, AML, роли, интеграции, кастомизации и другие контуры</td><td>Превращает общее подтверждение в набор конкретных проверок</td></tr>
+              <tr><td>5. Готовность операционного запуска</td><td>Подразделения, ответственные, рабочие места, порядок дня запуска и эскалации</td><td>Показывает, готов ли банк работать в продуктиве, а не только тестировать</td></tr>
+              <tr><td>6. Данные, среда, техника</td><td>Среда запуска, миграция, данные, интеграции, регламентные задания</td><td>Снимает риск технического разрыва между тестом и продуктивом</td></tr>
+              <tr><td>7. Управленческое подтверждение банка</td><td>Кто принимает решение, видит ли он риски и зафиксировано ли решение письменно</td><td>Защищает команду от отката решения на финальном совещании</td></tr>
+              <tr><td>8. Открытые вопросы и условия запуска</td><td>Список рисков, их влияние, план закрытия, срок и владелец</td><td>Переводит спорные пункты в управляемый список</td></tr>
+              <tr><td>9-10. Заключение и подтверждение сторон</td><td>Вывод менеджера и фиксация решения со стороны банка и подрядчика</td><td>Формирует финальную письменную точку go / no-go</td></tr>
+            </tbody>
+          </table>
         </div>
-        <div class="box">
-          <div class="section-label">Когда чек-лист не пройден</div>
-          <ul>
-            <li>есть хотя бы один статус <strong>Нет</strong> в ключевых блоках;</li>
-            <li>по внутренним замечаниям банка нет прозрачности;</li>
-            <li>после тестирования были изменения без повторной проверки;</li>
-            <li>банк не готов письменно подтвердить актуальность результатов тестирования.</li>
-          </ul>
-        </div>
-      </div>
 
-      <div class="status-legend">
-        <span class="chip chip-ok">Да — подтверждено и актуально</span>
-        <span class="chip chip-accent">Частично — запуск возможен только с условиями</span>
-        <span class="chip chip-risk">Нет — блокер или высокий риск</span>
-      </div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <div>
-          <div class="section-label">Карточка запуска</div>
-          <h2>Базовые реквизиты проверки</h2>
-        </div>
-        <div class="section-note">Заполняется до начала обсуждения по блокам</div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Поле</th>
-              <th>Значение</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Проект</td><td></td></tr>
-            <tr><td>Банк</td><td></td></tr>
-            <tr><td>Плановая дата запуска</td><td></td></tr>
-            <tr><td>Дата заполнения чек-листа</td><td></td></tr>
-            <tr><td>Версия чек-листа</td><td></td></tr>
-            <tr><td>Менеджер проекта</td><td></td></tr>
-            <tr><td>Представитель банка</td><td></td></tr>
-            <tr><td>Решение по итогам</td><td><strong>Go / Go with conditions / No-Go</strong></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <div>
-          <div class="section-label">Блоки проверки</div>
-          <h2>Основной чек-лист по актуальности готовности</h2>
-        </div>
-        <div class="section-note">Большие таблицы прокручиваются горизонтально на узких экранах</div>
-      </div>
-
-      <div class="ribbon">Блок 1. Актуальность ранее завершенного тестирования</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">1.1</td><td>Подтверждено, что протоколы тестирования по всем направлениям остаются актуальными на дату запуска</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">1.2</td><td>После последнего цикла тестирования не было изменений, которые обнуляют результаты ранее сданных тест-кейсов</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">1.3</td><td>По направлениям, где были изменения после тестирования, выполнена повторная проверка</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">1.4</td><td>По <code>AML</code>, если модуль в контуре запуска, подтверждено, что результаты тестирования актуальны</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">1.5</td><td>По другим критичным направлениям банка подтверждено отсутствие новых замечаний после завершения тестов</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="ribbon">Блок 2. Изменения после завершения тестирования</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">2.1</td><td>После завершения тестирования не менялись критичные настройки маршрутизации, обработки, лимитов, ролей или интеграций</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">2.2</td><td>Если изменения были, по ним есть перечень, дата, причина и владелец</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">2.3</td><td>Все изменения после тестирования были согласованы сторонами</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">2.4</td><td>По изменениям после тестирования проведена повторная проверка затронутых сценариев</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">2.5</td><td>Нет незарегистрированных или экспериментальных изменений, выполненных банком точечно перед запуском</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="ribbon">Блок 3. Внутренние замечания банка</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">3.1</td><td>У банка нет внутренних блокирующих замечаний бизнеса, не отраженных в <code>TS</code></td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">3.2</td><td>У банка нет внутренних блокирующих замечаний ИТ, не отраженных в <code>TS</code></td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">3.3</td><td>Все замечания, которые могут повлиять на запуск, классифицированы как блокирующие или неблокирующие</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">3.4</td><td>По всем неблокирующим замечаниям зафиксировано, почему они не мешают запуску</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">3.5</td><td>Нет новых массовых замечаний, появившихся после последнего цикла тестирования</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="ribbon">Блок 4. Подтверждение по критичным функциональным контурам</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Контур / направление</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">4.1</td><td>Платежи</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.2</td><td>Международные операции</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.3</td><td><code>AML</code> / комплаенс</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.4</td><td>Операционный блок</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.5</td><td>Нестандартные маршруты</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.6</td><td>Кастомизации банка</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.7</td><td>Интеграции в контуре запуска</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.8</td><td>Права, роли, доступы</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.9</td><td>Отчетность / печатные формы / выгрузки</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4.10</td><td>Иные критичные контуры проекта</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="ribbon">Блок 5. Готовность операционного запуска</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">5.1</td><td>Банк подтверждает готовность операционных подразделений к работе в продуктиве</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">5.2</td><td>Назначены ответственные на день запуска со стороны бизнеса и ИТ банка</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">5.3</td><td>Подтверждены доступы, роли и рабочие места для участников запуска</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">5.4</td><td>Подтвержден порядок действий в день запуска и после запуска</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">5.5</td><td>Подтвержден порядок эскалации при инцидентах в день запуска</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="ribbon">Блок 6. Данные, среда и техническая готовность банка</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">6.1</td><td>Среда, в которой будет запуск, соответствует среде, где подтверждалось тестирование, либо различия формально зафиксированы</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">6.2</td><td>Миграция данных завершена в требуемом объеме</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">6.3</td><td>Нет известных проблем с качеством данных, блокирующих запуск</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">6.4</td><td>Интеграционные каналы, обмены и регламентные задания готовы к запуску</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">6.5</td><td>У банка нет технических ограничений, из-за которых запуск должен быть перенесен</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="ribbon">Блок 7. Управленческое подтверждение банка</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Контрольный вопрос</th><th>Статус</th><th>Комментарий</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">7.1</td><td>Подтверждено, кто принимает финальное решение о запуске со стороны банка</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">7.2</td><td>Указанное лицо ознакомлено с актуальным статусом проекта и открытыми рисками</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">7.3</td><td>Указанное лицо подтверждает, что на текущий момент запуск возможен</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">7.4</td><td>Если запуск возможен с условиями, эти условия явно перечислены и согласованы</td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">7.5</td><td>Решение банка по запуску зафиксировано письменно</td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <div>
-          <div class="section-label">Риски запуска</div>
-          <h2>Открытые вопросы и условия запуска</h2>
-        </div>
-        <div class="section-note">Все статусы Нет и Частично должны попадать в этот блок</div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>№</th><th>Вопрос / риск</th><th>Блокирует запуск</th><th>План закрытия</th><th>Срок</th><th>Владелец</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="metric-id">1</td><td></td><td><strong>Да / Нет</strong></td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">2</td><td></td><td><strong>Да / Нет</strong></td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">3</td><td></td><td><strong>Да / Нет</strong></td><td></td><td></td><td></td></tr>
-            <tr><td class="metric-id">4</td><td></td><td><strong>Да / Нет</strong></td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <div>
-          <div class="section-label">Вывод менеджера</div>
-          <h2>Итоговое заключение по запуску</h2>
-        </div>
-      </div>
-
-      <div class="triple-grid">
-        <div class="box">
-          <div class="section-label">Краткий вывод</div>
-          <ul>
-            <li>Результаты тестирования на дату запуска: <strong>актуальны / актуальны с условиями / неактуальны</strong></li>
-            <li>Внутренние блокеры банка: <strong>отсутствуют / есть</strong></li>
-            <li>Изменения после тестирования: <strong>отсутствуют / есть контролируемые / есть неконтролируемые</strong></li>
-            <li>Рекомендация менеджера: <strong>Go / Go with conditions / No-Go</strong></li>
-          </ul>
-        </div>
-        <div class="box">
-          <div class="section-label">Комментарий менеджера</div>
-          <p>Короткий текст на 5-10 строк: что подтверждено, какие есть риски, почему запуск рекомендуется или не рекомендуется.</p>
-        </div>
-        <div class="box">
-          <div class="section-label">Короткая форма управленческого вывода</div>
-          <p>По состоянию на дату проверки банк подтверждает или не подтверждает, что ранее согласованная готовность к запуску остается актуальной.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <div>
-          <div class="section-label">Подтверждение сторон</div>
-          <h2>Финальная фиксация решения</h2>
-        </div>
-        <div class="section-note">Решение должно быть подтверждено обеими сторонами</div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Сторона</th><th>ФИО</th><th>Роль</th><th>Решение</th><th>Дата</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Банк</td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>Подрядчик</td><td></td><td></td><td></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="compact-grid">
-        <div class="box">
-          <div class="section-label">Правило 1</div>
-          <p>Если есть хотя бы один статус <strong>Нет</strong> в ключевых блоках, запуск выносится на отдельное решение <strong>No-Go</strong> или <strong>Go with conditions</strong>.</p>
-        </div>
-        <div class="box">
-          <div class="section-label">Правило 2</div>
-          <p>Если протоколы положительные, но по внутренним замечаниям банка нет прозрачности, чек-лист не считается пройденным.</p>
-        </div>
-        <div class="box">
-          <div class="section-label">Правило 3</div>
-          <p>Если после тестирования были изменения без повторной проверки, запуск считается находящимся в зоне повышенного риска.</p>
-        </div>
-      </div>
-
-      <div class="footer-note">
-        Документ подготовлен как HTML-версия рабочего шаблона «Шаблон чек-листа актуальности готовности банка к запуску». Он предназначен для обсуждения на совещании, печати или заполнения как управленческой формы перед финальным go/no-go.
-      </div>
-    </section>
+        <p class="footer-note">Полная детализация контрольных вопросов и таблиц сохраняется в markdown-версии шаблона и используется как рабочая основа для заполнения.</p>
+      </section>
+    </main>
   </div>
 </body>
 </html>
