@@ -600,24 +600,11 @@
     </section>
 
     <main class="content">
-      <aside class="sidebar no-print">
-        <h2>Содержание</h2>
-        <ul>
-          <li><a href="#tools">Панель действий</a></li>
-          <li><a href="#meta">Основные данные</a></li>
-          <li><a href="#sections-work">Рабочие блоки проверки</a></li>
-          <li><a href="#results">Позиция менеджера</a></li>
-          <li><a href="#signatures">Подписи и решения</a></li>
-          <li><a href="#auto-summary">Автоматический итог</a></li>
-          <li><a href="#interpretation">Правило интерпретации</a></li>
-          <li><a href="#final-wording">Итоговая формулировка</a></li>
-        </ul>
-      </aside>
       <section class="toolbar no-print" id="tools">
-          <div class="toolbar-left">
-            <button class="btn btn-primary" id="save-local-btn" type="button">Сохранить в браузере</button>
-            <button class="btn btn-secondary" id="download-json-btn" type="button">Скачать JSON</button>
-            <button class="btn btn-secondary" id="download-risks-btn" type="button">Скачать итоговые риски</button>
+            <div class="toolbar-left">
+              <button class="btn btn-primary" id="save-local-btn" type="button">Сохранить в браузере</button>
+              <button class="btn btn-secondary" id="download-json-btn" type="button">Скачать JSON</button>
+              <button class="btn btn-secondary" id="download-risks-btn" type="button">Скачать итоговые риски</button>
             <label class="btn btn-secondary" for="upload-json">Загрузить JSON</label>
             <input class="file-input" id="upload-json" type="file" accept=".json,application/json" />
             <button class="btn btn-secondary" id="export-pdf-btn" type="button">Выгрузить в PDF</button>
@@ -633,6 +620,19 @@
             <div class="save-indicator" id="save-indicator">Автосохранение включено</div>
           </div>
       </section>
+      <aside class="sidebar no-print">
+        <h2>Содержание</h2>
+        <ul>
+          <li><a href="#tools">Панель действий</a></li>
+          <li><a href="#meta">Основные данные</a></li>
+          <li><a href="#sections-work">Рабочие блоки проверки</a></li>
+          <li><a href="#results">Позиция менеджера</a></li>
+          <li><a href="#signatures">Подписи и решения</a></li>
+          <li><a href="#auto-summary">Автоматический итог</a></li>
+          <li><a href="#interpretation">Правило интерпретации</a></li>
+          <li><a href="#final-wording">Итоговая формулировка</a></li>
+        </ul>
+      </aside>
 
       <section class="section" id="meta">
           <div class="section-head">
@@ -752,7 +752,7 @@
         key: "decision",
         label: "Решение по итогам",
         type: "select",
-        options: ["", "Go", "Go with conditions", "No-Go"]
+        options: ["", "Запускать", "Запускать с условиями", "Не запускать"]
       }
     ];
 
@@ -891,7 +891,7 @@
         key: "pmRecommendation",
         label: "Рекомендация менеджера",
         type: "select",
-        options: ["", "Go", "Go with conditions", "No-Go"]
+        options: ["", "Запускать", "Запускать с условиями", "Не запускать"]
       },
       {
         key: "pmComment",
@@ -1302,17 +1302,17 @@
       let note = "Заполните статусы по чек-листу, чтобы получить автоматическую рекомендацию.";
 
       if (hasCriticalNo || hasBlockingRisk) {
-        decision = "No-Go";
-        tone = "risk";
-        note = "Обнаружены блокирующие риски или статусы `Нет` в критичных разделах 1, 2, 3, 4 или 7.";
-      } else if (hasAnyNo || hasAnyPartial) {
-        decision = "Go with conditions";
-        tone = "warn";
-        note = "Есть пункты со статусом `Нет` или `Частично`, которые нужно явно вынести в условия запуска.";
-      } else if (filled === total && total > 0) {
-        decision = "Go";
-        tone = "ok";
-        note = "Все стандартные пункты заполнены без блокирующих и условных статусов.";
+          decision = "Не запускать";
+          tone = "risk";
+          note = "Обнаружены блокирующие риски или статусы `Нет` в критичных разделах 1, 2, 3, 4 или 7.";
+        } else if (hasAnyNo || hasAnyPartial) {
+          decision = "Запускать с условиями";
+          tone = "warn";
+          note = "Есть пункты со статусом `Нет` или `Частично`, которые нужно явно вынести в условия запуска.";
+        } else if (filled === total && total > 0) {
+          decision = "Запускать";
+          tone = "ok";
+          note = "Все стандартные пункты заполнены без блокирующих и условных статусов.";
       } else if (filled > 0) {
         decision = "Недостаточно данных";
         tone = "neutral";
