@@ -354,6 +354,41 @@
       display: none;
     }
 
+    .auto-summary {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-alt);
+      padding: 18px;
+    }
+
+    .auto-summary-value {
+      margin-top: 10px;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .auto-summary-value.ok { color: var(--ok); }
+    .auto-summary-value.warn { color: var(--warn); }
+    .auto-summary-value.risk { color: var(--risk); }
+    .auto-summary-value.neutral { color: var(--muted); }
+
+    .auto-risk-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .auto-risk-list li + li {
+      margin-top: 10px;
+    }
+
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
     @media (max-width: 1180px) {
       .summary-grid,
       .meta-grid,
@@ -523,6 +558,31 @@
         <div class="section-note">Фиксация итогового решения сторон</div>
       </div>
       <div class="signature-grid" id="signature-grid"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Автоматический итог</div>
+          <h2>Рекомендуемый статус и список рисков</h2>
+        </div>
+        <div class="section-note">Формируется автоматически по заполненным статусам</div>
+      </div>
+      <div class="result-grid">
+        <div class="auto-summary">
+          <div class="section-label">Рекомендуемое решение</div>
+          <div class="auto-summary-value neutral" id="auto-decision-value">Недостаточно данных</div>
+          <p class="summary-note" id="auto-decision-note">Заполните статусы по чек-листу, чтобы получить автоматическую рекомендацию.</p>
+          <div class="inline-actions no-print">
+            <button class="btn btn-secondary" id="apply-auto-recommendation-btn" type="button">Подставить в рекомендацию менеджера</button>
+            <button class="btn btn-secondary" id="apply-auto-decision-btn" type="button">Подставить в решение по итогам</button>
+          </div>
+        </div>
+        <div class="auto-summary">
+          <div class="section-label">Автоматически собранные риски</div>
+          <div id="auto-risk-container" class="summary-note">Пока нет пунктов со статусом `Нет`, `Частично` или блокирующих рисков.</div>
+        </div>
+      </div>
     </section>
 
     <section class="section">
@@ -756,6 +816,8 @@
     }
 
     let formState = loadState();
+
+    const criticalSectionIds = new Set(["1", "2", "3", "4", "7"]);
 
     function loadState() {
       try {
@@ -1024,6 +1086,135 @@
       document.getElementById("badge-partial-count").textContent = partial;
       document.getElementById("badge-no-count").textContent = no;
       document.getElementById("badge-empty-count").textContent = total - filled;
+      renderAutoSummary();
+    }
+
+    function deriveAutoDecision() {
+      const riskItems = [];
+      let hasCriticalNo = false;
+      let hasAnyNo = false;
+      let hasAnyPartial = false;
+      let hasBlockingRisk = false;
+      let filled = 0;
+      let total = 0;
+
+      checklistSections.forEach(section => {
+        if (section.riskMode) {
+          section.rows.forEach(([rowId]) => {
+            const row = formState.sections[section.id][rowId];
+            if (row.risk || row.blocks || row.plan || row.due || row.owner) {
+              const blocks = row.blocks === "Да";
+              if (blocks) {
+                hasBlockingRisk = true;
+                riskItems.push({
+                  sectionId: section.id,
+                  sectionTitle: section.title,
+                  rowId,
+                  text: row.risk || "Открытый вопрос / риск",
+                  status: "Блокирует запуск",
+                  comment: row.plan,
+                  owner: row.owner
+                });
+              } else if (row.risk) {
+                riskItems.push({
+                  sectionId: section.id,
+                  sectionTitle: section.title,
+                  rowId,
+                  text: row.risk,
+                  status: row.blocks ? `Блокирует запуск: ${row.blocks}` : "Открытый риск",
+                  comment: row.plan,
+                  owner: row.owner
+                });
+              }
+            }
+          });
+          return;
+        }
+
+        section.rows.forEach(([rowId, text]) => {
+          total += 1;
+          const row = formState.sections[section.id][rowId];
+          if (row.status) filled += 1;
+          if (row.status === "Нет") {
+            hasAnyNo = true;
+            if (criticalSectionIds.has(section.id)) hasCriticalNo = true;
+            riskItems.push({
+              sectionId: section.id,
+              sectionTitle: section.title,
+              rowId,
+              text,
+              status: row.status,
+              comment: row.comment,
+              owner: row.owner
+            });
+          }
+          if (row.status === "Частично") {
+            hasAnyPartial = true;
+            riskItems.push({
+              sectionId: section.id,
+              sectionTitle: section.title,
+              rowId,
+              text,
+              status: row.status,
+              comment: row.comment,
+              owner: row.owner
+            });
+          }
+        });
+      });
+
+      let decision = "Недостаточно данных";
+      let tone = "neutral";
+      let note = "Заполните статусы по чек-листу, чтобы получить автоматическую рекомендацию.";
+
+      if (hasCriticalNo || hasBlockingRisk) {
+        decision = "No-Go";
+        tone = "risk";
+        note = "Обнаружены блокирующие риски или статусы `Нет` в критичных разделах 1, 2, 3, 4 или 7.";
+      } else if (hasAnyNo || hasAnyPartial) {
+        decision = "Go with conditions";
+        tone = "warn";
+        note = "Есть пункты со статусом `Нет` или `Частично`, которые нужно явно вынести в условия запуска.";
+      } else if (filled === total && total > 0) {
+        decision = "Go";
+        tone = "ok";
+        note = "Все стандартные пункты заполнены без блокирующих и условных статусов.";
+      } else if (filled > 0) {
+        decision = "Недостаточно данных";
+        tone = "neutral";
+        note = "Часть пунктов уже заполнена, но для рекомендации не хватает полного набора статусов.";
+      }
+
+      return { decision, tone, note, riskItems };
+    }
+
+    function renderAutoSummary() {
+      const summary = deriveAutoDecision();
+      const decisionEl = document.getElementById("auto-decision-value");
+      const noteEl = document.getElementById("auto-decision-note");
+      const riskContainer = document.getElementById("auto-risk-container");
+
+      decisionEl.textContent = summary.decision;
+      decisionEl.className = `auto-summary-value ${summary.tone}`;
+      noteEl.textContent = summary.note;
+
+      if (!summary.riskItems.length) {
+        riskContainer.textContent = "Пока нет пунктов со статусом `Нет`, `Частично` или блокирующих рисков.";
+        return;
+      }
+
+      riskContainer.innerHTML = `
+        <ol class="auto-risk-list">
+          ${summary.riskItems.map(item => `
+            <li>
+              <strong>${item.rowId}. ${escapeHtml(item.text)}</strong><br />
+              <span class="muted">${escapeHtml(item.sectionTitle)} • ${escapeHtml(item.status)}</span>
+              ${item.comment ? `<br /><span class="muted">Комментарий: ${escapeHtml(item.comment)}</span>` : ""}
+              ${item.owner ? `<br /><span class="muted">Владелец: ${escapeHtml(item.owner)}</span>` : ""}
+            </li>
+          `).join("")}
+        </ol>
+      `;
     }
 
     function escapeHtml(value) {
@@ -1085,6 +1276,22 @@
     document.getElementById("download-json-btn").addEventListener("click", downloadJson);
     document.getElementById("export-pdf-btn").addEventListener("click", () => window.print());
     document.getElementById("clear-btn").addEventListener("click", clearForm);
+    document.getElementById("apply-auto-recommendation-btn").addEventListener("click", () => {
+      const summary = deriveAutoDecision();
+      formState.results.pmRecommendation = summary.decision === "Недостаточно данных" ? "" : summary.decision;
+      renderResults();
+      bindInputs();
+      saveState(true);
+      refreshDerived();
+    });
+    document.getElementById("apply-auto-decision-btn").addEventListener("click", () => {
+      const summary = deriveAutoDecision();
+      formState.meta.decision = summary.decision === "Недостаточно данных" ? "" : summary.decision;
+      renderMeta();
+      bindInputs();
+      saveState(true);
+      refreshDerived();
+    });
     document.getElementById("upload-json").addEventListener("change", event => {
       const file = event.target.files[0];
       if (file) uploadJson(file);
