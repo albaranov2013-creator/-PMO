@@ -272,6 +272,25 @@
       border-collapse: collapse;
     }
 
+    .check-table-standard col.col-question {
+      width: 540px;
+    }
+
+    .check-table-standard col.col-status {
+      width: 10ch;
+    }
+
+    .check-table-standard col.col-owner {
+      width: 20ch;
+    }
+
+    .check-table-standard th:nth-child(3),
+    .check-table-standard td:nth-child(3),
+    .check-table-standard th:nth-child(5),
+    .check-table-standard td:nth-child(5) {
+      white-space: nowrap;
+    }
+
     th, td {
       padding: 12px;
       border-bottom: 1px solid var(--line);
@@ -1017,7 +1036,14 @@
       }
 
       return `
-        <table>
+        <table class="check-table-standard">
+          <colgroup>
+            <col class="col-id" />
+            <col class="col-question" />
+            <col class="col-status" />
+            <col class="col-comment" />
+            <col class="col-owner" />
+          </colgroup>
           <thead>
             <tr>
               <th>№</th>
