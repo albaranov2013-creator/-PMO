@@ -500,6 +500,7 @@
       <div class="toolbar-left">
         <button class="btn btn-primary" id="save-local-btn" type="button">Сохранить в браузере</button>
         <button class="btn btn-secondary" id="download-json-btn" type="button">Скачать JSON</button>
+        <button class="btn btn-secondary" id="download-risks-btn" type="button">Скачать итоговые риски</button>
         <label class="btn btn-secondary" for="upload-json">Загрузить JSON</label>
         <input class="file-input" id="upload-json" type="file" accept=".json,application/json" />
         <button class="btn btn-secondary" id="export-pdf-btn" type="button">Выгрузить в PDF</button>
@@ -1217,6 +1218,53 @@
       `;
     }
 
+    function buildRisksExport() {
+      const summary = deriveAutoDecision();
+      const lines = [];
+      const meta = formState.meta;
+
+      lines.push("Итоговые риски по чек-листу актуальности готовности банка к запуску");
+      lines.push("");
+      lines.push(`Проект: ${meta.project || "-"}`);
+      lines.push(`Банк: ${meta.bank || "-"}`);
+      lines.push(`Плановая дата запуска: ${meta.plannedDate || "-"}`);
+      lines.push(`Дата заполнения чек-листа: ${meta.checklistDate || "-"}`);
+      lines.push(`Менеджер проекта: ${meta.pm || "-"}`);
+      lines.push(`Представитель банка: ${meta.bankRep || "-"}`);
+      lines.push("");
+      lines.push(`Автоматическая рекомендация: ${summary.decision}`);
+      lines.push(`Комментарий: ${summary.note}`);
+      lines.push("");
+
+      if (!summary.riskItems.length) {
+        lines.push("Проблемные пункты отсутствуют.");
+      } else {
+        lines.push("Проблемные пункты:");
+        lines.push("");
+        summary.riskItems.forEach((item, index) => {
+          lines.push(`${index + 1}. [${item.sectionId}.${item.rowId}] ${item.sectionTitle}`);
+          lines.push(`   Пункт: ${item.text}`);
+          lines.push(`   Статус: ${item.status}`);
+          if (item.comment) lines.push(`   Комментарий: ${item.comment}`);
+          if (item.owner) lines.push(`   Владелец: ${item.owner}`);
+          lines.push("");
+        });
+      }
+
+      return lines.join("\n");
+    }
+
+    function downloadRisks() {
+      const content = buildRisksExport();
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+      link.href = URL.createObjectURL(blob);
+      link.download = `itogovye-riski-checklista-${date}.txt`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
     function escapeHtml(value) {
       return String(value || "")
         .replaceAll("&", "&amp;")
@@ -1274,6 +1322,7 @@
 
     document.getElementById("save-local-btn").addEventListener("click", () => saveState(true));
     document.getElementById("download-json-btn").addEventListener("click", downloadJson);
+    document.getElementById("download-risks-btn").addEventListener("click", downloadRisks);
     document.getElementById("export-pdf-btn").addEventListener("click", () => window.print());
     document.getElementById("clear-btn").addEventListener("click", clearForm);
     document.getElementById("apply-auto-recommendation-btn").addEventListener("click", () => {
