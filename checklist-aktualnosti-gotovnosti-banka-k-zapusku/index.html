@@ -291,6 +291,10 @@
       white-space: nowrap;
     }
 
+    .risk-table col.col-risk-owner {
+      width: 20ch;
+    }
+
     th, td {
       padding: 12px;
       border-bottom: 1px solid var(--line);
@@ -1017,7 +1021,15 @@
     function renderSectionTable(section) {
       if (section.riskMode) {
         return `
-          <table>
+          <table class="risk-table">
+            <colgroup>
+              <col class="col-id" />
+              <col class="col-risk-question" />
+              <col class="col-risk-blocks" />
+              <col class="col-risk-plan" />
+              <col class="col-risk-due" />
+              <col class="col-risk-owner" />
+            </colgroup>
             <thead>
               <tr>
                 <th>№</th>
