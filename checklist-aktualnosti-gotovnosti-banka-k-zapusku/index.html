@@ -70,21 +70,13 @@
       flex-wrap: wrap;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
-      gap: 24px;
-      align-items: start;
-    }
-
     .sidebar {
-      position: sticky;
-      top: 18px;
       background: var(--panel);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 20px 20px 18px;
       border: 1px solid transparent;
+      margin-bottom: 20px;
     }
 
     .sidebar h2 {
@@ -519,14 +511,6 @@
     }
 
     @media (max-width: 1100px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: static;
-      }
-
       .summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -615,7 +599,7 @@
       </div>
     </section>
 
-    <div class="layout">
+    <main class="content">
       <aside class="sidebar no-print">
         <h2>Содержание</h2>
         <ul>
@@ -629,9 +613,7 @@
           <li><a href="#final-wording">Итоговая формулировка</a></li>
         </ul>
       </aside>
-
-      <main class="content">
-        <section class="toolbar no-print" id="tools">
+      <section class="toolbar no-print" id="tools">
           <div class="toolbar-left">
             <button class="btn btn-primary" id="save-local-btn" type="button">Сохранить в браузере</button>
             <button class="btn btn-secondary" id="download-json-btn" type="button">Скачать JSON</button>
@@ -650,9 +632,9 @@
             </div>
             <div class="save-indicator" id="save-indicator">Автосохранение включено</div>
           </div>
-        </section>
+      </section>
 
-        <section class="section" id="meta">
+      <section class="section" id="meta">
           <div class="section-head">
             <div>
               <div class="section-label">Карточка запуска</div>
@@ -661,9 +643,9 @@
             <div class="section-note">Заполняется перед прохождением чек-листа</div>
           </div>
           <div class="meta-grid" id="meta-grid"></div>
-        </section>
+      </section>
 
-        <section class="section" id="sections-work">
+      <section class="section" id="sections-work">
           <div class="section-head">
             <div>
               <div class="section-label">Разделы 1-8</div>
@@ -672,9 +654,9 @@
             <div class="section-note">Статусы, комментарии и владельцы фиксируются по каждой строке</div>
           </div>
           <div id="dynamic-sections"></div>
-        </section>
+      </section>
 
-        <section class="section" id="results">
+      <section class="section" id="results">
           <div class="section-head">
             <div>
               <div class="section-label">Итоговое заключение</div>
@@ -683,9 +665,9 @@
             <div class="section-note">Краткий вывод и итоговый комментарий</div>
           </div>
           <div class="result-grid" id="result-grid"></div>
-        </section>
+      </section>
 
-        <section class="section" id="signatures">
+      <section class="section" id="signatures">
           <div class="section-head">
             <div>
               <div class="section-label">Подтверждение сторон</div>
@@ -694,9 +676,9 @@
             <div class="section-note">Фиксация итогового решения сторон</div>
           </div>
           <div class="signature-grid" id="signature-grid"></div>
-        </section>
+      </section>
 
-        <section class="section" id="auto-summary">
+      <section class="section" id="auto-summary">
           <div class="section-head">
             <div>
               <div class="section-label">Автоматический итог</div>
@@ -719,9 +701,9 @@
               <div id="auto-risk-container" class="summary-note">Пока нет пунктов со статусом `Нет`, `Частично` или блокирующих рисков.</div>
             </div>
           </div>
-        </section>
+      </section>
 
-        <section class="section" id="interpretation">
+      <section class="section" id="interpretation">
           <div class="section-head">
             <div>
               <div class="section-label">Интерпретация</div>
@@ -737,9 +719,9 @@
               <li>Если банк не готов письменно подтвердить актуальность своих результатов тестирования, это считается отдельным риском запуска.</li>
             </ul>
           </div>
-        </section>
+      </section>
 
-        <section class="section" id="final-wording">
+      <section class="section" id="final-wording">
           <div class="section-head">
             <div>
               <div class="section-label">Короткая форма управленческого вывода</div>
@@ -751,9 +733,8 @@
             <p>По состоянию на дату проверки банк подтверждает или не подтверждает, что ранее согласованная готовность к запуску остается актуальной. Решение принимается не только по факту прохождения тестов в прошлом, но и по подтвержденной актуальности этих результатов на текущий момент.</p>
           </div>
           <p class="footer-note">Если нужно передать итог вовне, рекомендуется сохранить заполненный результат в JSON и отдельно выгрузить страницу в PDF.</p>
-        </section>
-      </main>
-    </div>
+      </section>
+    </main>
   </div>
 
   <script>
