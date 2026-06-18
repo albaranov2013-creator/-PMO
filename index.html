@@ -1,250 +1,201 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PMO Pages Registry</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог публикаций PMO</title>
   <style>
     :root {
-      --bg-deep: #031224;
-      --bg-main: #051b32;
-      --bg-side: #014997;
-      --panel: rgba(7, 33, 60, 0.72);
-      --line: rgba(255, 255, 255, 0.12);
-      --text: #ffffff;
-      --muted: #d9d9d9;
-      --muted-2: #b4b4b4;
-      --cyan: #01acff;
-      --ok: #5be0a3;
-      --warn: #ffbf5f;
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+      --bg: #f3f6f8;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #5b667a;
+      --line: #d9e2ec;
+      --accent: #0f4c81;
+      --accent-soft: #eaf2f8;
+      --warn: #9f1239;
+      --warn-soft: #fce7f3;
+      --ok: #166534;
+      --ok-soft: #ecfdf3;
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
       color: var(--text);
-      font: 15px/1.58 "Roboto", "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 82% 14%, rgba(1, 172, 255, 0.18), transparent 18%),
-        radial-gradient(circle at 88% 78%, rgba(20, 99, 174, 0.24), transparent 24%),
-        linear-gradient(118deg, var(--bg-deep) 0%, var(--bg-main) 56%, var(--bg-side) 100%);
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.22;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-      background-size: 34px 34px;
+      background: linear-gradient(180deg, #eef3f7 0%, #f7fafc 100%);
+      line-height: 1.55;
     }
 
     .page {
-      position: relative;
-      z-index: 1;
-      max-width: 1380px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 28px;
+      padding: 28px 24px 40px;
     }
 
-    .shell {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      background:
-        radial-gradient(circle at 78% 16%, rgba(1, 172, 255, 0.14), transparent 16%),
-        radial-gradient(circle at 84% 82%, rgba(20, 99, 174, 0.22), transparent 20%),
-        linear-gradient(118deg, rgba(3,18,36,0.96) 0%, rgba(5,27,50,0.95) 58%, rgba(1,73,151,0.92) 100%);
+    .hero {
+      background: linear-gradient(135deg, #123b64 0%, #245b8e 100%);
+      color: #fff;
+      border-radius: 24px;
+      padding: 32px 36px;
       box-shadow: var(--shadow);
+      margin-bottom: 24px;
     }
 
-    .shell::before {
-      content: "";
-      position: absolute;
-      right: -160px;
-      top: -160px;
-      width: 460px;
-      height: 460px;
-      border-radius: 50%;
-      border: 1px solid rgba(1, 172, 255, 0.22);
-      box-shadow:
-        0 0 0 28px rgba(1, 172, 255, 0.05),
-        0 0 0 56px rgba(1, 172, 255, 0.03);
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.15;
     }
 
-    .hero,
-    .section {
-      padding: 34px 38px;
-    }
-
-    .section + .section {
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .eyebrow,
-    .label,
-    th {
-      color: var(--muted);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .hero-top,
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 18px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 9px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(1, 172, 255, 0.24);
-      background: rgba(1, 172, 255, 0.12);
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    h1, h2 {
+    .hero p {
       margin: 0;
-      font-family: "Barlow Condensed", "Roboto Condensed", sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.01em;
+      max-width: 920px;
+      color: rgba(255,255,255,.88);
+      font-size: 16px;
     }
 
-    h1 {
-      margin-top: 12px;
-      max-width: 960px;
-      font-size: 42px;
-      line-height: 1.02;
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
     }
 
-    h2 {
-      font-size: 32px;
-      line-height: 1.04;
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 20px 18px;
     }
 
-    .lead {
-      margin: 16px 0 0;
-      max-width: 900px;
-      color: var(--muted);
+    .sidebar h2 {
+      margin: 0 0 14px;
       font-size: 18px;
-      line-height: 1.34;
+      color: var(--accent);
+    }
+
+    .sidebar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar li + li { margin-top: 8px; }
+
+    .sidebar a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .sidebar a:hover { color: var(--accent); }
+
+    .content {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 26px;
+    }
+
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      color: #102a43;
+    }
+
+    .card h3 {
+      margin: 18px 0 10px;
+      font-size: 17px;
+      color: var(--accent);
     }
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 22px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
     }
 
     .metric {
-      position: relative;
-      overflow: hidden;
-      min-height: 166px;
-      padding: 20px 22px;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: var(--panel);
-      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 16px;
+      padding: 14px 16px;
     }
 
-    .metric::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--cyan), rgba(1,172,255,0.10));
+    .metric .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: rgba(255,255,255,.74);
+      margin-bottom: 6px;
     }
 
-    .metric-value {
-      margin-top: 14px;
-      font-family: "Barlow Condensed", "Roboto Condensed", sans-serif;
-      font-size: 48px;
-      line-height: 0.95;
-      color: var(--cyan);
+    .metric .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
     }
 
-    .metric-note,
-    .section-note {
-      margin-top: 10px;
-      color: var(--muted);
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 6px;
+      margin-bottom: 6px;
     }
 
-    .table-wrap {
-      margin-top: 18px;
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: rgba(4, 22, 42, 0.78);
+    .tag.ok {
+      background: var(--ok-soft);
+      color: var(--ok);
     }
 
     table {
       width: 100%;
-      min-width: 1080px;
       border-collapse: collapse;
+      margin: 12px 0 0;
+      font-size: 14px;
     }
 
     th, td {
-      padding: 14px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      text-align: left;
+      border: 1px solid var(--line);
+      padding: 10px 12px;
       vertical-align: top;
     }
 
     th {
-      background: rgba(255,255,255,0.04);
-      color: var(--muted);
-      font-weight: 500;
+      background: var(--accent-soft);
+      text-align: left;
+      color: #17324d;
     }
 
-    tbody tr:nth-child(even) td {
-      background: rgba(255,255,255,0.02);
-    }
-
-    tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .status-live {
-      background: rgba(91, 224, 163, 0.14);
-      color: var(--ok);
-    }
-
-    .status-building {
-      background: rgba(255, 191, 95, 0.14);
-      color: var(--warn);
+    .note {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      color: #31465f;
     }
 
     a {
-      color: var(--cyan);
+      color: var(--accent);
       text-decoration: none;
     }
 
@@ -254,72 +205,115 @@
 
     .footer-note {
       margin-top: 14px;
-      color: var(--muted-2);
+      color: var(--muted);
       font-size: 13px;
     }
 
-    @media (max-width: 980px) {
+    code {
+      color: #334e68;
+      background: #f8fafc;
+      padding: 1px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 14px 30px;
+      }
+
+      .hero {
+        padding: 24px 20px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .card {
+        padding: 18px 16px;
+      }
+
       .summary-grid {
         grid-template-columns: 1fr;
       }
 
-      .hero-top,
-      .section-head {
-        display: block;
-      }
-
-      .badge,
-      .section-note {
-        margin-top: 12px;
+      table, th, td {
+        font-size: 13px;
       }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <main class="shell">
-      <section class="hero">
-        <div class="hero-top">
+    <section class="hero">
+      <h1>Каталог публикаций PMO</h1>
+      <p>
+        Единая точка входа во все материалы, которые публикуются через GitHub Pages:
+        аналитические профили клиентов, управленческие документы PMO, интерактивные формы и рабочие страницы.
+      </p>
+      <div class="summary-grid">
+        <div class="metric">
+          <div class="label">Сайт</div>
+          <div class="value">PMO</div>
+        </div>
+        <div class="metric">
+          <div class="label">Страниц</div>
+          <div class="value">3</div>
+        </div>
+        <div class="metric">
+          <div class="label">Статус</div>
+          <div class="value">Live</div>
+        </div>
+        <div class="metric">
+          <div class="label">Реестр</div>
+          <div class="value">Auto</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>Содержание</h2>
+        <ul>
+          <li><a href="#overview">Обзор</a></li>
+          <li><a href="#pages">Список страниц</a></li>
+          <li><a href="#rules">Правила публикации</a></li>
+          <li><a href="#links">Полезные ссылки</a></li>
+        </ul>
+      </aside>
+
+      <main class="content">
+        <section class="card" id="overview">
+          <h2>Обзор</h2>
+          <p>Каталог используется как единый вход в опубликованные материалы PMO.</p>
           <div>
-            <div class="eyebrow">PMO / GitHub Pages / Реестр публикаций</div>
-            <h1>Единая точка входа в опубликованные <span style="color:#01acff;">PMO-страницы</span></h1>
-            <p class="lead">
-              Здесь собраны все материалы, которые публикуются через GitHub Pages: базовая ссылка сайта, итоговые публичные ссылки и привязка к исходным локальным файлам.
-              Реестр обновляется вместе с каждой новой публикацией.
-            </p>
+            <span class="tag">GitHub Pages</span>
+            <span class="tag ok">Все ссылки активны</span>
+            <span class="tag">Реестр синхронизируется</span>
           </div>
-          <div class="badge">Каталог публикаций</div>
-        </div>
-
-        <div class="summary-grid">
-          <article class="metric">
-            <div class="label">Сайт</div>
-            <div class="metric-value">PMO</div>
-            <div class="metric-note"><a href="https://albaranov2013-creator.github.io/-PMO/">Открыть базовую ссылку</a></div>
-          </article>
-          <article class="metric">
-            <div class="label">Страниц в реестре</div>
-            <div class="metric-value">2</div>
-            <div class="metric-note">Опубликованные материалы, доступные по отдельным итоговым ссылкам.</div>
-          </article>
-          <article class="metric">
-            <div class="label">Режим ведения</div>
-            <div class="metric-value">Auto</div>
-            <div class="metric-note">Markdown-реестр, JSON-реестр и web-каталог поддерживаются синхронно.</div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <div>
-            <div class="label">Навигация</div>
-            <h2>Список страниц</h2>
+          <div class="note">
+            Здесь хранятся базовая ссылка сайта, итоговые ссылки отдельных страниц и привязка к локальным исходным файлам,
+            из которых была сделана публикация.
           </div>
-          <div class="section-note">Итоговые публичные ссылки доступны из таблицы ниже</div>
-        </div>
+        </section>
 
-        <div class="table-wrap">
+        <section class="card" id="pages">
+          <h2>Список страниц</h2>
           <table>
             <thead>
               <tr>
@@ -339,8 +333,8 @@
                 <td><code>metriki-prohozhdeniya-psi</code></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/">Открыть сайт</a></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/metriki-prohozhdeniya-psi/">Открыть страницу</a></td>
-                <td><span class="status status-live">live</span></td>
-                <td>Страница доступна по итоговой ссылке</td>
+                <td><span class="tag ok">live</span></td>
+                <td>Аналитическая страница по набору метрик PMO для этапа ПСИ.</td>
               </tr>
               <tr>
                 <td>2026-06-18</td>
@@ -348,8 +342,8 @@
                 <td><code>checklist-aktualnosti-gotovnosti-banka-k-zapusku</code></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/">Открыть сайт</a></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/checklist-aktualnosti-gotovnosti-banka-k-zapusku/">Открыть страницу</a></td>
-                <td><span class="status status-live">live</span></td>
-                <td>Интерактивная форма для совместного заполнения с банком, автосохранением, JSON и выгрузкой в PDF</td>
+                <td><span class="tag ok">live</span></td>
+                <td>Интерактивная форма для совместного заполнения с банком, автосохранением, JSON, PDF и экспортом рисков.</td>
               </tr>
               <tr>
                 <td>2026-06-18</td>
@@ -357,16 +351,33 @@
                 <td><code>profil-klienta-pmo-bnk-finance</code></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/">Открыть сайт</a></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/profil-klienta-pmo-bnk-finance/">Открыть страницу</a></td>
-                <td><span class="status status-live">live</span></td>
-                <td>Аналитический профиль клиента PMO опубликован по итоговой ссылке</td>
+                <td><span class="tag ok">live</span></td>
+                <td>Аналитический профиль клиента PMO, опубликованный по итоговой ссылке.</td>
               </tr>
             </tbody>
           </table>
-        </div>
+        </section>
 
-        <p class="footer-note">Локальный реестр: `Интеграции/GitHub/Реестр публикаций GitHub Pages.md` и `Интеграции/GitHub/github-pages-registry.json`.</p>
-      </section>
-    </main>
+        <section class="card" id="rules">
+          <h2>Правила публикации</h2>
+          <ul>
+            <li>При каждой новой публикации в каталог добавляется новая строка с датой, slug, исходным файлом и итоговой ссылкой.</li>
+            <li>Markdown-реестр, JSON-реестр и web-каталог поддерживаются синхронно.</li>
+            <li>Каталог используется как общий навигационный вход для дальнейшей рассылки ссылок.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="links">
+          <h2>Полезные ссылки</h2>
+          <ul>
+            <li>Базовая ссылка сайта: <a href="https://albaranov2013-creator.github.io/-PMO/">https://albaranov2013-creator.github.io/-PMO/</a></li>
+            <li>Локальный markdown-реестр: <a href="file:///C:/AI%20Баранов/Интеграции/GitHub/Реестр%20публикаций%20GitHub%20Pages.md">Реестр публикаций GitHub Pages.md</a></li>
+            <li>Локальный JSON-реестр: <a href="file:///C:/AI%20Баранов/Интеграции/GitHub/github-pages-registry.json">github-pages-registry.json</a></li>
+          </ul>
+          <p class="footer-note">Каталог обновлен в визуальном стиле профилей PMO и используется как единая входная страница публикаций.</p>
+        </section>
+      </main>
+    </div>
   </div>
 </body>
 </html>
