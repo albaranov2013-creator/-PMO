@@ -185,7 +185,8 @@
     .summary-grid,
     .meta-grid,
     .result-grid,
-    .signature-grid {
+    .signature-grid,
+    .meta-preview-grid {
       display: grid;
       gap: 14px;
       margin-top: 18px;
@@ -199,6 +200,10 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
+    .meta-preview-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     .result-grid,
     .signature-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -206,7 +211,8 @@
 
     .summary-card,
     .field-card,
-    .note-card {
+    .note-card,
+    .meta-preview-card {
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: var(--panel-alt);
@@ -230,6 +236,53 @@
       margin-top: 8px;
       color: var(--muted);
       font-size: 13px;
+    }
+
+    .meta-preview-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .meta-preview-value {
+      margin-top: 6px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .toolbar-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 12px;
+      min-width: min(540px, 100%);
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+    }
+
+    .toolbar-meta-item {
+      min-width: 0;
+    }
+
+    .toolbar-meta-label {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toolbar-meta-value {
+      display: block;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      word-break: break-word;
     }
 
     .hero .section-label {
@@ -506,7 +559,8 @@
       .summary-grid,
       .meta-grid,
       .result-grid,
-      .signature-grid {
+      .signature-grid,
+      .meta-preview-grid {
         grid-template-columns: 1fr;
       }
 
@@ -524,6 +578,10 @@
       .page { padding: 12px; }
       .hero, .section, .toolbar { padding: 18px; }
       h1 { font-size: 28px; }
+      .toolbar-meta {
+        grid-template-columns: 1fr;
+        min-width: 100%;
+      }
     }
 
     @media (max-width: 1100px) {
@@ -588,6 +646,7 @@
           <li>Особенно нужен, когда банк самостоятельно выполняет часть настроек и часть функциональной проверки.</li>
           <li>Используется, когда между завершением тестирования и запуском есть временной разрыв или возможны поздние изменения.</li>
           <li>Статус <strong>Да</strong> означает подтверждено и актуально, <strong>Нет</strong> означает блокер или высокий риск, <strong>Частично</strong> означает запуск возможен только с условиями, <strong>Не релевантно</strong> означает, что пункт не применяется к данному запуску.</li>
+          <li><strong>Правило для статуса "Не релевантно":</strong> его можно ставить только если пункт объективно отсутствует в контуре запуска. Нельзя использовать этот статус вместо <strong>Нет</strong> или <strong>Частично</strong>, если по пункту есть незавершенная работа, риск, зависимость или спорный вопрос.</li>
         </ul>
       <div class="summary-grid">
         <article class="summary-card">
@@ -611,8 +670,26 @@
             <div class="summary-note">Требует условий запуска</div>
         </article>
         </div>
+        <div class="meta-preview-grid">
+          <article class="meta-preview-card">
+            <div class="section-label">Проект</div>
+            <div class="meta-preview-value" id="hero-project">-</div>
+          </article>
+          <article class="meta-preview-card">
+            <div class="section-label">Банк</div>
+            <div class="meta-preview-value" id="hero-bank">-</div>
+          </article>
+          <article class="meta-preview-card">
+            <div class="section-label">Плановая дата запуска</div>
+            <div class="meta-preview-value" id="hero-planned-date">-</div>
+          </article>
+          <article class="meta-preview-card">
+            <div class="section-label">Дата чек-листа</div>
+            <div class="meta-preview-value" id="hero-checklist-date">-</div>
+          </article>
+        </div>
         <div class="callout">
-          <p><strong>Практика:</strong> все пункты со статусом <strong>Нет</strong> или <strong>Частично</strong> должны быть вынесены в отдельный список рисков к запуску и отражены в итоговом решении.</p>
+          <p><strong>Практика:</strong> все пункты со статусом <strong>Нет</strong> или <strong>Частично</strong> должны быть вынесены в отдельный список рисков к запуску и отражены в итоговом решении. Статус <strong>Не релевантно</strong> допустим только для реально неприменимых пунктов и не должен использоваться для сокрытия риска.</p>
         </div>
       </section>
 
@@ -628,6 +705,24 @@
             <button class="btn btn-danger" id="clear-btn" type="button">Очистить форму</button>
           </div>
           <div class="toolbar-right">
+              <div class="toolbar-meta">
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Проект</span>
+                  <span class="toolbar-meta-value" id="toolbar-project">-</span>
+                </div>
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Банк</span>
+                  <span class="toolbar-meta-value" id="toolbar-bank">-</span>
+                </div>
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Плановая дата запуска</span>
+                  <span class="toolbar-meta-value" id="toolbar-planned-date">-</span>
+                </div>
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Дата чек-листа</span>
+                  <span class="toolbar-meta-value" id="toolbar-checklist-date">-</span>
+                </div>
+              </div>
               <div class="summary-badges">
                 <span class="status-badge badge-ok">Да: <span id="badge-ok-count">0</span></span>
                 <span class="status-badge badge-partial">Частично: <span id="badge-partial-count">0</span></span>
@@ -1001,6 +1096,22 @@
       }
     }
 
+    function displayValue(value) {
+      return value && String(value).trim() ? String(value).trim() : "-";
+    }
+
+    function refreshMetaPreview() {
+      const meta = formState.meta;
+      document.getElementById("hero-project").textContent = displayValue(meta.project);
+      document.getElementById("hero-bank").textContent = displayValue(meta.bank);
+      document.getElementById("hero-planned-date").textContent = displayValue(meta.plannedDate);
+      document.getElementById("hero-checklist-date").textContent = displayValue(meta.checklistDate);
+      document.getElementById("toolbar-project").textContent = displayValue(meta.project);
+      document.getElementById("toolbar-bank").textContent = displayValue(meta.bank);
+      document.getElementById("toolbar-planned-date").textContent = displayValue(meta.plannedDate);
+      document.getElementById("toolbar-checklist-date").textContent = displayValue(meta.checklistDate);
+    }
+
     function renderMeta() {
       const container = document.getElementById("meta-grid");
       container.innerHTML = metaFields.map(field => {
@@ -1247,6 +1358,7 @@
         document.getElementById("badge-no-count").textContent = no;
         document.getElementById("badge-na-count").textContent = na;
         document.getElementById("badge-empty-count").textContent = total - filled;
+        refreshMetaPreview();
         renderAutoSummary();
       }
 
