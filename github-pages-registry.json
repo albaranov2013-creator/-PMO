@@ -7,6 +7,26 @@
   "pages": [
     {
       "date": "2026-06-25",
+      "title": "Метрики прохождения ПСИ - промышленная эксплуатация",
+      "slug": "metriki-prohozhdeniya-psi-promyshlennaya-ekspluataciya",
+      "source_file": "C:\\AI Баранов\\Работа\\Портфель\\Менеджеры\\Метрики прохождения ПСИ - промышленная эксплуатация.html",
+      "base_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "final_url": "https://albaranov2013-creator.github.io/-PMO/metriki-prohozhdeniya-psi-promyshlennaya-ekspluataciya/",
+      "status": "live",
+      "comment": "Опубликована отдельная страница по метрикам этапа промышленной эксплуатации"
+    },
+    {
+      "date": "2026-06-25",
+      "title": "Шаблон чек-листа актуальности готовности банка к запуску - свежая версия",
+      "slug": "checklist-aktualnosti-gotovnosti-banka-k-zapusku-v2",
+      "source_file": "C:\\AI Баранов\\Работа\\Портфель\\Менеджеры\\Шаблон чек-листа актуальности готовности банка к запуску.html",
+      "base_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "final_url": "https://albaranov2013-creator.github.io/-PMO/checklist-aktualnosti-gotovnosti-banka-k-zapusku-v2/",
+      "status": "live",
+      "comment": "Отдельно опубликована свежая версия для обхода кэша: видимая метка версии `2026-06-25 v2`, исправлена синхронизация значений перед сохранением и PDF-печатью"
+    },
+    {
+      "date": "2026-06-25",
       "title": "Каталог публикаций PMO",
       "slug": "index",
       "source_file": "C:\\AI Баранов\\Интеграции\\GitHub\\index.html",
@@ -33,7 +53,7 @@
       "base_url": "https://albaranov2013-creator.github.io/-PMO/",
       "final_url": "https://albaranov2013-creator.github.io/-PMO/checklist-aktualnosti-gotovnosti-banka-k-zapusku/",
       "status": "live",
-      "comment": "Повторно обновлена опубликованная версия: логотип убран, заголовок сохранен белым"
+      "comment": "Повторно обновлена опубликованная версия: исправлена синхронизация значений перед сохранением, JSON-выгрузкой и PDF-печатью; логотип убран, заголовок сохранен белым"
     },
     {
       "date": "2026-06-24",
