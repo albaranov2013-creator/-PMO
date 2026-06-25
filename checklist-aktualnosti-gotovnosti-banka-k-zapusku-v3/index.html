@@ -595,13 +595,13 @@
 
     @page {
       size: A4 landscape;
-      margin: 10mm;
+      margin: 8mm;
     }
 
     @media print {
       body {
         background: #fff;
-        font: 11px/1.25 "Segoe UI", Arial, sans-serif;
+        font: 9.5px/1.15 "Segoe UI", Arial, sans-serif;
       }
 
       .page {
@@ -637,77 +637,83 @@
       }
 
       .hero {
-        padding: 14px 16px;
-        margin-bottom: 10px;
-        break-inside: auto;
-        page-break-inside: auto;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        page-break-after: always;
       }
 
       .hero h1 {
-        font-size: 22px;
-        margin-bottom: 6px;
+        font-size: 18px;
+        margin-bottom: 4px;
       }
 
       .lead,
-      .hint-list,
       .summary-note,
-      .callout,
       .footer-note {
-        font-size: 10px;
+        font-size: 8.5px;
+      }
+
+      .hint-list,
+      .callout {
+        display: none !important;
       }
 
       .summary-grid,
       .meta-preview-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 8px;
-        margin-top: 10px;
+        gap: 6px;
+        margin-top: 8px;
       }
 
       .summary-card,
       .meta-preview-card,
       .field-card {
-        padding: 10px 12px;
-        border-radius: 12px;
+        padding: 7px 9px;
+        border-radius: 10px;
       }
 
       .summary-value {
-        font-size: 18px;
+        font-size: 15px;
       }
 
       .meta-preview-value {
-        font-size: 11px;
+        font-size: 9px;
         line-height: 1.2;
       }
 
       .section {
-        padding: 12px 14px;
-        margin-top: 8px;
+        padding: 8px 10px;
+        margin-top: 6px;
         break-inside: auto;
         page-break-inside: auto;
       }
 
       .section-head {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        break-after: avoid-page;
+        page-break-after: avoid;
       }
 
       h2 {
-        font-size: 18px;
+        font-size: 14px;
       }
 
       h3 {
-        font-size: 14px;
+        font-size: 11px;
       }
 
       .section-note,
       .field-label,
       .section-label,
       th {
-        font-size: 9px;
+        font-size: 7.5px;
       }
 
       .table-wrap {
         overflow: visible;
-        border-radius: 12px;
+        border-radius: 10px;
       }
 
       table {
@@ -717,24 +723,74 @@
 
       th,
       td {
-        padding: 6px 8px;
-        font-size: 10px;
+        padding: 4px 5px;
+        font-size: 8px;
         line-height: 1.2;
       }
 
       .field-textarea {
-        min-height: 54px;
+        min-height: 26px;
       }
 
       .field-textarea.owner-textarea {
-        min-height: 42px;
+        min-height: 22px;
       }
 
       .result-grid,
       .signature-grid,
       .meta-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
+        gap: 6px;
+      }
+
+      #meta {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        page-break-after: always;
+      }
+
+      #meta .meta-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      #meta .field-card {
+        padding: 6px 8px;
+      }
+
+      #sections-work {
+        page-break-before: auto;
+      }
+
+      #sections-work .section-head {
+        margin-bottom: 4px;
+      }
+
+      #dynamic-sections > section {
+        margin-top: 4px !important;
+        padding-top: 0 !important;
+      }
+
+      #dynamic-sections > section:first-child {
+        margin-top: 0 !important;
+      }
+
+      #signatures {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        page-break-before: always;
+      }
+
+      #signatures .field-card {
+        padding: 6px 8px;
+      }
+
+      #signatures input,
+      #signatures textarea,
+      #results input,
+      #results textarea,
+      #results select {
+        font-size: 8px;
+        padding: 4px 5px;
       }
     }
   </style>
