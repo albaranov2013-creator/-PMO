@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Метрики прохождения ПСИ - промышленная эксплуатация</title>
+  <style>
+    :root {
+      --bg: #f3f6f8;
+      --panel: #ffffff;
+      --panel-alt: #fafbfc;
+      --text: #1f2937;
+      --muted: #5b667a;
+      --line: #d9e2ec;
+      --accent: #0f4c81;
+      --accent-soft: #eaf2f8;
+      --primary: #0f4c81;
+      --primary-soft: #eaf2f8;
+      --warn: #9f1239;
+      --warn-soft: #fce7f3;
+      --ok: #166534;
+      --ok-soft: #ecfdf3;
+      --neutral: #7c8798;
+      --neutral-soft: #f3f4f6;
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #eef3f7 0%, #f7fafc 100%);
+      color: var(--text);
+      font: 15px/1.55 "Segoe UI", Arial, sans-serif;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 24px 40px;
+    }
+
+    .hero,
+    .toolbar,
+    .sidebar,
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #123b64 0%, #245b8e 100%);
+      color: #fff;
+      padding: 32px 36px;
+      margin-bottom: 20px;
+      border: none;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 36px;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 980px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+    }
+
+    .toolbar {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .toolbar-left,
+    .toolbar-right,
+    .summary-badges,
+    .calc-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .btn,
+    .chip,
+    .calc-actions button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--accent);
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover,
+    .chip:hover,
+    .calc-actions button:hover {
+      background: var(--accent-soft);
+      border-color: #bfd1e1;
+    }
+
+    .chip {
+      background: var(--accent-soft);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      padding: 20px 20px 18px;
+    }
+
+    .sidebar h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar li + li { margin-top: 8px; }
+
+    .sidebar a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .sidebar a:hover { color: var(--accent); }
+
+    .content {
+      display: grid;
+      gap: 20px;
+    }
+
+    .section {
+      padding: 24px 26px;
+    }
+
+    .section h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      color: #102a43;
+    }
+
+    .section h3 {
+      margin: 18px 0 10px;
+      font-size: 17px;
+      color: var(--accent);
+    }
+
+    .section p,
+    .section li {
+      color: var(--text);
+    }
+
+    .section ul {
+      margin: 12px 0 0;
+      padding-left: 20px;
+    }
+
+    .hero-stats,
+    .role-grid,
+    .signal-grid,
+    .week-grid,
+    .calc-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 24px; }
+    .role-grid, .signal-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .calc-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .stat-card,
+    .role-card,
+    .signal-card,
+    .week-card,
+    .calc-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+
+    .stat-card strong,
+    .role-card strong {
+      display: block;
+      color: var(--accent);
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .stat-card span,
+    .role-card span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .signal-card h4,
+    .week-card h4,
+    .calc-card h4 {
+      margin: 0 0 10px;
+      font-size: 17px;
+      color: #102a43;
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 12px;
+      color: #16324f;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .tag.good { color: var(--ok); background: var(--ok-soft); }
+    .tag.warn { color: var(--warn); background: var(--warn-soft); }
+    .tag.neutral { color: var(--neutral); background: var(--neutral-soft); }
+
+    .formula {
+      display: block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .calc-card label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .calc-card input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .calc-card input:focus {
+      border-color: #93b5cf;
+      box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.12);
+    }
+
+    .results-wrap {
+      margin-top: 18px;
+      overflow-x: auto;
+    }
+
+    .subsection-title {
+      margin: 22px 0 12px;
+      font-size: 18px;
+      color: var(--accent);
+    }
+
+    .summary-box {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+    }
+
+    .summary-box strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #102a43;
+      font-size: 17px;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .forecast-box {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: #f8fbfd;
+      border: 1px solid var(--line);
+    }
+
+    .forecast-box h4 {
+      margin: 0 0 10px;
+      color: #102a43;
+      font-size: 17px;
+    }
+
+    .save-box {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: #f8fbfd;
+      border: 1px solid var(--line);
+    }
+
+    .save-box h4 {
+      margin: 0 0 10px;
+      color: #102a43;
+      font-size: 17px;
+    }
+
+    .save-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .save-grid label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .save-grid input,
+    .save-grid select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    @media (max-width: 1180px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .hero-stats, .role-grid, .signal-grid, .week-grid, .calc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 18px 14px 28px; }
+      .hero, .section, .sidebar, .toolbar { padding: 18px; }
+      .hero h1 { font-size: 28px; }
+      .hero-stats, .role-grid, .signal-grid, .week-grid, .calc-grid { grid-template-columns: 1fr; }
+      th, td { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Метрики прохождения ПСИ для промышленной эксплуатации</h1>
+      <p>
+        Единая страница для менеджеров проектов и PMO: что считать каждую неделю, как читать сигналы и как переводить расчеты в управленческий статус проекта.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-card"><strong>8</strong><span>обязательных метрик недельного контроля</span></div>
+        <div class="stat-card"><strong>1 неделя</strong><span>единый шаг расчета и анализа динамики</span></div>
+        <div class="stat-card"><strong>4 недели</strong><span>пример накопительного расчета</span></div>
+        <div class="stat-card"><strong>3 роли</strong><span>PM, PMO, руководитель портфеля</span></div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <div class="toolbar-left">
+        <span class="toolbar-label">Быстрые переходы</span>
+        <a class="btn" href="#calculator">Калькулятор</a>
+        <a class="btn" href="#weeks">Пример по неделям</a>
+        <a class="btn" href="#launch">Внедрение</a>
+      </div>
+      <div class="toolbar-right">
+        <span class="chip">Шаг расчета: неделя</span>
+        <span class="chip">Фокус: запуск в прод</span>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>Навигация</h2>
+        <ul>
+          <li><a href="#purpose">Зачем это вводится</a></li>
+          <li><a href="#set">Недельный набор метрик</a></li>
+          <li><a href="#roles">Роли и ответственность</a></li>
+          <li><a href="#calendar">Календарь расчета</a></li>
+          <li><a href="#sources">Источники данных</a></li>
+          <li><a href="#thresholds">Пороги сигналов</a></li>
+          <li><a href="#calculator">Калькулятор</a></li>
+          <li><a href="#weeks">Пример по неделям</a></li>
+          <li><a href="#status">Как выносить в статус</a></li>
+          <li><a href="#launch">Порядок внедрения</a></li>
+        </ul>
+      </aside>
+
+      <main class="content">
+        <section class="section" id="purpose">
+          <h2>Зачем это вводится</h2>
+          <p>
+            Цель не в том, чтобы сделать еще один красивый отчет, а в том, чтобы каждую неделю одинаково видеть состояние ПСИ:
+            темп прохождения, качество поставки, качество исправлений, устойчивость объема и влияние всего этого на срок запуска.
+          </p>
+          <div class="note">
+            В промышленной модели метрики должны считаться по одному шаблону, прикладываться к недельному статусу и использоваться как основание для эскалации и управленческих решений.
+          </div>
+        </section>
+
+        <section class="section" id="set">
+          <h2>Обязательный недельный набор</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Метрика</th>
+                <th>Как считается</th>
+                <th>Управленческий смысл</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Процент прохождения ПСИ</td>
+                <td>Пройдено КП / Всего КП</td>
+                <td>Показывает фактический прогресс приемки</td>
+              </tr>
+              <tr>
+                <td>Отклонение от плана по КП</td>
+                <td>Факт пройденных КП - План пройденных КП</td>
+                <td>Показывает отставание или опережение по темпу</td>
+              </tr>
+              <tr>
+                <td>Плотность замечаний</td>
+                <td>Всего замечаний / Всего КП</td>
+                <td>Характеризует качество поставки на единицу тестового объема</td>
+              </tr>
+              <tr>
+                <td>Доля критичных замечаний</td>
+                <td>Критичные / Все замечания</td>
+                <td>Показывает тяжесть проблем, а не только их количество</td>
+              </tr>
+              <tr>
+                <td>Доля повторно открытых замечаний</td>
+                <td>Переоткрыто / Исправлено</td>
+                <td>Проверяет качество исправлений и патчей</td>
+              </tr>
+              <tr>
+                <td>Доля новых требований на стадии ПСИ</td>
+                <td>Новые требования / Все изменения</td>
+                <td>Показывает размывание периметра работ</td>
+              </tr>
+              <tr>
+                <td>Средний срок закрытия замечания</td>
+                <td>Сумма дней на закрытие / Количество закрытых</td>
+                <td>Оценивает скорость реакции команды</td>
+              </tr>
+              <tr>
+                <td>Отклонение даты завершения ПСИ</td>
+                <td>Текущая прогнозная дата - Базовая дата</td>
+                <td>Фиксирует влияние качества и объема на запуск</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="roles">
+          <h2>Роли и ответственность</h2>
+          <div class="role-grid">
+            <div class="role-card"><strong>PM</strong><span>Собирает входные данные, считает метрики, готовит недельный вывод и действия.</span></div>
+            <div class="role-card"><strong>PMO</strong><span>Проверяет единый подход, собирает свод по портфелю и отслеживает красные зоны.</span></div>
+            <div class="role-card"><strong>Портфель</strong><span>Принимает решения по эскалации, сроку запуска и управленческим мерам.</span></div>
+            <div class="role-card"><strong>Заказчик</strong><span>Получает прозрачную и сопоставимую картину зрелости запуска.</span></div>
+          </div>
+        </section>
+
+        <section class="section" id="calendar">
+          <h2>Календарь недельного расчета</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>День</th>
+                <th>Действие</th>
+                <th>Владелец</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Пятница</td>
+                <td>Фиксация данных по тестам, замечаниям, исправлениям и изменениям</td>
+                <td>PM / тест-лид</td>
+              </tr>
+              <tr>
+                <td>Понедельник до обеда</td>
+                <td>Расчет метрик за неделю и подготовка вывода</td>
+                <td>PM</td>
+              </tr>
+              <tr>
+                <td>Понедельник после обеда</td>
+                <td>Проверка отклонений и согласование эскалаций</td>
+                <td>PMO / руководитель портфеля</td>
+              </tr>
+              <tr>
+                <td>Вторник</td>
+                <td>Вынос расчета в статус проекта и принятие решений</td>
+                <td>PM / руководитель портфеля</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="sources">
+          <h2>Источники данных</h2>
+          <ul>
+            <li>Протокол прохождения контрольных примеров.</li>
+            <li>Реестр замечаний с критичностью, датами открытия и закрытия.</li>
+            <li>Журнал исправлений и повторных открытий.</li>
+            <li>Реестр запросов на изменение и новых требований.</li>
+            <li>Актуальный прогноз даты завершения ПСИ.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="thresholds">
+          <h2>Пороги сигналов</h2>
+          <div class="signal-grid">
+            <div class="signal-card">
+              <h4>Зеленая зона</h4>
+              <span class="tag good">Контрольная ситуация</span>
+              <p>Отклонения не влияют на запуск, критичные замечания управляемы, качество исправлений устойчивое.</p>
+            </div>
+            <div class="signal-card">
+              <h4>Желтая зона</h4>
+              <span class="tag warn">Нужен контроль</span>
+              <p>Есть сигналы ухудшения качества, сроков или объема, но ситуация еще управляемая.</p>
+            </div>
+            <div class="signal-card">
+              <h4>Красная зона</h4>
+              <span class="tag warn">Нужна эскалация</span>
+              <p>Есть прямой риск запуска: тяжелые дефекты, плохие исправления или устойчивое отставание.</p>
+            </div>
+            <div class="signal-card">
+              <h4>Правило</h4>
+              <span class="tag neutral">Управленческая логика</span>
+              <p>Если две и более метрики ушли в красную зону, проект должен идти на отдельный разбор.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="calculator">
+          <h2>Интерактивный недельный калькулятор</h2>
+          <p>Подставьте данные конкретной недели и сразу получите расчет метрик и управленческий вывод.</p>
+
+          <h3 class="subsection-title">Общий накопительный блок</h3>
+          <p>
+            Этот блок считает картину нарастающим итогом относительно плана ПСИ: сколько недель заложено, какая сейчас неделя,
+            сколько КП должно быть пройдено по плану к текущей неделе и какой прогноз получается по факту.
+          </p>
+
+          <div class="calc-grid">
+              <div class="calc-card">
+                <h4>План ПСИ</h4>
+                <label for="plannedWeeks">Плановое количество недель ПСИ</label>
+                <input id="plannedWeeks" type="number" min="1" value="4" />
+                <label for="totalCases" style="margin-top:12px;">Всего контрольных примеров по плану</label>
+                <input id="totalCases" type="number" min="0" value="20" />
+                <div class="hint" id="weeklyPlanHint">Недельный план будет рассчитан автоматически.</div>
+              </div>
+
+              <div class="calc-card">
+                <h4>Нарастающий итог</h4>
+                <label for="currentWeek" style="margin-top:12px;">Рабочая неделя для расчета</label>
+                <input id="currentWeek" type="number" min="1" value="3" />
+                <label for="passedCases">Пройдено КП накопительно</label>
+                <input id="passedCases" type="number" min="0" value="14" />
+                <label for="plannedCases" style="margin-top:12px;">План пройденных КП к текущей неделе</label>
+                <input id="plannedCases" type="number" min="0" value="15" readonly />
+                <label for="weekName" style="margin-top:12px;">Название недели</label>
+              <input id="weekName" type="text" value="Неделя 3" />
+              <div class="hint" id="cumulativePlanHint">План к текущей неделе подставляется автоматически.</div>
+            </div>
+          </div>
+
+            <div class="results-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Накопительная метрика</th>
+                  <th>Значение</th>
+                  <th>Сигнал</th>
+                  <th>Комментарий</th>
+                </tr>
+                </thead>
+                <tbody id="cumulativeResultsBody"></tbody>
+              </table>
+            </div>
+
+            <h3 class="subsection-title">Сводная динамика ПСИ по неделям</h3>
+            <p>
+              В таблице ниже показывается динамика по каждой неделе: недельный план, накопительный план, фактическое прохождение и отклонение от плана.
+            </p>
+
+            <div class="results-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Неделя</th>
+                    <th>План КП за неделю</th>
+                    <th>План КП накопительно</th>
+                    <th>Факт КП за неделю</th>
+                    <th>Факт КП накопительно</th>
+                    <th>Отклонение</th>
+                  </tr>
+                </thead>
+                <tbody id="weeklyDynamicsBody"></tbody>
+              </table>
+            </div>
+
+            <div class="forecast-box">
+              <h4>Прогноз срока завершения ПСИ</h4>
+              <div id="forecastText">После расчета здесь появится общий процент прохождения ПСИ и прогноз срока завершения при текущей скорости.</div>
+            </div>
+
+            <div class="save-box">
+              <h4>Сохранение и работа по неделям</h4>
+              <div class="save-grid">
+                <div>
+                  <label for="snapshotName">Имя сохранения</label>
+                  <input id="snapshotName" type="text" value="ПСИ - Неделя 3" />
+                </div>
+                <div>
+                  <label for="savedSnapshots">Сохраненные недели</label>
+                  <select id="savedSnapshots">
+                    <option value="">Нет сохранений</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="snapshotProject">Проект / контур</label>
+                  <input id="snapshotProject" type="text" value="Основной проект" />
+                </div>
+              </div>
+
+              <div class="calc-actions">
+                <button id="saveSnapshotBtn" type="button">Сохранить неделю</button>
+                <button id="loadSnapshotBtn" type="button">Загрузить неделю</button>
+                <button id="deleteSnapshotBtn" type="button">Удалить сохранение</button>
+              </div>
+
+              <div class="hint" id="saveStatusHint">Сохранения хранятся локально в браузере на этом компьютере.</div>
+            </div>
+
+            <h3 class="subsection-title">Недельный операционный блок</h3>
+          <p>Ниже остается недельный управленческий блок: качество, исправления, новые требования и влияние на срок запуска.</p>
+
+          <div class="calc-grid">
+            <div class="calc-card">
+              <h4>Тесты и план</h4>
+              <label for="weekPassedCases">Пройдено КП за неделю</label>
+              <input id="weekPassedCases" type="number" min="0" value="4" />
+              <label for="weekPlannedCases" style="margin-top:12px;">План пройденных КП за неделю</label>
+              <input id="weekPlannedCases" type="number" min="0" value="5" readonly />
+              <label for="carryOverCases" style="margin-top:12px;">КП в переносе на следующую неделю</label>
+              <input id="carryOverCases" type="number" min="0" value="1" />
+              <div class="hint" id="weekPlanHint">Недельный план подставляется автоматически из общего плана ПСИ.</div>
+            </div>
+
+            <div class="calc-card">
+              <h4>Замечания</h4>
+              <label for="issuesTotal">Всего замечаний</label>
+              <input id="issuesTotal" type="number" min="0" value="25" />
+              <label for="criticalIssues" style="margin-top:12px;">Критичные замечания</label>
+              <input id="criticalIssues" type="number" min="0" value="6" />
+              <label for="avgCloseDays" style="margin-top:12px;">Средний срок закрытия, дней</label>
+              <input id="avgCloseDays" type="number" min="0" step="0.1" value="4.5" />
+            </div>
+
+            <div class="calc-card">
+              <h4>Исправления и изменения</h4>
+              <label for="fixedIssues">Исправлено замечаний</label>
+              <input id="fixedIssues" type="number" min="0" value="16" />
+              <label for="reopenedIssues" style="margin-top:12px;">Повторно открыто</label>
+              <input id="reopenedIssues" type="number" min="0" value="4" />
+              <label for="newRequirements" style="margin-top:12px;">Новых требований</label>
+              <input id="newRequirements" type="number" min="0" value="2" />
+            </div>
+
+            <div class="calc-card">
+              <h4>Сроки и период</h4>
+              <label for="allChanges">Всего запросов на изменения</label>
+              <input id="allChanges" type="number" min="0" value="8" />
+              <label for="scheduleDelta" style="margin-top:12px;">Сдвиг завершения ПСИ, дней</label>
+              <input id="scheduleDelta" type="number" step="1" value="1" />
+              <label for="workWeekDays" style="margin-top:12px;">Рабочих дней в неделе ПСИ</label>
+              <input id="workWeekDays" type="number" min="1" value="5" />
+            </div>
+          </div>
+
+          <div class="calc-actions" style="margin-top:18px;">
+            <button id="recalcBtn" type="button">Пересчитать</button>
+            <button id="sampleBtn" type="button">Подставить пример недели 3</button>
+            <button id="resetBtn" type="button">Сбросить</button>
+          </div>
+
+          <div class="results-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Метрика</th>
+                  <th>Значение</th>
+                  <th>Сигнал</th>
+                  <th>Комментарий</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="summary-box">
+            <strong id="summaryTitle">Итог недели</strong>
+            <div id="summaryText">Нажмите «Пересчитать», чтобы получить управленческий вывод.</div>
+          </div>
+        </section>
+
+        <section class="section" id="weeks">
+          <h2>Пример расчета по неделям</h2>
+          <div class="week-grid">
+            <article class="week-card">
+              <h4>Неделя 1</h4>
+              <ul>
+                <li>Согласовано 20 из 20 КП</li>
+                <li>Пройдено 5 КП</li>
+                <li>Замечаний 12, из них критичных 3</li>
+                <li>Переоткрыто 1 из 4 исправленных</li>
+                <li>Новых требований 1 из 3 изменений</li>
+                <li>Сдвиг срока: 0 дней</li>
+              </ul>
+              <span class="formula">ПСИ = 5 / 20 = 25% | Плотность = 12 / 20 = 0,60 | Критичные = 3 / 12 = 25%</span>
+              <p>Темп приемки нормальный, но качество поставки уже напряженное.</p>
+            </article>
+
+            <article class="week-card">
+              <h4>Неделя 2</h4>
+              <ul>
+                <li>Пройдено накопительно 10 КП</li>
+                <li>Замечаний 18, критичных 4</li>
+                <li>Переоткрыто 2 из 10 исправленных</li>
+                <li>Новых требований 1 из 5 изменений</li>
+                <li>Сдвиг срока: 0 дней</li>
+              </ul>
+              <span class="formula">ПСИ = 10 / 20 = 50% | Плотность = 18 / 20 = 0,90 | Критичные = 4 / 18 = 22,2%</span>
+              <p>Срок удерживается, но тяжесть замечаний и качество исправлений остаются в желто-красной зоне.</p>
+            </article>
+
+            <article class="week-card">
+              <h4>Неделя 3</h4>
+              <ul>
+                <li>Пройдено накопительно 14 КП</li>
+                <li>Замечаний 25, критичных 6</li>
+                <li>Переоткрыто 4 из 16 исправленных</li>
+                <li>Новых требований 2 из 8 изменений</li>
+                <li>Сдвиг срока: +1 день</li>
+              </ul>
+              <span class="formula">ПСИ = 14 / 20 = 70% | Плотность = 25 / 20 = 1,25 | Повторы = 4 / 16 = 25%</span>
+              <p>Появилось первое отставание, нужна обязательная эскалация и отдельный контроль качества исправлений.</p>
+            </article>
+
+            <article class="week-card">
+              <h4>Неделя 4</h4>
+              <ul>
+                <li>Пройдено накопительно 18 КП</li>
+                <li>Замечаний 28, критичных 4</li>
+                <li>Переоткрыто 4 из 24 исправленных</li>
+                <li>Новых требований 2 из 10 изменений</li>
+                <li>Сдвиг срока: +2 дня</li>
+              </ul>
+              <span class="formula">ПСИ = 18 / 20 = 90% | Критичные = 4 / 28 = 14,3% | Новые требования = 2 / 10 = 20%</span>
+              <p>Приемка близка к завершению, но запуск допустим только после отдельной проверки актуальности результатов тестирования.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="status">
+          <h2>Как выносить это в статус проекта</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Блок</th>
+                <th>Пример формулировки</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Прогресс ПСИ</td>
+                <td>70% КП пройдено, отклонение от плана -1 КП, прогноз завершения сдвинут на 1 рабочий день.</td>
+              </tr>
+              <tr>
+                <td>Качество</td>
+                <td>Плотность замечаний 1,25 на КП, доля критичных 24%, качество исправлений нестабильно.</td>
+              </tr>
+              <tr>
+                <td>Объем</td>
+                <td>Доля новых требований на стадии ПСИ 25%, есть риск размывания периметра.</td>
+              </tr>
+              <tr>
+                <td>Вывод PM</td>
+                <td>Требуется эскалация по качеству исправлений и фиксация запрета на новые требования без отдельного решения.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="launch">
+          <h2>Порядок внедрения</h2>
+          <h3>Шаг 1. Пилот</h3>
+          <ul>
+            <li>Взять 3-5 текущих проектов в ПСИ.</li>
+            <li>Считать метрики 4 недели по единому шаблону.</li>
+            <li>Проверить неоднозначности в формулах и источниках данных.</li>
+          </ul>
+
+          <h3>Шаг 2. Закрепление шаблона</h3>
+          <ul>
+            <li>Утвердить единый недельный шаблон расчета для PM.</li>
+            <li>Сделать приложение к недельному статусу обязательным для всех проектов в ПСИ.</li>
+          </ul>
+
+          <h3>Шаг 3. Портфельный контроль</h3>
+          <ul>
+            <li>PMO собирает общий свод по проектам и красным зонам.</li>
+            <li>Руководитель портфеля рассматривает отклонения по одной шкале, а не по разным трактовкам менеджеров.</li>
+          </ul>
+
+          <h3>Шаг 4. Регулярное использование</h3>
+          <ul>
+            <li>Метрики становятся частью управления запуском, а не разовым аналитическим приложением.</li>
+            <li>История недельных значений используется как доказательная база на разборах по качеству, срокам и действиям PM.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "psi-metrics-weekly-snapshots-v1";
+
+    const sampleWeek3 = {
+      totalCases: 20,
+      plannedWeeks: 4,
+      currentWeek: 3,
+      passedCases: 14,
+      plannedCases: 15,
+      weekPassedCases: 4,
+      weekPlannedCases: 5,
+      carryOverCases: 1,
+      issuesTotal: 25,
+      criticalIssues: 6,
+      avgCloseDays: 4.5,
+      fixedIssues: 16,
+      reopenedIssues: 4,
+      newRequirements: 2,
+      allChanges: 8,
+      scheduleDelta: 1,
+      workWeekDays: 5,
+      weekName: "Неделя 3",
+      snapshotName: "ПСИ - Неделя 3",
+      snapshotProject: "Основной проект"
+    };
+
+    const defaults = { ...sampleWeek3 };
+
+    function getNumber(id) {
+      const value = document.getElementById(id).value;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function percent(value) {
+      return `${(value * 100).toFixed(1)}%`;
+    }
+
+    function ratio(value) {
+      return value.toFixed(2);
+    }
+
+    function signalTag(kind, label) {
+      return `<span class="tag ${kind}">${label}</span>`;
+    }
+
+    function getSignal(kind, comment) {
+      const map = {
+        good: signalTag("good", "Зеленый"),
+        warn: signalTag("warn", "Желтый"),
+        bad: signalTag("warn", "Красный")
+      };
+      return { signal: map[kind], level: kind, comment };
+    }
+
+    function getAllFormData() {
+      return {
+        plannedWeeks: getNumber("plannedWeeks"),
+        currentWeek: getNumber("currentWeek"),
+        totalCases: getNumber("totalCases"),
+        passedCases: getNumber("passedCases"),
+        weekPassedCases: getNumber("weekPassedCases"),
+        carryOverCases: getNumber("carryOverCases"),
+        issuesTotal: getNumber("issuesTotal"),
+        criticalIssues: getNumber("criticalIssues"),
+        avgCloseDays: getNumber("avgCloseDays"),
+        fixedIssues: getNumber("fixedIssues"),
+        reopenedIssues: getNumber("reopenedIssues"),
+        newRequirements: getNumber("newRequirements"),
+        allChanges: getNumber("allChanges"),
+        scheduleDelta: getNumber("scheduleDelta"),
+        workWeekDays: getNumber("workWeekDays"),
+        weekName: document.getElementById("weekName").value || "",
+        snapshotName: document.getElementById("snapshotName").value || "",
+        snapshotProject: document.getElementById("snapshotProject").value || ""
+      };
+    }
+
+    function applyFormData(data) {
+      Object.entries(data).forEach(([key, value]) => {
+        const el = document.getElementById(key);
+        if (el) {
+          el.value = value;
+        }
+      });
+    }
+
+    function getSnapshots() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function setSnapshots(items) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+
+    function getProjectSnapshots(projectName) {
+      return getSnapshots()
+        .filter((item) => (item.snapshotProject || "") === (projectName || ""))
+        .sort((a, b) => Number(a.currentWeek || 0) - Number(b.currentWeek || 0));
+    }
+
+    function refreshSnapshotsList(selectedKey = "") {
+      const select = document.getElementById("savedSnapshots");
+      const snapshots = getSnapshots();
+      if (!snapshots.length) {
+        select.innerHTML = `<option value="">Нет сохранений</option>`;
+        return;
+      }
+
+      select.innerHTML = snapshots.map((item) => {
+        const label = `${item.snapshotName} | ${item.snapshotProject} | ${item.weekName}`;
+        const selected = item.id === selectedKey ? "selected" : "";
+        return `<option value="${item.id}" ${selected}>${label}</option>`;
+      }).join("");
+    }
+
+    function saveSnapshot() {
+      const data = getAllFormData();
+      const snapshots = getSnapshots();
+      const id = `${data.snapshotProject}::${data.weekName}::${data.snapshotName}`;
+      const payload = {
+        id,
+        ...data,
+        savedAt: new Date().toISOString()
+      };
+
+      const existingIndex = snapshots.findIndex((item) => item.id === id);
+      if (existingIndex >= 0) {
+        snapshots[existingIndex] = payload;
+      } else {
+        snapshots.push(payload);
+      }
+
+      setSnapshots(snapshots);
+      refreshSnapshotsList(id);
+      document.getElementById("saveStatusHint").textContent = `Сохранено: ${data.snapshotName}. Можно возвращаться к этой неделе позже.`;
+      evaluateMetrics();
+    }
+
+    function loadSnapshot() {
+      const id = document.getElementById("savedSnapshots").value;
+      const snapshot = getSnapshots().find((item) => item.id === id);
+      if (!snapshot) {
+        document.getElementById("saveStatusHint").textContent = "Выберите сохраненную неделю для загрузки.";
+        return;
+      }
+
+      applyFormData(snapshot);
+      evaluateMetrics();
+      document.getElementById("saveStatusHint").textContent = `Загружено: ${snapshot.snapshotName}.`;
+    }
+
+    function deleteSnapshot() {
+      const id = document.getElementById("savedSnapshots").value;
+      if (!id) {
+        document.getElementById("saveStatusHint").textContent = "Нет выбранного сохранения для удаления.";
+        return;
+      }
+
+      const snapshots = getSnapshots().filter((item) => item.id !== id);
+      setSnapshots(snapshots);
+      refreshSnapshotsList();
+      document.getElementById("saveStatusHint").textContent = "Сохранение удалено.";
+      evaluateMetrics();
+    }
+
+    function evaluateMetrics() {
+      const totalCases = getNumber("totalCases");
+      const plannedWeeks = getNumber("plannedWeeks");
+      const currentWeek = getNumber("currentWeek");
+      const passedCases = getNumber("passedCases");
+      const weekPassedCases = getNumber("weekPassedCases");
+      const carryOverCases = getNumber("carryOverCases");
+      const issuesTotal = getNumber("issuesTotal");
+      const criticalIssues = getNumber("criticalIssues");
+      const avgCloseDays = getNumber("avgCloseDays");
+      const fixedIssues = getNumber("fixedIssues");
+      const reopenedIssues = getNumber("reopenedIssues");
+      const newRequirements = getNumber("newRequirements");
+      const allChanges = getNumber("allChanges");
+      const scheduleDelta = getNumber("scheduleDelta");
+      const workWeekDays = getNumber("workWeekDays");
+      const weekName = document.getElementById("weekName").value || "Текущая неделя";
+      const snapshotProject = document.getElementById("snapshotProject").value || "Основной проект";
+
+      if (!document.getElementById("snapshotName").value.trim()) {
+        document.getElementById("snapshotName").value = `ПСИ - ${weekName}`;
+      }
+
+      const weekPlanExact = plannedWeeks > 0 ? totalCases / plannedWeeks : 0;
+      const weekPlanRounded = Math.ceil(weekPlanExact);
+      const plannedCasesExact = plannedWeeks > 0 ? totalCases * Math.min(currentWeek, plannedWeeks) / plannedWeeks : 0;
+      const plannedCases = Math.min(Math.ceil(plannedCasesExact), totalCases);
+      const weekPlannedCases = weekPlanRounded;
+
+      document.getElementById("plannedCases").value = plannedCases;
+      document.getElementById("weekPlannedCases").value = weekPlannedCases;
+      document.getElementById("weeklyPlanHint").textContent = `Автоплан: ${weekPlanExact.toFixed(2)} КП в неделю, для работы используется округление вверх до ${weekPlanRounded} КП.`;
+      document.getElementById("cumulativePlanHint").textContent = `Автоплан к ${currentWeek}-й неделе: ${plannedCasesExact.toFixed(2)} КП, в поле подставлено ${plannedCases} КП.`;
+      document.getElementById("weekPlanHint").textContent = `Автоплан недели: ${weekPlannedCases} КП из общего плана ${totalCases} КП на ${plannedWeeks} нед.`;
+
+      const progress = totalCases > 0 ? passedCases / totalCases : 0;
+      const planDelta = passedCases - plannedCases;
+      const plannedProgress = plannedWeeks > 0 ? Math.min(currentWeek / plannedWeeks, 1) : 0;
+      const avgThroughput = currentWeek > 0 ? passedCases / currentWeek : 0;
+      const remainingCases = Math.max(totalCases - passedCases, 0);
+      const forecastWeeksTotal = avgThroughput > 0 ? totalCases / avgThroughput : 0;
+      const forecastDelayWeeks = forecastWeeksTotal > 0 ? forecastWeeksTotal - plannedWeeks : 0;
+      const forecastByCurrentWeekSpeed = weekPassedCases > 0 ? (currentWeek - 1) + (remainingCases / weekPassedCases) + 1 : 0;
+      const remainingWeeksByCurrentSpeed = weekPassedCases > 0 ? remainingCases / weekPassedCases : 0;
+      const weekDelta = weekPassedCases - weekPlannedCases;
+      const issueDensity = totalCases > 0 ? issuesTotal / totalCases : 0;
+      const criticalShare = issuesTotal > 0 ? criticalIssues / issuesTotal : 0;
+      const reopenShare = fixedIssues > 0 ? reopenedIssues / fixedIssues : 0;
+      const scopeShare = allChanges > 0 ? newRequirements / allChanges : 0;
+      const weeklyLoad = workWeekDays > 0 ? weekPassedCases / workWeekDays : 0;
+      const previousWeeksFactTotal = Math.max(passedCases - weekPassedCases, 0);
+      const previousWeeksCount = Math.max(currentWeek - 1, 0);
+      const previousWeekAverage = previousWeeksCount > 0 ? previousWeeksFactTotal / previousWeeksCount : 0;
+      const savedProjectWeeks = getProjectSnapshots(snapshotProject);
+
+      const cumulativeRows = [
+        {
+          name: "Автоматический план КП в неделю",
+          value: `${weekPlanExact.toFixed(2)} КП/нед. (рабочее значение ${weekPlanRounded})`,
+          ...getSignal(weekPlanRounded > 0 ? "good" : "bad",
+            weekPlanRounded > 0 ? "Недельный план рассчитан автоматически из общего плана ПСИ" : "Недостаточно данных для расчета недельного плана")
+        },
+        {
+          name: "Плановая длительность ПСИ",
+          value: `${plannedWeeks} нед.`,
+          ...getSignal(plannedWeeks >= currentWeek ? "good" : "bad",
+            plannedWeeks >= currentWeek ? "Текущая неделя укладывается в базовый план" : "Факт уже вышел за базовый план ПСИ")
+        },
+        {
+          name: "Фактический прогресс накопительно",
+          value: `${passedCases} из ${totalCases} КП (${percent(progress)})`,
+          ...getSignal(progress >= plannedProgress ? "good" : progress >= Math.max(plannedProgress - 0.1, 0) ? "warn" : "bad",
+            progress >= plannedProgress ? "Фактический прогресс не ниже плановой кривой" : progress >= Math.max(plannedProgress - 0.1, 0) ? "Есть умеренное отставание от плановой кривой" : "Накопительное отставание от плана уже существенное")
+        },
+        {
+          name: "Отклонение накопительно от плана",
+          value: `${planDelta >= 0 ? "+" : ""}${planDelta} КП`,
+          ...getSignal(planDelta >= 0 ? "good" : planDelta >= -1 ? "warn" : "bad",
+            planDelta >= 0 ? "Накопительный план не сорван" : planDelta >= -1 ? "Есть небольшое отставание" : "Накопительное отставание требует эскалации")
+        },
+        {
+          name: "Средний темп прохождения",
+          value: `${ratio(avgThroughput)} КП/нед.`,
+          ...getSignal(avgThroughput >= (plannedWeeks > 0 ? totalCases / plannedWeeks : 0) ? "good" : avgThroughput >= (plannedWeeks > 0 ? (totalCases / plannedWeeks) * 0.9 : 0) ? "warn" : "bad",
+            avgThroughput >= (plannedWeeks > 0 ? totalCases / plannedWeeks : 0) ? "Средний темп соответствует базовому плану" : avgThroughput >= (plannedWeeks > 0 ? (totalCases / plannedWeeks) * 0.9 : 0) ? "Темп близок к нижней границе плана" : "Средний темп недостаточен для завершения в план")
+        },
+        {
+          name: "Остаток контрольных примеров",
+          value: `${remainingCases} КП`,
+          ...getSignal(remainingCases <= totalCases * 0.2 ? "good" : remainingCases <= totalCases * 0.4 ? "warn" : "bad",
+            remainingCases <= totalCases * 0.2 ? "Остаток уже управляемый" : remainingCases <= totalCases * 0.4 ? "Остаток заметный, нужен контроль темпа" : "Остаток большой относительно текущей стадии")
+        },
+        {
+          name: "Прогноз завершения по текущему темпу",
+          value: forecastWeeksTotal > 0 ? `${forecastWeeksTotal.toFixed(1)} нед.` : "н/д",
+          ...getSignal(forecastDelayWeeks <= 0 ? "good" : forecastDelayWeeks <= 1 ? "warn" : "bad",
+            forecastWeeksTotal <= 0 ? "Недостаточно данных для прогноза" : forecastDelayWeeks <= 0 ? "Текущий темп позволяет уложиться в план" : forecastDelayWeeks <= 1 ? "Есть риск сдвига до одной недели" : "Текущий темп ведет к сдвигу более чем на неделю")
+        }
+      ];
+
+      const rows = [
+        {
+          name: "Прохождение КП за неделю",
+          value: `${weekPassedCases} из ${weekPlannedCases} КП`,
+          ...getSignal(weekDelta >= 0 ? "good" : weekDelta >= -1 ? "warn" : "bad",
+            weekDelta >= 0 ? "Недельный план выполнен" : weekDelta >= -1 ? "Есть небольшое отставание по неделе" : "Неделя закрыта с заметным недовыполнением")
+        },
+        {
+          name: "Отклонение недели от плана",
+          value: `${weekDelta >= 0 ? "+" : ""}${weekDelta} КП`,
+          ...getSignal(weekDelta >= 0 ? "good" : weekDelta >= -1 ? "warn" : "bad",
+            weekDelta >= 0 ? "Неделя идет по плану" : weekDelta >= -1 ? "Отставание недели пока контролируемо" : "Недельное отставание уже давит на общий график")
+        },
+        {
+          name: "Перенос КП на следующую неделю",
+          value: `${carryOverCases} КП`,
+          ...getSignal(carryOverCases <= 0 ? "good" : carryOverCases <= 1 ? "warn" : "bad",
+            carryOverCases <= 0 ? "Переноса нет" : carryOverCases <= 1 ? "Есть ограниченный хвост" : "Формируется значимый хвост невыполненных КП")
+        },
+        {
+          name: "Средняя недельная производительность",
+          value: `${weeklyLoad.toFixed(2)} КП/день`,
+          ...getSignal(weeklyLoad >= 1 ? "good" : weeklyLoad >= 0.7 ? "warn" : "bad",
+            weeklyLoad >= 1 ? "Недельная интенсивность рабочая" : weeklyLoad >= 0.7 ? "Интенсивность на нижней границе" : "Интенсивность прохождения низкая")
+        },
+        {
+          name: "Плотность замечаний",
+          value: ratio(issueDensity),
+          ...getSignal(issueDensity <= 0.7 ? "good" : issueDensity <= 1.0 ? "warn" : "bad",
+            issueDensity <= 0.7 ? "Качество поставки приемлемое" : issueDensity <= 1.0 ? "Качество требует внимания" : "Слишком много замечаний на объем тестов")
+        },
+        {
+          name: "Доля критичных замечаний",
+          value: percent(criticalShare),
+          ...getSignal(criticalShare <= 0.1 ? "good" : criticalShare <= 0.2 ? "warn" : "bad",
+            criticalShare <= 0.1 ? "Тяжесть замечаний управляемая" : criticalShare <= 0.2 ? "Есть риск по критичным дефектам" : "Критичных замечаний слишком много")
+        },
+        {
+          name: "Доля повторно открытых замечаний",
+          value: percent(reopenShare),
+          ...getSignal(reopenShare <= 0.1 ? "good" : reopenShare <= 0.2 ? "warn" : "bad",
+            reopenShare <= 0.1 ? "Исправления качественные" : reopenShare <= 0.2 ? "Исправления нестабильны" : "Качество исправлений плохое")
+        },
+        {
+          name: "Доля новых требований на ПСИ",
+          value: percent(scopeShare),
+          ...getSignal(scopeShare <= 0.1 ? "good" : scopeShare <= 0.2 ? "warn" : "bad",
+            scopeShare <= 0.1 ? "Периметр стабилен" : scopeShare <= 0.2 ? "Есть давление на объем" : "Периметр размывается во время ПСИ")
+        },
+        {
+          name: "Средний срок закрытия замечания",
+          value: `${avgCloseDays.toFixed(1)} дн.`,
+          ...getSignal(avgCloseDays <= 3 ? "good" : avgCloseDays <= 5 ? "warn" : "bad",
+            avgCloseDays <= 3 ? "Команда быстро закрывает замечания" : avgCloseDays <= 5 ? "Скорость закрытия приемлемая, но без запаса" : "Закрытие замечаний слишком медленное")
+        },
+        {
+          name: "Отклонение даты завершения ПСИ",
+          value: `${scheduleDelta >= 0 ? "+" : ""}${scheduleDelta} дн.`,
+          ...getSignal(scheduleDelta <= 0 ? "good" : scheduleDelta <= 2 ? "warn" : "bad",
+            scheduleDelta <= 0 ? "Срыв по дате не прогнозируется" : scheduleDelta <= 2 ? "Появился контролируемый сдвиг" : "Сдвиг уже критичен для запуска")
+        }
+      ];
+
+      const dynamicsRows = [];
+      const totalWeeksForTable = Math.max(plannedWeeks, Math.ceil(forecastByCurrentWeekSpeed || 0), currentWeek);
+
+      for (let week = 1; week <= totalWeeksForTable; week += 1) {
+        const plannedWeekly = week <= plannedWeeks ? weekPlanRounded : 0;
+        const plannedCumulativeWeek = week <= plannedWeeks ? Math.min(Math.ceil((totalCases * week) / plannedWeeks), totalCases) : totalCases;
+
+        const savedWeek = savedProjectWeeks.find((item) => Number(item.currentWeek) === week);
+        let factWeekly = "";
+        let factCumulative = "";
+        let deviation = "";
+
+        if (savedWeek) {
+          factWeekly = Number(savedWeek.weekPassedCases || 0);
+          factCumulative = Number(savedWeek.passedCases || 0);
+          deviation = factCumulative - plannedCumulativeWeek;
+        } else if (week === currentWeek) {
+          factWeekly = weekPassedCases;
+          factCumulative = passedCases;
+          deviation = factCumulative - plannedCumulativeWeek;
+        }
+
+        dynamicsRows.push({
+          week,
+          plannedWeekly: plannedWeekly > 0 ? plannedWeekly.toFixed(0) : "-",
+          plannedCumulativeWeek: plannedCumulativeWeek.toFixed(0),
+          factWeekly: factWeekly === "" ? "—" : Number(factWeekly).toFixed(1),
+          factCumulative: factCumulative === "" ? "—" : Number(factCumulative).toFixed(1),
+          deviation: deviation === "" ? "—" : `${deviation >= 0 ? "+" : ""}${Number(deviation).toFixed(1)}`,
+          source: savedWeek ? "saved" : week === currentWeek ? "current" : "empty"
+        });
+      }
+
+      renderRows("cumulativeResultsBody", cumulativeRows);
+      renderDynamics(dynamicsRows);
+      renderRows("resultsBody", rows);
+      renderForecast({
+        progress,
+        passedCases,
+        totalCases,
+        plannedWeeks,
+        currentWeek,
+        weekPlannedCases,
+        weekPassedCases,
+        forecastWeeksTotal,
+        forecastByCurrentWeekSpeed,
+        remainingWeeksByCurrentSpeed,
+        avgThroughput
+      });
+      renderSummary(rows, cumulativeRows, weekName);
+    }
+
+    function renderRows(targetId, rows) {
+      const body = document.getElementById(targetId);
+      body.innerHTML = rows.map((row) => `
+        <tr>
+          <td>${row.name}</td>
+          <td>${row.value}</td>
+          <td>${row.signal}</td>
+          <td>${row.comment}</td>
+        </tr>
+        `).join("");
+    }
+
+    function renderDynamics(rows) {
+      const body = document.getElementById("weeklyDynamicsBody");
+      body.innerHTML = rows.map((row) => `
+        <tr>
+          <td>${row.week}</td>
+          <td>${row.plannedWeekly}</td>
+          <td>${row.plannedCumulativeWeek}</td>
+          <td>${row.factWeekly}</td>
+          <td>${row.factCumulative}</td>
+          <td>${row.deviation}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderForecast(data) {
+      const {
+        progress,
+        passedCases,
+        totalCases,
+        plannedWeeks,
+        currentWeek,
+        weekPlannedCases,
+        weekPassedCases,
+        forecastWeeksTotal,
+        forecastByCurrentWeekSpeed,
+        remainingWeeksByCurrentSpeed,
+        avgThroughput
+      } = data;
+
+      const progressText = `${(progress * 100).toFixed(1)}%`;
+      const avgWeeksText = forecastWeeksTotal > 0 ? `${forecastWeeksTotal.toFixed(1)} нед.` : "н/д";
+      const currentSpeedWeeksText = forecastByCurrentWeekSpeed > 0 ? `${forecastByCurrentWeekSpeed.toFixed(1)} нед.` : "н/д";
+      const remainingWeeksText = remainingWeeksByCurrentSpeed > 0 ? `${remainingWeeksByCurrentSpeed.toFixed(1)} нед.` : "н/д";
+
+      document.getElementById("forecastText").textContent =
+        `Общий процент прохождения ПСИ: ${progressText} (${passedCases} из ${totalCases} КП). ` +
+        `Плановая длительность ПСИ: ${plannedWeeks} нед., текущая неделя: ${currentWeek}. ` +
+        `План на текущую неделю: ${weekPlannedCases} КП, факт: ${weekPassedCases} КП. ` +
+        `При средней накопительной скорости завершение ожидается за ${avgWeeksText}. ` +
+        `При текущей недельной скорости ПСИ займет около ${currentSpeedWeeksText} всего, ` +
+        `то есть еще примерно ${remainingWeeksText} от текущей точки. ` +
+        `Текущая средняя скорость: ${avgThroughput.toFixed(2)} КП/нед.`;
+    }
+
+    function renderSummary(weeklyRows, cumulativeRows, weekName) {
+      const rows = [...weeklyRows, ...cumulativeRows];
+      const badCount = rows.filter((row) => row.level === "bad").length;
+      const warnCount = rows.filter((row) => row.level === "warn").length;
+      let text = "";
+
+      if (badCount >= 2) {
+        text = `Красная зона. В красном ${badCount} метрики(а), в желтом ${warnCount}. Проект нужно выносить на отдельную эскалацию: запуск без дополнительного решения рискован.`;
+      } else if (badCount === 1 || warnCount >= 3) {
+        text = `Желто-красная зона. Есть как минимум один критичный сигнал и накопленный риск по качеству или срокам. Нужен отдельный план действий и повторная проверка на следующей неделе.`;
+      } else if (warnCount >= 1) {
+        text = `Желтая зона. Ситуация пока управляемая, но запас небольшой. Менеджеру проекта нужно держать на контроле качество, сроки и новые требования.`;
+      } else {
+        text = `Зеленая зона. Недельный набор метрик не показывает существенных рисков для завершения ПСИ и подготовки к запуску.`;
+      }
+
+      document.getElementById("summaryTitle").textContent = `${weekName}: управленческий вывод`;
+      document.getElementById("summaryText").textContent = text;
+    }
+
+    function fillSample() {
+      for (const [key, value] of Object.entries(sampleWeek3)) {
+        const el = document.getElementById(key);
+        if (el) {
+          el.value = value;
+        }
+      }
+      evaluateMetrics();
+    }
+
+    function resetAll() {
+      for (const [key, value] of Object.entries(defaults)) {
+        document.getElementById(key).value = value;
+      }
+      document.getElementById("weeklyDynamicsBody").innerHTML = "";
+      document.getElementById("forecastText").textContent = "После расчета здесь появится общий процент прохождения ПСИ и прогноз срока завершения при текущей скорости.";
+      evaluateMetrics();
+    }
+
+    document.getElementById("recalcBtn").addEventListener("click", evaluateMetrics);
+    document.getElementById("sampleBtn").addEventListener("click", fillSample);
+    document.getElementById("resetBtn").addEventListener("click", resetAll);
+    document.getElementById("saveSnapshotBtn").addEventListener("click", saveSnapshot);
+    document.getElementById("loadSnapshotBtn").addEventListener("click", loadSnapshot);
+    document.getElementById("deleteSnapshotBtn").addEventListener("click", deleteSnapshot);
+
+    [
+      "plannedWeeks",
+      "currentWeek",
+      "totalCases",
+      "passedCases",
+      "weekPassedCases",
+      "carryOverCases",
+      "issuesTotal",
+      "criticalIssues",
+      "avgCloseDays",
+      "fixedIssues",
+      "reopenedIssues",
+      "newRequirements",
+      "allChanges",
+      "scheduleDelta",
+      "workWeekDays",
+      "weekName"
+    ].forEach((id) => {
+      document.getElementById(id).addEventListener("input", evaluateMetrics);
+      document.getElementById(id).addEventListener("change", evaluateMetrics);
+      });
+
+    refreshSnapshotsList();
+    resetAll();
+  </script>
+</body>
+</html>
