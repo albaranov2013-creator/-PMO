@@ -1331,6 +1331,15 @@
     }
 
     function setByPath(target, path, value) {
+      if (path.startsWith("sections.")) {
+        const parts = path.split(".");
+        const sectionId = parts[1];
+        const field = parts[parts.length - 1];
+        const rowId = parts.slice(2, -1).join(".");
+        target.sections[sectionId][rowId][field] = value;
+        return;
+      }
+
       const parts = path.split(".");
       let current = target;
       for (let i = 0; i < parts.length - 1; i++) {
