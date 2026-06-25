@@ -1306,6 +1306,12 @@
       });
     }
 
+    function syncStateFromDom() {
+      document.querySelectorAll("[data-path]").forEach(element => {
+        setByPath(formState, element.dataset.path, element.value);
+      });
+    }
+
     function handleFieldChange(event) {
       const path = event.target.dataset.path;
       setByPath(formState, path, event.target.value);
@@ -1592,12 +1598,30 @@
       refreshDerived();
     }
 
-    document.getElementById("save-local-btn").addEventListener("click", () => saveState(true));
-    document.getElementById("download-json-btn").addEventListener("click", downloadJson);
-    document.getElementById("download-risks-btn").addEventListener("click", downloadRisks);
-    document.getElementById("export-pdf-btn").addEventListener("click", () => window.print());
+    document.getElementById("save-local-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      saveState(true);
+    });
+    document.getElementById("download-json-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      downloadJson();
+    });
+    document.getElementById("download-risks-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      downloadRisks();
+    });
+    document.getElementById("export-pdf-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      window.print();
+    });
     document.getElementById("clear-btn").addEventListener("click", clearForm);
     document.getElementById("apply-auto-recommendation-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
       const summary = deriveAutoDecision();
       formState.results.pmRecommendation = summary.decision === "Недостаточно данных" ? "" : summary.decision;
       renderResults();
@@ -1606,6 +1630,8 @@
       refreshDerived();
     });
     document.getElementById("apply-auto-decision-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
       const summary = deriveAutoDecision();
       formState.meta.decision = summary.decision === "Недостаточно данных" ? "" : summary.decision;
       renderMeta();
