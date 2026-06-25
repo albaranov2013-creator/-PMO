@@ -593,9 +593,15 @@
       }
     }
 
+    @page {
+      size: A4 landscape;
+      margin: 10mm;
+    }
+
     @media print {
       body {
         background: #fff;
+        font: 11px/1.25 "Segoe UI", Arial, sans-serif;
       }
 
       .page {
@@ -626,11 +632,109 @@
         border: 1px solid #cbd5e1;
         background: #fff;
         box-shadow: none;
+        padding: 6px 8px;
+        font-size: 10px;
       }
 
-      .section,
       .hero {
-        break-inside: avoid;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        break-inside: auto;
+        page-break-inside: auto;
+      }
+
+      .hero h1 {
+        font-size: 22px;
+        margin-bottom: 6px;
+      }
+
+      .lead,
+      .hint-list,
+      .summary-note,
+      .callout,
+      .footer-note {
+        font-size: 10px;
+      }
+
+      .summary-grid,
+      .meta-preview-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .summary-card,
+      .meta-preview-card,
+      .field-card {
+        padding: 10px 12px;
+        border-radius: 12px;
+      }
+
+      .summary-value {
+        font-size: 18px;
+      }
+
+      .meta-preview-value {
+        font-size: 11px;
+        line-height: 1.2;
+      }
+
+      .section {
+        padding: 12px 14px;
+        margin-top: 8px;
+        break-inside: auto;
+        page-break-inside: auto;
+      }
+
+      .section-head {
+        margin-bottom: 8px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      h3 {
+        font-size: 14px;
+      }
+
+      .section-note,
+      .field-label,
+      .section-label,
+      th {
+        font-size: 9px;
+      }
+
+      .table-wrap {
+        overflow: visible;
+        border-radius: 12px;
+      }
+
+      table {
+        min-width: 0;
+        table-layout: fixed;
+      }
+
+      th,
+      td {
+        padding: 6px 8px;
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .field-textarea {
+        min-height: 54px;
+      }
+
+      .field-textarea.owner-textarea {
+        min-height: 42px;
+      }
+
+      .result-grid,
+      .signature-grid,
+      .meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
       }
     }
   </style>
