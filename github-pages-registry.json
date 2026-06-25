@@ -1,0 +1,59 @@
+{
+  "site": {
+    "repo_owner": "albaranov2013-creator",
+    "repo_name": "-PMO",
+    "base_url": "https://albaranov2013-creator.github.io/-PMO/"
+  },
+  "pages": [
+    {
+      "date": "2026-06-25",
+      "title": "Каталог публикаций PMO",
+      "slug": "index",
+      "source_file": "C:\\AI Баранов\\Интеграции\\GitHub\\index.html",
+      "base_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "final_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "status": "live",
+      "comment": "Повторно обновлен каталог публикаций: добавлена ссылка на пример заполнения чек-листа актуальности готовности банка к запуску"
+    },
+    {
+      "date": "2026-06-17",
+      "title": "Метрики прохождения ПСИ",
+      "slug": "metriki-prohozhdeniya-psi",
+      "source_file": "C:\\AI Баранов\\Работа\\Портфель\\Менеджеры\\Метрики прохождения ПСИ.html",
+      "base_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "final_url": "https://albaranov2013-creator.github.io/-PMO/metriki-prohozhdeniya-psi/",
+      "status": "live",
+      "comment": "Страница доступна по итоговой ссылке"
+    },
+    {
+      "date": "2026-06-24",
+      "title": "Шаблон чек-листа актуальности готовности банка к запуску",
+      "slug": "checklist-aktualnosti-gotovnosti-banka-k-zapusku",
+      "source_file": "C:\\AI Баранов\\Работа\\Портфель\\Менеджеры\\Шаблон чек-листа актуальности готовности банка к запуску.html",
+      "base_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "final_url": "https://albaranov2013-creator.github.io/-PMO/checklist-aktualnosti-gotovnosti-banka-k-zapusku/",
+      "status": "live",
+      "comment": "Повторно обновлена опубликованная версия: логотип убран, заголовок сохранен белым"
+    },
+    {
+      "date": "2026-06-24",
+      "title": "Пример заполнения чек-листа актуальности готовности банка к запуску",
+      "slug": "primer-zapolneniya-checklista-aktualnosti-gotovnosti-banka-k-zapusku",
+      "source_file": "C:\\AI Баранов\\Работа\\Портфель\\Менеджеры\\Пример заполнения чек-листа актуальности готовности банка к запуску.html",
+      "base_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "final_url": "https://albaranov2013-creator.github.io/-PMO/primer-zapolneniya-checklista-aktualnosti-gotovnosti-banka-k-zapusku/",
+      "status": "live",
+      "comment": "Учебный образец для менеджеров на кейсе 1055 / Заман Банк с примером заполнения и логикой статусов"
+    },
+    {
+      "date": "2026-06-18",
+      "title": "Профиль клиента PMO - BNK Finance",
+      "slug": "profil-klienta-pmo-bnk-finance",
+      "source_file": "C:\\AI Баранов\\Работа\\Портфель\\Риски\\Профили клиентов PMO\\Профиль клиента PMO - BNK Finance.html",
+      "base_url": "https://albaranov2013-creator.github.io/-PMO/",
+      "final_url": "https://albaranov2013-creator.github.io/-PMO/profil-klienta-pmo-bnk-finance/",
+      "status": "live",
+      "comment": "Аналитический профиль клиента PMO опубликован по итоговой ссылке"
+    }
+  ]
+}
