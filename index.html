@@ -273,7 +273,7 @@
         </div>
         <div class="metric">
           <div class="label">Страниц</div>
-          <div class="value">3</div>
+          <div class="value">4</div>
         </div>
         <div class="metric">
           <div class="label">Статус</div>
@@ -337,13 +337,22 @@
                 <td>Аналитическая страница по набору метрик PMO для этапа ПСИ.</td>
               </tr>
               <tr>
-                <td>2026-06-18</td>
+                <td>2026-06-24</td>
                 <td>Шаблон чек-листа актуальности готовности банка к запуску</td>
                 <td><code>checklist-aktualnosti-gotovnosti-banka-k-zapusku</code></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/">Открыть сайт</a></td>
                 <td><a href="https://albaranov2013-creator.github.io/-PMO/checklist-aktualnosti-gotovnosti-banka-k-zapusku/">Открыть страницу</a></td>
                 <td><span class="tag ok">live</span></td>
                 <td>Интерактивная форма для совместного заполнения с банком, автосохранением, JSON, PDF и экспортом рисков.</td>
+              </tr>
+              <tr>
+                <td>2026-06-24</td>
+                <td>Пример заполнения чек-листа актуальности готовности банка к запуску</td>
+                <td><code>primer-zapolneniya-checklista-aktualnosti-gotovnosti-banka-k-zapusku</code></td>
+                <td><a href="https://albaranov2013-creator.github.io/-PMO/">Открыть сайт</a></td>
+                <td><a href="https://albaranov2013-creator.github.io/-PMO/primer-zapolneniya-checklista-aktualnosti-gotovnosti-banka-k-zapusku/">Открыть страницу</a></td>
+                <td><span class="tag ok">live</span></td>
+                <td>Учебный образец для менеджеров на кейсе 1055 / Заман Банк с примером заполнения и логикой статусов.</td>
               </tr>
               <tr>
                 <td>2026-06-18</td>
@@ -356,6 +365,10 @@
               </tr>
             </tbody>
           </table>
+          <div class="note">
+            По странице <code>checklist-aktualnosti-gotovnosti-banka-k-zapusku</code> 24.06.2026 опубликовано повторное обновление:
+            логотип убран, заголовок оставлен белым.
+          </div>
         </section>
 
         <section class="card" id="rules">
@@ -364,6 +377,9 @@
             <li>При каждой новой публикации в каталог добавляется новая строка с датой, slug, исходным файлом и итоговой ссылкой.</li>
             <li>Markdown-реестр, JSON-реестр и web-каталог поддерживаются синхронно.</li>
             <li>Каталог используется как общий навигационный вход для дальнейшей рассылки ссылок.</li>
+            <li>Если локальный файл уже связан с опубликованной страницей, после его изменения он считается кандидатом на обновление в GitHub Pages.</li>
+            <li>Перед любым внешним обновлением ассистент обязан отдельно спросить, нужно ли обновлять публикацию.</li>
+            <li>Без явного подтверждения пользователя внешнюю публикацию обновлять нельзя.</li>
           </ul>
         </section>
 
