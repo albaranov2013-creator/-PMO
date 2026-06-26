@@ -18,6 +18,8 @@
       --primary-soft: #eaf2f8;
       --warn: #9f1239;
       --warn-soft: #fce7f3;
+      --attention: #9a6700;
+      --attention-soft: #fef3c7;
       --ok: #166534;
       --ok-soft: #ecfdf3;
       --neutral: #7c8798;
@@ -127,16 +129,12 @@
     }
 
     .layout {
-      display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
-      gap: 24px;
-      align-items: start;
+      display: block;
     }
 
     .sidebar {
-      position: sticky;
-      top: 18px;
       padding: 20px 20px 18px;
+      margin-bottom: 20px;
     }
 
     .sidebar h2 {
@@ -150,17 +148,29 @@
       list-style: none;
       margin: 0;
       padding: 0;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
     }
 
-    .sidebar li + li { margin-top: 8px; }
+    .sidebar li + li { margin-top: 0; }
 
     .sidebar a {
+      display: block;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-alt);
       color: var(--muted);
       text-decoration: none;
       font-size: 14px;
     }
 
-    .sidebar a:hover { color: var(--accent); }
+    .sidebar a:hover {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: #bfd1e1;
+    }
 
     .content {
       display: grid;
@@ -194,6 +204,7 @@
     }
 
     .hero-stats,
+    .hero-form,
     .role-grid,
     .signal-grid,
     .week-grid,
@@ -203,6 +214,7 @@
     }
 
     .hero-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 24px; }
+    .hero-form { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 24px; }
     .role-grid, .signal-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .calc-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -238,6 +250,30 @@
       margin: 0 0 10px;
       font-size: 17px;
       color: #102a43;
+    }
+
+    .hero-field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-field input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+    }
+
+    .hero-field input:focus {
+      border-color: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
     }
 
     .note {
@@ -283,6 +319,7 @@
     }
 
     .tag.good { color: var(--ok); background: var(--ok-soft); }
+    .tag.attention { color: var(--attention); background: var(--attention-soft); }
     .tag.warn { color: var(--warn); background: var(--warn-soft); }
     .tag.neutral { color: var(--neutral); background: var(--neutral-soft); }
 
@@ -406,16 +443,16 @@
     }
 
     @media (max-width: 1180px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static; }
-      .hero-stats, .role-grid, .signal-grid, .week-grid, .calc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sidebar ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .hero-stats, .hero-form, .role-grid, .signal-grid, .week-grid, .calc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 760px) {
       .page { padding: 18px 14px 28px; }
       .hero, .section, .sidebar, .toolbar { padding: 18px; }
       .hero h1 { font-size: 28px; }
-      .hero-stats, .role-grid, .signal-grid, .week-grid, .calc-grid { grid-template-columns: 1fr; }
+      .sidebar ul { grid-template-columns: 1fr; }
+      .hero-stats, .hero-form, .role-grid, .signal-grid, .week-grid, .calc-grid { grid-template-columns: 1fr; }
       th, td { font-size: 14px; }
     }
   </style>
@@ -425,14 +462,30 @@
     <section class="hero">
       <h1>Метрики прохождения ПСИ для промышленной эксплуатации</h1>
       <p>
-        Единая страница для менеджеров проектов и PMO: что считать каждую неделю, как читать сигналы и как переводить расчеты в управленческий статус проекта.
+        Верхний блок предназначен только для ручного ввода основных данных по проекту и ответственным ролям.
       </p>
 
-      <div class="hero-stats">
-        <div class="stat-card"><strong>8</strong><span>обязательных метрик недельного контроля</span></div>
-        <div class="stat-card"><strong>1 неделя</strong><span>единый шаг расчета и анализа динамики</span></div>
-        <div class="stat-card"><strong>4 недели</strong><span>пример накопительного расчета</span></div>
-        <div class="stat-card"><strong>3 роли</strong><span>PM, PMO, руководитель портфеля</span></div>
+      <div class="hero-form">
+        <div class="hero-field">
+          <label for="projectName">Проект</label>
+          <input id="projectName" type="text" value="Основной проект" />
+        </div>
+        <div class="hero-field">
+          <label for="clientName">Клиент</label>
+          <input id="clientName" type="text" value="" />
+        </div>
+        <div class="hero-field">
+          <label for="projectManager">Менеджер проекта</label>
+          <input id="projectManager" type="text" value="" />
+        </div>
+        <div class="hero-field">
+          <label for="accountManager">Аккаунт-менеджер</label>
+          <input id="accountManager" type="text" value="" />
+        </div>
+        <div class="hero-field">
+          <label for="clientManager">Менеджер клиента</label>
+          <input id="clientManager" type="text" value="" />
+        </div>
       </div>
     </section>
 
@@ -440,7 +493,7 @@
       <div class="toolbar-left">
         <span class="toolbar-label">Быстрые переходы</span>
         <a class="btn" href="#calculator">Калькулятор</a>
-        <a class="btn" href="#weeks">Пример по неделям</a>
+        <a class="btn" href="#weeks">Выводы по неделям</a>
         <a class="btn" href="#launch">Внедрение</a>
       </div>
       <div class="toolbar-right">
@@ -449,23 +502,23 @@
       </div>
     </section>
 
-    <div class="layout">
-      <aside class="sidebar">
-        <h2>Навигация</h2>
-        <ul>
-          <li><a href="#purpose">Зачем это вводится</a></li>
-          <li><a href="#set">Недельный набор метрик</a></li>
-          <li><a href="#roles">Роли и ответственность</a></li>
-          <li><a href="#calendar">Календарь расчета</a></li>
-          <li><a href="#sources">Источники данных</a></li>
-          <li><a href="#thresholds">Пороги сигналов</a></li>
-          <li><a href="#calculator">Калькулятор</a></li>
-          <li><a href="#weeks">Пример по неделям</a></li>
-          <li><a href="#status">Как выносить в статус</a></li>
-          <li><a href="#launch">Порядок внедрения</a></li>
-        </ul>
-      </aside>
+    <aside class="sidebar">
+      <h2>Навигация</h2>
+      <ul>
+        <li><a href="#purpose">Зачем это вводится</a></li>
+        <li><a href="#set">Недельный набор метрик</a></li>
+        <li><a href="#roles">Роли и ответственность</a></li>
+        <li><a href="#calendar">Календарь расчета</a></li>
+        <li><a href="#sources">Источники данных</a></li>
+        <li><a href="#thresholds">Пороги сигналов</a></li>
+        <li><a href="#calculator">Калькулятор</a></li>
+        <li><a href="#weeks">Выводы по неделям</a></li>
+        <li><a href="#status">Как выносить в статус</a></li>
+        <li><a href="#launch">Порядок внедрения</a></li>
+      </ul>
+    </aside>
 
+    <div class="layout">
       <main class="content">
         <section class="section" id="purpose">
           <h2>Зачем это вводится</h2>
@@ -501,7 +554,7 @@
               </tr>
               <tr>
                 <td>Плотность замечаний</td>
-                <td>Всего замечаний / Всего КП</td>
+                <td>Зарегистрировано замечаний / Всего КП</td>
                 <td>Характеризует качество поставки на единицу тестового объема</td>
               </tr>
               <tr>
@@ -599,7 +652,7 @@
             </div>
             <div class="signal-card">
               <h4>Желтая зона</h4>
-              <span class="tag warn">Нужен контроль</span>
+              <span class="tag attention">Нужен контроль</span>
               <p>Есть сигналы ухудшения качества, сроков или объема, но ситуация еще управляемая.</p>
             </div>
             <div class="signal-card">
@@ -632,21 +685,35 @@
                 <input id="plannedWeeks" type="number" min="1" value="4" />
                 <label for="totalCases" style="margin-top:12px;">Всего контрольных примеров по плану</label>
                 <input id="totalCases" type="number" min="0" value="20" />
+                <label for="psiStartDate" style="margin-top:12px;">Дата начала ПСИ</label>
+                <input id="psiStartDate" type="date" value="2026-06-01" />
+                <label for="psiPlannedEndDate" style="margin-top:12px;">Плановая дата завершения ПСИ</label>
+                <input id="psiPlannedEndDate" type="date" value="2026-06-28" />
                 <div class="hint" id="weeklyPlanHint">Недельный план будет рассчитан автоматически.</div>
               </div>
 
               <div class="calc-card">
                 <h4>Нарастающий итог</h4>
-                <label for="currentWeek" style="margin-top:12px;">Рабочая неделя для расчета</label>
-                <input id="currentWeek" type="number" min="1" value="3" />
                 <label for="passedCases">Пройдено КП накопительно</label>
-                <input id="passedCases" type="number" min="0" value="14" />
+                <input id="passedCases" type="number" min="0" value="14" readonly />
                 <label for="plannedCases" style="margin-top:12px;">План пройденных КП к текущей неделе</label>
                 <input id="plannedCases" type="number" min="0" value="15" readonly />
-                <label for="weekName" style="margin-top:12px;">Название недели</label>
-              <input id="weekName" type="text" value="Неделя 3" />
               <div class="hint" id="cumulativePlanHint">План к текущей неделе подставляется автоматически.</div>
+              <div class="hint" id="cumulativeFactHint">Факт накопительно рассчитывается автоматически как сумма недельных фактов по сохраненным неделям и текущей неделе.</div>
+              <div class="hint" id="dateForecastHint">По датам будет рассчитан прогноз завершения и отклонение от плановой даты при текущей скорости.</div>
             </div>
+
+              <div class="calc-card">
+                <h4>Замечания</h4>
+                <label for="registeredIssuesCumulative">Зарегистрировано замечаний накопительно</label>
+                <input id="registeredIssuesCumulative" type="number" min="0" value="25" readonly />
+                <label for="openIssuesCumulative" style="margin-top:12px;">Открыто замечаний накопительно</label>
+                <input id="openIssuesCumulative" type="number" min="0" value="13" readonly />
+                <label for="closedIssuesCumulative" style="margin-top:12px;">Закрыто замечаний накопительно</label>
+                <input id="closedIssuesCumulative" type="number" min="0" value="16" readonly />
+                <div class="hint">Показатели считаются автоматически из общего числа замечаний, исправленных и повторно открытых.</div>
+                <div class="hint" id="issuesForecastHint">После сохранения недель здесь появится прогноз, за сколько недель можно закрыть весь хвост замечаний.</div>
+              </div>
           </div>
 
             <div class="results-wrap">
@@ -681,6 +748,7 @@
                   </tr>
                 </thead>
                 <tbody id="weeklyDynamicsBody"></tbody>
+                <tfoot id="weeklyDynamicsFooter"></tfoot>
               </table>
             </div>
 
@@ -689,9 +757,43 @@
               <div id="forecastText">После расчета здесь появится общий процент прохождения ПСИ и прогноз срока завершения при текущей скорости.</div>
             </div>
 
+            <h3 class="subsection-title">Сводная динамика замечаний по неделям</h3>
+            <p>
+              В таблице ниже показывается динамика по замечаниям по каждой неделе: сколько замечаний зарегистрировано, сколько закрыто, сколько повторно открыто и какой открытый хвост формируется накопительно.
+            </p>
+
+            <div class="results-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Неделя</th>
+                    <th>Зарегистрировано за неделю</th>
+                    <th>Закрыто за неделю</th>
+                    <th>Повторно открыто за неделю</th>
+                    <th>Открыто накопительно</th>
+                  </tr>
+                </thead>
+                <tbody id="weeklyIssuesDynamicsBody"></tbody>
+                <tfoot id="weeklyIssuesDynamicsFooter"></tfoot>
+              </table>
+            </div>
+
+            <div class="forecast-box">
+              <h4>Прогноз закрытия замечаний</h4>
+              <div id="issuesForecastText">После расчета здесь появится прогноз, за сколько недель можно закрыть весь хвост замечаний при текущей скорости.</div>
+            </div>
+
             <div class="save-box">
               <h4>Сохранение и работа по неделям</h4>
               <div class="save-grid">
+                <div>
+                  <label for="currentWeek">Рабочая неделя для расчета</label>
+                  <input id="currentWeek" type="number" min="1" value="3" />
+                </div>
+                <div>
+                  <label for="weekName">Название недели</label>
+                  <input id="weekName" type="text" value="Неделя 3" />
+                </div>
                 <div>
                   <label for="snapshotName">Имя сохранения</label>
                   <input id="snapshotName" type="text" value="ПСИ - Неделя 3" />
@@ -704,7 +806,7 @@
                 </div>
                 <div>
                   <label for="snapshotProject">Проект / контур</label>
-                  <input id="snapshotProject" type="text" value="Основной проект" />
+                  <input id="snapshotProject" type="text" value="Основной проект" readonly />
                 </div>
               </div>
 
@@ -734,7 +836,7 @@
 
             <div class="calc-card">
               <h4>Замечания</h4>
-              <label for="issuesTotal">Всего замечаний</label>
+              <label for="issuesTotal">Зарегистрировано замечаний</label>
               <input id="issuesTotal" type="number" min="0" value="25" />
               <label for="criticalIssues" style="margin-top:12px;">Критичные замечания</label>
               <input id="criticalIssues" type="number" min="0" value="6" />
@@ -756,8 +858,10 @@
               <h4>Сроки и период</h4>
               <label for="allChanges">Всего запросов на изменения</label>
               <input id="allChanges" type="number" min="0" value="8" />
-              <label for="scheduleDelta" style="margin-top:12px;">Сдвиг завершения ПСИ, дней</label>
-              <input id="scheduleDelta" type="number" step="1" value="1" />
+              <label for="scheduleDelta" style="margin-top:12px;">Отклонение от плановой даты, дней</label>
+              <input id="scheduleDelta" type="number" step="1" value="1" readonly />
+              <label for="forecastEndDate" style="margin-top:12px;">Прогнозная дата завершения ПСИ</label>
+              <input id="forecastEndDate" type="date" value="2026-06-29" readonly />
               <label for="workWeekDays" style="margin-top:12px;">Рабочих дней в неделе ПСИ</label>
               <input id="workWeekDays" type="number" min="1" value="5" />
             </div>
@@ -790,61 +894,9 @@
         </section>
 
         <section class="section" id="weeks">
-          <h2>Пример расчета по неделям</h2>
-          <div class="week-grid">
-            <article class="week-card">
-              <h4>Неделя 1</h4>
-              <ul>
-                <li>Согласовано 20 из 20 КП</li>
-                <li>Пройдено 5 КП</li>
-                <li>Замечаний 12, из них критичных 3</li>
-                <li>Переоткрыто 1 из 4 исправленных</li>
-                <li>Новых требований 1 из 3 изменений</li>
-                <li>Сдвиг срока: 0 дней</li>
-              </ul>
-              <span class="formula">ПСИ = 5 / 20 = 25% | Плотность = 12 / 20 = 0,60 | Критичные = 3 / 12 = 25%</span>
-              <p>Темп приемки нормальный, но качество поставки уже напряженное.</p>
-            </article>
-
-            <article class="week-card">
-              <h4>Неделя 2</h4>
-              <ul>
-                <li>Пройдено накопительно 10 КП</li>
-                <li>Замечаний 18, критичных 4</li>
-                <li>Переоткрыто 2 из 10 исправленных</li>
-                <li>Новых требований 1 из 5 изменений</li>
-                <li>Сдвиг срока: 0 дней</li>
-              </ul>
-              <span class="formula">ПСИ = 10 / 20 = 50% | Плотность = 18 / 20 = 0,90 | Критичные = 4 / 18 = 22,2%</span>
-              <p>Срок удерживается, но тяжесть замечаний и качество исправлений остаются в желто-красной зоне.</p>
-            </article>
-
-            <article class="week-card">
-              <h4>Неделя 3</h4>
-              <ul>
-                <li>Пройдено накопительно 14 КП</li>
-                <li>Замечаний 25, критичных 6</li>
-                <li>Переоткрыто 4 из 16 исправленных</li>
-                <li>Новых требований 2 из 8 изменений</li>
-                <li>Сдвиг срока: +1 день</li>
-              </ul>
-              <span class="formula">ПСИ = 14 / 20 = 70% | Плотность = 25 / 20 = 1,25 | Повторы = 4 / 16 = 25%</span>
-              <p>Появилось первое отставание, нужна обязательная эскалация и отдельный контроль качества исправлений.</p>
-            </article>
-
-            <article class="week-card">
-              <h4>Неделя 4</h4>
-              <ul>
-                <li>Пройдено накопительно 18 КП</li>
-                <li>Замечаний 28, критичных 4</li>
-                <li>Переоткрыто 4 из 24 исправленных</li>
-                <li>Новых требований 2 из 10 изменений</li>
-                <li>Сдвиг срока: +2 дня</li>
-              </ul>
-              <span class="formula">ПСИ = 18 / 20 = 90% | Критичные = 4 / 28 = 14,3% | Новые требования = 2 / 10 = 20%</span>
-              <p>Приемка близка к завершению, но запуск допустим только после отдельной проверки актуальности результатов тестирования.</p>
-            </article>
-          </div>
+          <h2>Выводы по неделям</h2>
+          <p>В этом разделе автоматически собираются реальные недельные выводы по сохраненным неделям и по текущей введенной неделе.</p>
+          <div class="week-grid" id="weeklyInsights"></div>
         </section>
 
         <section class="section" id="status">
@@ -912,8 +964,15 @@
     const STORAGE_KEY = "psi-metrics-weekly-snapshots-v1";
 
     const sampleWeek3 = {
+      projectName: "Основной проект",
+      clientName: "",
+      projectManager: "",
+      accountManager: "",
+      clientManager: "",
       totalCases: 20,
       plannedWeeks: 4,
+      psiStartDate: "2026-06-01",
+      psiPlannedEndDate: "2026-06-28",
       currentWeek: 3,
       passedCases: 14,
       plannedCases: 15,
@@ -927,7 +986,11 @@
       reopenedIssues: 4,
       newRequirements: 2,
       allChanges: 8,
+      registeredIssuesCumulative: 25,
+      openIssuesCumulative: 13,
+      closedIssuesCumulative: 16,
       scheduleDelta: 1,
+      forecastEndDate: "2026-06-29",
       workWeekDays: 5,
       weekName: "Неделя 3",
       snapshotName: "ПСИ - Неделя 3",
@@ -950,6 +1013,34 @@
       return value.toFixed(2);
     }
 
+    function getDateValue(id) {
+      return document.getElementById(id).value || "";
+    }
+
+    function parseDate(value) {
+      if (!value) {
+        return null;
+      }
+
+      const date = new Date(`${value}T00:00:00`);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function addDays(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
+    function diffDays(dateA, dateB) {
+      const oneDay = 1000 * 60 * 60 * 24;
+      return Math.round((dateA.getTime() - dateB.getTime()) / oneDay);
+    }
+
+    function toIsoDate(date) {
+      return date.toISOString().slice(0, 10);
+    }
+
     function signalTag(kind, label) {
       return `<span class="tag ${kind}">${label}</span>`;
     }
@@ -957,7 +1048,7 @@
     function getSignal(kind, comment) {
       const map = {
         good: signalTag("good", "Зеленый"),
-        warn: signalTag("warn", "Желтый"),
+        warn: signalTag("attention", "Желтый"),
         bad: signalTag("warn", "Красный")
       };
       return { signal: map[kind], level: kind, comment };
@@ -965,7 +1056,14 @@
 
     function getAllFormData() {
       return {
+        projectName: document.getElementById("projectName").value || "",
+        clientName: document.getElementById("clientName").value || "",
+        projectManager: document.getElementById("projectManager").value || "",
+        accountManager: document.getElementById("accountManager").value || "",
+        clientManager: document.getElementById("clientManager").value || "",
         plannedWeeks: getNumber("plannedWeeks"),
+        psiStartDate: getDateValue("psiStartDate"),
+        psiPlannedEndDate: getDateValue("psiPlannedEndDate"),
         currentWeek: getNumber("currentWeek"),
         totalCases: getNumber("totalCases"),
         passedCases: getNumber("passedCases"),
@@ -978,7 +1076,11 @@
         reopenedIssues: getNumber("reopenedIssues"),
         newRequirements: getNumber("newRequirements"),
         allChanges: getNumber("allChanges"),
+        registeredIssuesCumulative: getNumber("registeredIssuesCumulative"),
+        openIssuesCumulative: getNumber("openIssuesCumulative"),
+        closedIssuesCumulative: getNumber("closedIssuesCumulative"),
         scheduleDelta: getNumber("scheduleDelta"),
+        forecastEndDate: getDateValue("forecastEndDate"),
         workWeekDays: getNumber("workWeekDays"),
         weekName: document.getElementById("weekName").value || "",
         snapshotName: document.getElementById("snapshotName").value || "",
@@ -1013,22 +1115,151 @@
         .sort((a, b) => Number(a.currentWeek || 0) - Number(b.currentWeek || 0));
     }
 
+    function getLastSavedWeekNumber(projectName) {
+      const savedProjectWeeks = getProjectSnapshots(projectName);
+      if (!savedProjectWeeks.length) {
+        return 0;
+      }
+
+      return Math.max(Number(savedProjectWeeks[savedProjectWeeks.length - 1].currentWeek || 0), 0);
+    }
+
+    function applyLastSavedWeekAsDefault() {
+      const projectName = document.getElementById("projectName").value || document.getElementById("snapshotProject").value || "Основной проект";
+      const lastSavedWeek = getLastSavedWeekNumber(projectName);
+      if (lastSavedWeek > 0) {
+        document.getElementById("currentWeek").value = lastSavedWeek;
+      }
+    }
+
+    function syncWeekLabels() {
+      const currentWeek = Math.max(getNumber("currentWeek"), 1);
+      const weekLabel = `Неделя ${currentWeek}`;
+      document.getElementById("weekName").value = weekLabel;
+      document.getElementById("snapshotName").value = `ПСИ - ${weekLabel}`;
+      document.getElementById("snapshotProject").value = document.getElementById("projectName").value || "Основной проект";
+    }
+
+    function getWeeklyFactForWeek(savedProjectWeeks, week, currentWeek, currentWeekPassedCases) {
+      if (week === currentWeek) {
+        return currentWeekPassedCases;
+      }
+
+      const savedWeek = savedProjectWeeks.find((item) => Number(item.currentWeek || 0) === week);
+      return savedWeek ? Number(savedWeek.weekPassedCases || 0) : null;
+    }
+
+    function calculateAutomaticPassedCases(savedProjectWeeks, currentWeek, currentWeekPassedCases, manualPassedCases) {
+      let cumulative = 0;
+      let knownWeeksCount = 0;
+
+      for (let week = 1; week <= currentWeek; week += 1) {
+        const weeklyFact = getWeeklyFactForWeek(savedProjectWeeks, week, currentWeek, currentWeekPassedCases);
+        if (weeklyFact !== null) {
+          cumulative += Math.max(Number(weeklyFact) || 0, 0);
+          knownWeeksCount += 1;
+        }
+      }
+
+      const normalizedManualPassedCases = Math.max(Number(manualPassedCases) || 0, 0);
+      const fallbackGap = knownWeeksCount < currentWeek
+        ? Math.max(normalizedManualPassedCases - cumulative, 0)
+        : 0;
+
+      return {
+        cumulative: cumulative + fallbackGap,
+        fallbackGap,
+        knownWeeksCount
+      };
+    }
+
+    function getWeeklyMetricForWeek(savedProjectWeeks, week, currentWeek, currentWeekValue, fieldName) {
+      if (week === currentWeek) {
+        return currentWeekValue;
+      }
+
+      const savedWeek = savedProjectWeeks.find((item) => Number(item.currentWeek || 0) === week);
+      return savedWeek ? Number(savedWeek[fieldName] || 0) : null;
+    }
+
+    function sumMetricCumulative(savedProjectWeeks, currentWeek, currentWeekValue, fieldName) {
+      let total = 0;
+
+      for (let week = 1; week <= currentWeek; week += 1) {
+        const weeklyValue = getWeeklyMetricForWeek(savedProjectWeeks, week, currentWeek, currentWeekValue, fieldName);
+        if (weeklyValue !== null) {
+          total += Math.max(Number(weeklyValue) || 0, 0);
+        }
+      }
+
+      return total;
+    }
+
+    function collectWeeklyIssueRows(savedProjectWeeks, currentWeek, currentWeekData) {
+      const byWeek = new Map();
+
+      savedProjectWeeks.forEach((item) => {
+        const week = Number(item.currentWeek || 0);
+        if (week > 0) {
+          byWeek.set(week, {
+            week,
+            issuesTotal: Math.max(Number(item.issuesTotal || 0), 0),
+            fixedIssues: Math.max(Number(item.fixedIssues || 0), 0),
+            reopenedIssues: Math.max(Number(item.reopenedIssues || 0), 0)
+          });
+        }
+      });
+
+      if (currentWeek > 0) {
+        byWeek.set(currentWeek, {
+          week: currentWeek,
+          issuesTotal: Math.max(Number(currentWeekData.issuesTotal || 0), 0),
+          fixedIssues: Math.max(Number(currentWeekData.fixedIssues || 0), 0),
+          reopenedIssues: Math.max(Number(currentWeekData.reopenedIssues || 0), 0)
+        });
+      }
+
+      return [...byWeek.values()].sort((a, b) => a.week - b.week);
+    }
+
     function refreshSnapshotsList(selectedKey = "") {
       const select = document.getElementById("savedSnapshots");
       const snapshots = getSnapshots();
       if (!snapshots.length) {
         select.innerHTML = `<option value="">Нет сохранений</option>`;
+        select.value = "";
         return;
       }
 
+      const projectName = document.getElementById("projectName").value || document.getElementById("snapshotProject").value || "Основной проект";
+      const projectSnapshots = getProjectSnapshots(projectName);
+      const defaultSelectedKey = selectedKey
+        || (projectSnapshots.length ? projectSnapshots[projectSnapshots.length - 1].id : snapshots[snapshots.length - 1].id);
+
       select.innerHTML = snapshots.map((item) => {
         const label = `${item.snapshotName} | ${item.snapshotProject} | ${item.weekName}`;
-        const selected = item.id === selectedKey ? "selected" : "";
+        const selected = item.id === defaultSelectedKey ? "selected" : "";
         return `<option value="${item.id}" ${selected}>${label}</option>`;
       }).join("");
+
+      select.value = defaultSelectedKey;
+    }
+
+    function applySnapshotAndEvaluate(snapshot, statusText = "") {
+      if (!snapshot) {
+        return;
+      }
+
+      applyFormData(snapshot);
+      refreshSnapshotsList(snapshot.id);
+      evaluateMetrics();
+      if (statusText) {
+        document.getElementById("saveStatusHint").textContent = statusText;
+      }
     }
 
     function saveSnapshot() {
+      evaluateMetrics();
       const data = getAllFormData();
       const snapshots = getSnapshots();
       const id = `${data.snapshotProject}::${data.weekName}::${data.snapshotName}`;
@@ -1046,9 +1277,7 @@
       }
 
       setSnapshots(snapshots);
-      refreshSnapshotsList(id);
-      document.getElementById("saveStatusHint").textContent = `Сохранено: ${data.snapshotName}. Можно возвращаться к этой неделе позже.`;
-      evaluateMetrics();
+      applySnapshotAndEvaluate(payload, `Сохранено: ${data.snapshotName}. Выполнена проверка метрик и обновлен управленческий вывод.`);
     }
 
     function loadSnapshot() {
@@ -1059,9 +1288,7 @@
         return;
       }
 
-      applyFormData(snapshot);
-      evaluateMetrics();
-      document.getElementById("saveStatusHint").textContent = `Загружено: ${snapshot.snapshotName}.`;
+      applySnapshotAndEvaluate(snapshot, `Загружено: ${snapshot.snapshotName}. Выполнена проверка метрик и обновлен управленческий вывод.`);
     }
 
     function deleteSnapshot() {
@@ -1079,10 +1306,13 @@
     }
 
     function evaluateMetrics() {
+      syncWeekLabels();
       const totalCases = getNumber("totalCases");
       const plannedWeeks = getNumber("plannedWeeks");
+      const psiStartDateValue = getDateValue("psiStartDate");
+      const psiPlannedEndDateValue = getDateValue("psiPlannedEndDate");
       const currentWeek = getNumber("currentWeek");
-      const passedCases = getNumber("passedCases");
+      const manualPassedCases = getNumber("passedCases");
       const weekPassedCases = getNumber("weekPassedCases");
       const carryOverCases = getNumber("carryOverCases");
       const issuesTotal = getNumber("issuesTotal");
@@ -1092,14 +1322,12 @@
       const reopenedIssues = getNumber("reopenedIssues");
       const newRequirements = getNumber("newRequirements");
       const allChanges = getNumber("allChanges");
-      const scheduleDelta = getNumber("scheduleDelta");
       const workWeekDays = getNumber("workWeekDays");
       const weekName = document.getElementById("weekName").value || "Текущая неделя";
       const snapshotProject = document.getElementById("snapshotProject").value || "Основной проект";
-
-      if (!document.getElementById("snapshotName").value.trim()) {
-        document.getElementById("snapshotName").value = `ПСИ - ${weekName}`;
-      }
+      const savedProjectWeeks = getProjectSnapshots(snapshotProject);
+      const automaticPassedCases = calculateAutomaticPassedCases(savedProjectWeeks, currentWeek, weekPassedCases, manualPassedCases);
+      const passedCases = automaticPassedCases.cumulative;
 
       const weekPlanExact = plannedWeeks > 0 ? totalCases / plannedWeeks : 0;
       const weekPlanRounded = Math.ceil(weekPlanExact);
@@ -1107,10 +1335,14 @@
       const plannedCases = Math.min(Math.ceil(plannedCasesExact), totalCases);
       const weekPlannedCases = weekPlanRounded;
 
+      document.getElementById("passedCases").value = passedCases;
       document.getElementById("plannedCases").value = plannedCases;
       document.getElementById("weekPlannedCases").value = weekPlannedCases;
       document.getElementById("weeklyPlanHint").textContent = `Автоплан: ${weekPlanExact.toFixed(2)} КП в неделю, для работы используется округление вверх до ${weekPlanRounded} КП.`;
       document.getElementById("cumulativePlanHint").textContent = `Автоплан к ${currentWeek}-й неделе: ${plannedCasesExact.toFixed(2)} КП, в поле подставлено ${plannedCases} КП.`;
+      document.getElementById("cumulativeFactHint").textContent = automaticPassedCases.fallbackGap > 0
+        ? `Факт накопительно: ${passedCases} КП. Учтена база ${automaticPassedCases.fallbackGap} КП из общего накопительного факта, потому что по части прошлых недель нет сохраненных снимков.`
+        : `Факт накопительно рассчитан автоматически: ${passedCases} КП как сумма недельных фактов до ${currentWeek}-й недели.`;
       document.getElementById("weekPlanHint").textContent = `Автоплан недели: ${weekPlannedCases} КП из общего плана ${totalCases} КП на ${plannedWeeks} нед.`;
 
       const progress = totalCases > 0 ? passedCases / totalCases : 0;
@@ -1123,15 +1355,79 @@
       const forecastByCurrentWeekSpeed = weekPassedCases > 0 ? (currentWeek - 1) + (remainingCases / weekPassedCases) + 1 : 0;
       const remainingWeeksByCurrentSpeed = weekPassedCases > 0 ? remainingCases / weekPassedCases : 0;
       const weekDelta = weekPassedCases - weekPlannedCases;
+      const forecastWeeksForDates = forecastByCurrentWeekSpeed > 0 ? forecastByCurrentWeekSpeed : forecastWeeksTotal;
+      const psiStartDate = parseDate(psiStartDateValue);
+      const psiPlannedEndDate = parseDate(psiPlannedEndDateValue);
+      let scheduleDelta = 0;
+      let forecastEndDateValue = "";
+
+      if (psiStartDate && psiPlannedEndDate && forecastWeeksForDates > 0) {
+        const forecastDurationDays = Math.max(Math.ceil(forecastWeeksForDates * 7) - 1, 0);
+        const forecastEndDate = addDays(psiStartDate, forecastDurationDays);
+        forecastEndDateValue = toIsoDate(forecastEndDate);
+        scheduleDelta = diffDays(forecastEndDate, psiPlannedEndDate);
+      }
+
+      document.getElementById("scheduleDelta").value = scheduleDelta;
+      document.getElementById("forecastEndDate").value = forecastEndDateValue;
+      document.getElementById("dateForecastHint").textContent = psiStartDate && psiPlannedEndDate && forecastEndDateValue
+        ? `При текущей скорости прогнозная дата завершения ПСИ: ${forecastEndDateValue}. Отклонение от плановой даты: ${scheduleDelta >= 0 ? "+" : ""}${scheduleDelta} дн.`
+        : "Заполните дату начала и плановую дату завершения ПСИ, чтобы получить прогноз по датам.";
+
       const issueDensity = totalCases > 0 ? issuesTotal / totalCases : 0;
       const criticalShare = issuesTotal > 0 ? criticalIssues / issuesTotal : 0;
       const reopenShare = fixedIssues > 0 ? reopenedIssues / fixedIssues : 0;
       const scopeShare = allChanges > 0 ? newRequirements / allChanges : 0;
+      const weeklyIssueRows = collectWeeklyIssueRows(savedProjectWeeks, currentWeek, {
+        issuesTotal,
+        fixedIssues,
+        reopenedIssues
+      });
+      const issueWeeksCount = weeklyIssueRows.length;
+      const totalRegisteredIssuesByWeeks = weeklyIssueRows.reduce((sum, row) => sum + row.issuesTotal, 0);
+      const totalClosedIssuesByWeeks = weeklyIssueRows.reduce((sum, row) => sum + row.fixedIssues, 0);
+      const totalReopenedIssuesByWeeks = weeklyIssueRows.reduce((sum, row) => sum + row.reopenedIssues, 0);
+      const avgRegisteredIssuesPerWeek = issueWeeksCount > 0 ? totalRegisteredIssuesByWeeks / issueWeeksCount : 0;
+      const avgClosedIssuesPerWeek = issueWeeksCount > 0 ? totalClosedIssuesByWeeks / issueWeeksCount : 0;
+      const avgReopenedIssuesPerWeek = issueWeeksCount > 0 ? totalReopenedIssuesByWeeks / issueWeeksCount : 0;
+      const netIssueBurnPerWeek = avgClosedIssuesPerWeek - avgRegisteredIssuesPerWeek - avgReopenedIssuesPerWeek;
+      const registeredIssuesCumulative = sumMetricCumulative(savedProjectWeeks, currentWeek, issuesTotal, "issuesTotal");
+      const closedIssuesCumulative = sumMetricCumulative(savedProjectWeeks, currentWeek, fixedIssues, "fixedIssues");
+      const reopenedIssuesCumulative = sumMetricCumulative(savedProjectWeeks, currentWeek, reopenedIssues, "reopenedIssues");
+      const openIssuesCumulative = Math.max(registeredIssuesCumulative - closedIssuesCumulative + reopenedIssuesCumulative, 0);
+      document.getElementById("registeredIssuesCumulative").value = registeredIssuesCumulative;
+      document.getElementById("openIssuesCumulative").value = openIssuesCumulative;
+      document.getElementById("closedIssuesCumulative").value = closedIssuesCumulative;
+      const issueWeeksToZero = netIssueBurnPerWeek > 0 ? openIssuesCumulative / netIssueBurnPerWeek : 0;
+      document.getElementById("issuesForecastHint").textContent = issueWeeksCount > 0
+        ? netIssueBurnPerWeek > 0
+          ? `Средняя регистрация: ${avgRegisteredIssuesPerWeek.toFixed(1)} замеч./нед., среднее закрытие: ${avgClosedIssuesPerWeek.toFixed(1)} замеч./нед., повторно открыто: ${avgReopenedIssuesPerWeek.toFixed(1)} замеч./нед. Чистое сокращение хвоста: ${netIssueBurnPerWeek.toFixed(1)} замеч./нед. При таком темпе до нуля потребуется около ${issueWeeksToZero.toFixed(1)} нед.`
+          : `Средняя регистрация: ${avgRegisteredIssuesPerWeek.toFixed(1)} замеч./нед., среднее закрытие: ${avgClosedIssuesPerWeek.toFixed(1)} замеч./нед., повторно открыто: ${avgReopenedIssuesPerWeek.toFixed(1)} замеч./нед. При таком темпе хвост замечаний не сокращается: выхода в ноль нет без ускорения закрытия или снижения притока.`
+        : "После сохранения недель здесь появится прогноз, за сколько недель можно закрыть весь хвост замечаний.";
+      const weeklyIssuesDynamicsRows = [];
+      let openIssuesRunning = 0;
+
+      weeklyIssueRows.forEach((row) => {
+        openIssuesRunning = Math.max(openIssuesRunning + row.issuesTotal - row.fixedIssues + row.reopenedIssues, 0);
+        weeklyIssuesDynamicsRows.push({
+          week: row.week,
+          registered: row.issuesTotal.toFixed(1),
+          closed: row.fixedIssues.toFixed(1),
+          reopened: row.reopenedIssues.toFixed(1),
+          openCumulative: openIssuesRunning.toFixed(1)
+        });
+      });
+
+      const weeklyIssuesTotals = {
+        registered: totalRegisteredIssuesByWeeks.toFixed(1),
+        closed: totalClosedIssuesByWeeks.toFixed(1),
+        reopened: totalReopenedIssuesByWeeks.toFixed(1),
+        openCumulative: openIssuesCumulative.toFixed(1)
+      };
       const weeklyLoad = workWeekDays > 0 ? weekPassedCases / workWeekDays : 0;
       const previousWeeksFactTotal = Math.max(passedCases - weekPassedCases, 0);
       const previousWeeksCount = Math.max(currentWeek - 1, 0);
       const previousWeekAverage = previousWeeksCount > 0 ? previousWeeksFactTotal / previousWeeksCount : 0;
-      const savedProjectWeeks = getProjectSnapshots(snapshotProject);
 
       const cumulativeRows = [
         {
@@ -1243,23 +1539,28 @@
 
       const dynamicsRows = [];
       const totalWeeksForTable = Math.max(plannedWeeks, Math.ceil(forecastByCurrentWeekSpeed || 0), currentWeek);
+      let cumulativeFactRunning = automaticPassedCases.fallbackGap;
+      let totalFactWeekly = 0;
+      let fallbackApplied = automaticPassedCases.fallbackGap <= 0;
 
       for (let week = 1; week <= totalWeeksForTable; week += 1) {
         const plannedWeekly = week <= plannedWeeks ? weekPlanRounded : 0;
         const plannedCumulativeWeek = week <= plannedWeeks ? Math.min(Math.ceil((totalCases * week) / plannedWeeks), totalCases) : totalCases;
-
-        const savedWeek = savedProjectWeeks.find((item) => Number(item.currentWeek) === week);
+        const factWeeklyValue = getWeeklyFactForWeek(savedProjectWeeks, week, currentWeek, weekPassedCases);
+        const hasFact = factWeeklyValue !== null;
         let factWeekly = "";
         let factCumulative = "";
         let deviation = "";
 
-        if (savedWeek) {
-          factWeekly = Number(savedWeek.weekPassedCases || 0);
-          factCumulative = Number(savedWeek.passedCases || 0);
-          deviation = factCumulative - plannedCumulativeWeek;
-        } else if (week === currentWeek) {
-          factWeekly = weekPassedCases;
-          factCumulative = passedCases;
+        if (hasFact) {
+          const normalizedFactWeekly = Math.max(Number(factWeeklyValue) || 0, 0);
+          if (!fallbackApplied) {
+            fallbackApplied = true;
+          }
+          cumulativeFactRunning += normalizedFactWeekly;
+          totalFactWeekly += normalizedFactWeekly;
+          factWeekly = normalizedFactWeekly;
+          factCumulative = cumulativeFactRunning;
           deviation = factCumulative - plannedCumulativeWeek;
         }
 
@@ -1270,25 +1571,157 @@
           factWeekly: factWeekly === "" ? "—" : Number(factWeekly).toFixed(1),
           factCumulative: factCumulative === "" ? "—" : Number(factCumulative).toFixed(1),
           deviation: deviation === "" ? "—" : `${deviation >= 0 ? "+" : ""}${Number(deviation).toFixed(1)}`,
-          source: savedWeek ? "saved" : week === currentWeek ? "current" : "empty"
+          source: week === currentWeek ? "current" : hasFact ? "saved" : "empty"
         });
       }
 
+      const totalPlannedWeekly = dynamicsRows.reduce((sum, row) => {
+        return sum + (row.plannedWeekly === "-" ? 0 : Number(row.plannedWeekly));
+      }, 0);
+      const totalPlannedCumulative = dynamicsRows.length ? Number(dynamicsRows[dynamicsRows.length - 1].plannedCumulativeWeek) : 0;
+      const totalDeviation = passedCases - totalPlannedCumulative;
+      const dynamicsTotals = {
+        plannedWeekly: totalPlannedWeekly.toFixed(0),
+        plannedCumulativeWeek: totalPlannedCumulative.toFixed(0),
+        factWeekly: totalFactWeekly.toFixed(1),
+        factCumulative: passedCases.toFixed(1),
+        deviation: `${totalDeviation >= 0 ? "+" : ""}${totalDeviation.toFixed(1)}`
+      };
+
+      const currentSnapshotData = {
+        currentWeek,
+        weekName,
+        totalCases,
+        plannedWeeks,
+        passedCases,
+        plannedCases,
+        weekPassedCases,
+        weekPlannedCases,
+        issuesTotal,
+        criticalIssues,
+        fixedIssues,
+        reopenedIssues,
+        newRequirements,
+        allChanges,
+        scheduleDelta
+      };
+
+      const weeklyInsightsMap = new Map();
+      savedProjectWeeks.forEach((item) => {
+        const week = Number(item.currentWeek || 0);
+        if (week > 0) {
+          weeklyInsightsMap.set(week, item);
+        }
+      });
+      if (currentWeek > 0) {
+        weeklyInsightsMap.set(currentWeek, currentSnapshotData);
+      }
+
+      const weeklyInsightItems = [...weeklyInsightsMap.values()]
+        .sort((a, b) => Number(a.currentWeek || 0) - Number(b.currentWeek || 0))
+        .map((item) => {
+          const itemTotalCases = Math.max(Number(item.totalCases || 0), 0);
+          const itemPlannedWeeks = Math.max(Number(item.plannedWeeks || 0), 0);
+          const itemWeek = Math.max(Number(item.currentWeek || 0), 0);
+          const itemPassedCases = Math.max(Number(item.passedCases || 0), 0);
+          const itemPlannedCases = Math.max(Number(item.plannedCases || 0), 0);
+          const itemWeekPassedCases = Math.max(Number(item.weekPassedCases || 0), 0);
+          const itemIssuesTotal = Math.max(Number(item.issuesTotal || 0), 0);
+          const itemCriticalIssues = Math.max(Number(item.criticalIssues || 0), 0);
+          const itemFixedIssues = Math.max(Number(item.fixedIssues || 0), 0);
+          const itemReopenedIssues = Math.max(Number(item.reopenedIssues || 0), 0);
+          const itemNewRequirements = Math.max(Number(item.newRequirements || 0), 0);
+          const itemAllChanges = Math.max(Number(item.allChanges || 0), 0);
+          const itemScheduleDelta = Number(item.scheduleDelta || 0);
+          const itemProgress = itemTotalCases > 0 ? itemPassedCases / itemTotalCases : 0;
+          const itemPlannedProgress = itemPlannedWeeks > 0 ? Math.min(itemWeek / itemPlannedWeeks, 1) : 0;
+          const itemPlanDelta = itemPassedCases - itemPlannedCases;
+          const itemIssueDensity = itemTotalCases > 0 ? itemIssuesTotal / itemTotalCases : 0;
+          const itemCriticalShare = itemIssuesTotal > 0 ? itemCriticalIssues / itemIssuesTotal : 0;
+          const itemReopenShare = itemFixedIssues > 0 ? itemReopenedIssues / itemFixedIssues : 0;
+          const itemScopeShare = itemAllChanges > 0 ? itemNewRequirements / itemAllChanges : 0;
+
+          const itemCumulativeRows = [
+            {
+              level: itemProgress >= itemPlannedProgress ? "good" : itemProgress >= Math.max(itemPlannedProgress - 0.1, 0) ? "warn" : "bad"
+            },
+            {
+              level: itemPlanDelta >= 0 ? "good" : itemPlanDelta >= -1 ? "warn" : "bad"
+            }
+          ];
+
+          const itemWeeklyRows = [
+            {
+              level: itemIssueDensity <= 0.7 ? "good" : itemIssueDensity <= 1.0 ? "warn" : "bad"
+            },
+            {
+              level: itemCriticalShare <= 0.1 ? "good" : itemCriticalShare <= 0.2 ? "warn" : "bad"
+            },
+            {
+              level: itemReopenShare <= 0.1 ? "good" : itemReopenShare <= 0.2 ? "warn" : "bad"
+            },
+            {
+              level: itemScopeShare <= 0.1 ? "good" : itemScopeShare <= 0.2 ? "warn" : "bad"
+            },
+            {
+              level: itemScheduleDelta <= 0 ? "good" : itemScheduleDelta <= 2 ? "warn" : "bad"
+            }
+          ];
+
+          return {
+            weekName: item.weekName || `Неделя ${itemWeek}`,
+            passedCases: itemPassedCases,
+            totalCases: itemTotalCases,
+            weekPassedCases: itemWeekPassedCases,
+            plannedCases: itemPlannedCases,
+            planDelta: itemPlanDelta,
+            issuesTotal: itemIssuesTotal,
+            criticalIssues: itemCriticalIssues,
+            fixedIssues: itemFixedIssues,
+            reopenedIssues: itemReopenedIssues,
+            newRequirements: itemNewRequirements,
+            allChanges: itemAllChanges,
+            scheduleDelta: itemScheduleDelta,
+            formula: `ПСИ = ${itemPassedCases} / ${itemTotalCases} = ${percent(itemProgress)} | Плотность = ${ratio(itemIssueDensity)} | Критичные = ${percent(itemCriticalShare)} | Повторы = ${percent(itemReopenShare)}`,
+            summaryText: getSummaryText(itemWeeklyRows, itemCumulativeRows)
+          };
+        });
+
       renderRows("cumulativeResultsBody", cumulativeRows);
-      renderDynamics(dynamicsRows);
+      renderDynamics(dynamicsRows, dynamicsTotals);
+      renderIssuesDynamics(weeklyIssuesDynamicsRows, weeklyIssuesTotals);
+      renderWeeklyInsights(weeklyInsightItems);
+      renderIssuesForecast({
+        issueWeeksCount,
+        avgRegisteredIssuesPerWeek,
+        avgClosedIssuesPerWeek,
+        avgReopenedIssuesPerWeek,
+        netIssueBurnPerWeek,
+        issueWeeksToZero,
+        openIssuesCumulative
+      });
       renderRows("resultsBody", rows);
       renderForecast({
         progress,
         passedCases,
         totalCases,
         plannedWeeks,
+        psiStartDateValue,
+        psiPlannedEndDateValue,
         currentWeek,
         weekPlannedCases,
         weekPassedCases,
         forecastWeeksTotal,
         forecastByCurrentWeekSpeed,
         remainingWeeksByCurrentSpeed,
-        avgThroughput
+        avgThroughput,
+        scheduleDelta,
+        forecastEndDateValue,
+        avgRegisteredIssuesPerWeek,
+        avgClosedIssuesPerWeek,
+        avgReopenedIssuesPerWeek,
+        netIssueBurnPerWeek,
+        issueWeeksToZero
       });
       renderSummary(rows, cumulativeRows, weekName);
     }
@@ -1305,8 +1738,9 @@
         `).join("");
     }
 
-    function renderDynamics(rows) {
+    function renderDynamics(rows, totals) {
       const body = document.getElementById("weeklyDynamicsBody");
+      const footer = document.getElementById("weeklyDynamicsFooter");
       body.innerHTML = rows.map((row) => `
         <tr>
           <td>${row.week}</td>
@@ -1317,6 +1751,63 @@
           <td>${row.deviation}</td>
         </tr>
       `).join("");
+
+      footer.innerHTML = `
+        <tr>
+          <th>ИТОГО</th>
+          <th>${totals.plannedWeekly}</th>
+          <th>${totals.plannedCumulativeWeek}</th>
+          <th>${totals.factWeekly}</th>
+          <th>${totals.factCumulative}</th>
+          <th>${totals.deviation}</th>
+        </tr>
+      `;
+    }
+
+    function renderIssuesDynamics(rows, totals) {
+      const body = document.getElementById("weeklyIssuesDynamicsBody");
+      const footer = document.getElementById("weeklyIssuesDynamicsFooter");
+      body.innerHTML = rows.map((row) => `
+        <tr>
+          <td>${row.week}</td>
+          <td>${row.registered}</td>
+          <td>${row.closed}</td>
+          <td>${row.reopened}</td>
+          <td>${row.openCumulative}</td>
+        </tr>
+      `).join("");
+
+      footer.innerHTML = `
+        <tr>
+          <th>ИТОГО</th>
+          <th>${totals.registered}</th>
+          <th>${totals.closed}</th>
+          <th>${totals.reopened}</th>
+          <th>${totals.openCumulative}</th>
+        </tr>
+      `;
+    }
+
+    function renderIssuesForecast(data) {
+      const {
+        issueWeeksCount,
+        avgRegisteredIssuesPerWeek,
+        avgClosedIssuesPerWeek,
+        avgReopenedIssuesPerWeek,
+        netIssueBurnPerWeek,
+        issueWeeksToZero,
+        openIssuesCumulative
+      } = data;
+
+      const target = document.getElementById("issuesForecastText");
+      if (!issueWeeksCount) {
+        target.textContent = "После расчета здесь появится прогноз, за сколько недель можно закрыть весь хвост замечаний при текущей скорости.";
+        return;
+      }
+
+      target.textContent = netIssueBurnPerWeek > 0
+        ? `Открытый хвост замечаний: ${openIssuesCumulative.toFixed(1)}. При средней регистрации ${avgRegisteredIssuesPerWeek.toFixed(1)} замеч./нед., среднем закрытии ${avgClosedIssuesPerWeek.toFixed(1)} замеч./нед. и среднем повторном открытии ${avgReopenedIssuesPerWeek.toFixed(1)} замеч./нед. чистое сокращение хвоста составляет ${netIssueBurnPerWeek.toFixed(1)} замеч./нед. При таком темпе до нуля потребуется около ${issueWeeksToZero.toFixed(1)} нед.`
+        : `Открытый хвост замечаний: ${openIssuesCumulative.toFixed(1)}. При средней регистрации ${avgRegisteredIssuesPerWeek.toFixed(1)} замеч./нед., среднем закрытии ${avgClosedIssuesPerWeek.toFixed(1)} замеч./нед. и среднем повторном открытии ${avgReopenedIssuesPerWeek.toFixed(1)} замеч./нед. хвост сейчас не сокращается. Для выхода в ноль нужно ускорять закрытие или снижать приток новых и повторно открытых замечаний.`;
     }
 
     function renderForecast(data) {
@@ -1325,13 +1816,22 @@
         passedCases,
         totalCases,
         plannedWeeks,
+        psiStartDateValue,
+        psiPlannedEndDateValue,
         currentWeek,
         weekPlannedCases,
         weekPassedCases,
         forecastWeeksTotal,
         forecastByCurrentWeekSpeed,
         remainingWeeksByCurrentSpeed,
-        avgThroughput
+        avgThroughput,
+        scheduleDelta,
+        forecastEndDateValue,
+        avgRegisteredIssuesPerWeek,
+        avgClosedIssuesPerWeek,
+        avgReopenedIssuesPerWeek,
+        netIssueBurnPerWeek,
+        issueWeeksToZero
       } = data;
 
       const progressText = `${(progress * 100).toFixed(1)}%`;
@@ -1342,31 +1842,80 @@
       document.getElementById("forecastText").textContent =
         `Общий процент прохождения ПСИ: ${progressText} (${passedCases} из ${totalCases} КП). ` +
         `Плановая длительность ПСИ: ${plannedWeeks} нед., текущая неделя: ${currentWeek}. ` +
+        `Период ПСИ: ${psiStartDateValue || "н/д"} - ${psiPlannedEndDateValue || "н/д"}. ` +
         `План на текущую неделю: ${weekPlannedCases} КП, факт: ${weekPassedCases} КП. ` +
         `При средней накопительной скорости завершение ожидается за ${avgWeeksText}. ` +
         `При текущей недельной скорости ПСИ займет около ${currentSpeedWeeksText} всего, ` +
         `то есть еще примерно ${remainingWeeksText} от текущей точки. ` +
-        `Текущая средняя скорость: ${avgThroughput.toFixed(2)} КП/нед.`;
+        `Текущая средняя скорость: ${avgThroughput.toFixed(2)} КП/нед. ` +
+        `Прогнозная дата завершения: ${forecastEndDateValue || "н/д"}, отклонение от плана: ${scheduleDelta >= 0 ? "+" : ""}${scheduleDelta} дн. ` +
+        (netIssueBurnPerWeek > 0
+          ? `По замечаниям: средняя регистрация ${avgRegisteredIssuesPerWeek.toFixed(1)} в нед., среднее закрытие ${avgClosedIssuesPerWeek.toFixed(1)} в нед., повторно открыто ${avgReopenedIssuesPerWeek.toFixed(1)} в нед. Чистое сокращение хвоста ${netIssueBurnPerWeek.toFixed(1)} в нед., до нуля около ${issueWeeksToZero.toFixed(1)} нед.`
+          : `По замечаниям: средняя регистрация ${avgRegisteredIssuesPerWeek.toFixed(1)} в нед., среднее закрытие ${avgClosedIssuesPerWeek.toFixed(1)} в нед., повторно открыто ${avgReopenedIssuesPerWeek.toFixed(1)} в нед. При таком темпе хвост замечаний в ноль не выходит.`);
+    }
+
+    function getSummaryText(rows, cumulativeRows) {
+      const summaryMetricNames = new Set([
+        "Фактический прогресс накопительно",
+        "Отклонение накопительно от плана",
+        "Средний темп прохождения",
+        "Прохождение КП за неделю",
+        "Отклонение недели от плана",
+        "Плотность замечаний",
+        "Доля критичных замечаний",
+        "Доля повторно открытых замечаний",
+        "Доля новых требований на ПСИ",
+        "Средний срок закрытия замечания",
+        "Отклонение даты завершения ПСИ"
+      ]);
+
+      const allRows = [...rows, ...cumulativeRows]
+        .filter((row) => summaryMetricNames.has(row.name));
+      const badCount = allRows.filter((row) => row.level === "bad").length;
+      const warnCount = allRows.filter((row) => row.level === "warn").length;
+
+      if (badCount >= 2) {
+        return `Красная зона. В красном ${badCount} метрики(а), в желтом ${warnCount}. Проект нужно выносить на отдельную эскалацию: запуск без дополнительного решения рискован.`;
+      }
+
+      if (badCount === 1 || warnCount >= 3) {
+        return `Желто-красная зона. Есть как минимум один критичный сигнал и накопленный риск по качеству или срокам. Нужен отдельный план действий и повторная проверка на следующей неделе.`;
+      }
+
+      if (warnCount >= 1) {
+        return `Желтая зона. Ситуация пока управляемая, но запас небольшой. Менеджеру проекта нужно держать на контроле качество, сроки и новые требования.`;
+      }
+
+      return `Зеленая зона. Недельный набор метрик не показывает существенных рисков для завершения ПСИ и подготовки к запуску.`;
     }
 
     function renderSummary(weeklyRows, cumulativeRows, weekName) {
-      const rows = [...weeklyRows, ...cumulativeRows];
-      const badCount = rows.filter((row) => row.level === "bad").length;
-      const warnCount = rows.filter((row) => row.level === "warn").length;
-      let text = "";
+      document.getElementById("summaryTitle").textContent = `${weekName}: управленческий вывод`;
+      document.getElementById("summaryText").textContent = getSummaryText(weeklyRows, cumulativeRows);
+    }
 
-      if (badCount >= 2) {
-        text = `Красная зона. В красном ${badCount} метрики(а), в желтом ${warnCount}. Проект нужно выносить на отдельную эскалацию: запуск без дополнительного решения рискован.`;
-      } else if (badCount === 1 || warnCount >= 3) {
-        text = `Желто-красная зона. Есть как минимум один критичный сигнал и накопленный риск по качеству или срокам. Нужен отдельный план действий и повторная проверка на следующей неделе.`;
-      } else if (warnCount >= 1) {
-        text = `Желтая зона. Ситуация пока управляемая, но запас небольшой. Менеджеру проекта нужно держать на контроле качество, сроки и новые требования.`;
-      } else {
-        text = `Зеленая зона. Недельный набор метрик не показывает существенных рисков для завершения ПСИ и подготовки к запуску.`;
+    function renderWeeklyInsights(items) {
+      const target = document.getElementById("weeklyInsights");
+      if (!items.length) {
+        target.innerHTML = `<div class="week-card"><h4>Недели пока не заполнены</h4><p>После ввода и сохранения недель здесь будут появляться автоматические выводы по каждой неделе.</p></div>`;
+        return;
       }
 
-      document.getElementById("summaryTitle").textContent = `${weekName}: управленческий вывод`;
-      document.getElementById("summaryText").textContent = text;
+      target.innerHTML = items.map((item) => `
+        <article class="week-card">
+          <h4>${item.weekName}</h4>
+          <ul>
+            <li>Пройдено накопительно ${item.passedCases} из ${item.totalCases} КП, за неделю ${item.weekPassedCases} КП</li>
+            <li>План накопительно ${item.plannedCases} КП, отклонение ${item.planDelta >= 0 ? "+" : ""}${item.planDelta} КП</li>
+            <li>Зарегистрировано замечаний ${item.issuesTotal}, критичных ${item.criticalIssues}</li>
+            <li>Исправлено ${item.fixedIssues}, повторно открыто ${item.reopenedIssues}</li>
+            <li>Новых требований ${item.newRequirements} из ${item.allChanges} изменений</li>
+            <li>Сдвиг срока ${item.scheduleDelta >= 0 ? "+" : ""}${item.scheduleDelta} дн.</li>
+          </ul>
+          <span class="formula">${item.formula}</span>
+          <p>${item.summaryText}</p>
+        </article>
+      `).join("");
     }
 
     function fillSample() {
@@ -1383,8 +1932,12 @@
       for (const [key, value] of Object.entries(defaults)) {
         document.getElementById(key).value = value;
       }
+      applyLastSavedWeekAsDefault();
+      refreshSnapshotsList();
       document.getElementById("weeklyDynamicsBody").innerHTML = "";
+      document.getElementById("weeklyIssuesDynamicsBody").innerHTML = "";
       document.getElementById("forecastText").textContent = "После расчета здесь появится общий процент прохождения ПСИ и прогноз срока завершения при текущей скорости.";
+      document.getElementById("issuesForecastText").textContent = "После расчета здесь появится прогноз, за сколько недель можно закрыть весь хвост замечаний при текущей скорости.";
       evaluateMetrics();
     }
 
@@ -1396,7 +1949,14 @@
     document.getElementById("deleteSnapshotBtn").addEventListener("click", deleteSnapshot);
 
     [
+      "projectName",
+      "clientName",
+      "projectManager",
+      "accountManager",
+      "clientManager",
       "plannedWeeks",
+      "psiStartDate",
+      "psiPlannedEndDate",
       "currentWeek",
       "totalCases",
       "passedCases",
@@ -1409,9 +1969,9 @@
       "reopenedIssues",
       "newRequirements",
       "allChanges",
-      "scheduleDelta",
       "workWeekDays",
-      "weekName"
+      "weekName",
+      "snapshotProject"
     ].forEach((id) => {
       document.getElementById(id).addEventListener("input", evaluateMetrics);
       document.getElementById(id).addEventListener("change", evaluateMetrics);
