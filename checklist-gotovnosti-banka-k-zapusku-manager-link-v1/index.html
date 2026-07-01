@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Чек-лист готовности банка к запуску - отдельная ссылка для менеджера</title>
+  <style>
+    :root {
+      --bg: #f3f6f8;
+      --panel: #ffffff;
+      --panel-alt: #fafbfc;
+      --text: #1f2937;
+      --muted: #5b667a;
+      --line: #d9e2ec;
+      --accent: #0f4c81;
+      --accent-soft: #eaf2f8;
+      --primary: #0f4c81;
+      --primary-soft: #eaf2f8;
+      --warn: #9f1239;
+      --warn-soft: #fce7f3;
+      --ok: #166534;
+      --ok-soft: #ecfdf3;
+      --risk: #9f1239;
+      --risk-soft: #fce7f3;
+      --shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #eef3f7 0%, #f7fafc 100%);
+      color: var(--text);
+      font: 15px/1.55 "Segoe UI", Arial, sans-serif;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 24px 40px;
+    }
+
+    .hero,
+    .section,
+    .toolbar {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #123b64 0%, #245b8e 100%);
+      color: #fff;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      border: none;
+    }
+
+    .toolbar {
+      position: static;
+      z-index: 1;
+      margin-top: 0;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .sidebar {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 20px 18px;
+      border: 1px solid transparent;
+      margin-bottom: 20px;
+    }
+
+    .sidebar h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar li + li {
+      margin-top: 8px;
+    }
+
+    .sidebar a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .sidebar a:hover {
+      color: var(--accent);
+    }
+
+    .content {
+      display: grid;
+      gap: 20px;
+    }
+
+    .toolbar-left,
+    .toolbar-right,
+    .summary-badges {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .section {
+      margin-top: 0;
+      padding: 24px 26px;
+      box-shadow: var(--shadow);
+      border: none;
+    }
+
+    .eyebrow,
+    .section-label,
+    .field-label,
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      color: var(--text);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      max-width: 920px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .hero h1 {
+      color: #ffffff;
+    }
+
+    h2 {
+      font-size: 24px;
+      line-height: 1.2;
+      color: #102a43;
+    }
+
+    h3 {
+      font-size: 17px;
+      line-height: 1.22;
+      color: var(--accent);
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 920px;
+      color: rgba(255,255,255,.88);
+      font-size: 16px;
+    }
+
+    .hint-list {
+      margin: 16px 0 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.86);
+    }
+
+    .hint-list li + li {
+      margin-top: 8px;
+    }
+
+    .summary-grid,
+    .meta-grid,
+    .result-grid,
+    .signature-grid,
+    .meta-preview-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .meta-preview-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .result-grid,
+    .signature-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary-card,
+    .field-card,
+    .note-card,
+    .meta-preview-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-alt);
+      padding: 16px 18px;
+    }
+
+    .summary-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .summary-value {
+      margin-top: 6px;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .summary-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta-preview-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .meta-preview-value {
+      margin-top: 6px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .toolbar-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 12px;
+      min-width: min(540px, 100%);
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+    }
+
+    .toolbar-meta-item {
+      min-width: 0;
+    }
+
+    .toolbar-meta-label {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toolbar-meta-value {
+      display: block;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .hero .section-label {
+      color: rgba(255,255,255,.74);
+      letter-spacing: .04em;
+    }
+
+    .hero .summary-note {
+      color: rgba(255,255,255,.82);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1120px;
+      border-collapse: collapse;
+    }
+
+    table col.col-id {
+      width: 8ch;
+    }
+
+    .check-table-standard col.col-question {
+      width: 360px;
+    }
+
+    .check-table-standard col.col-status {
+      width: 21ch;
+    }
+
+    .check-table-standard col.col-owner {
+      width: 28ch;
+    }
+
+    .check-table-standard th:nth-child(3),
+    .check-table-standard td:nth-child(3),
+    .check-table-standard th:nth-child(5),
+    .check-table-standard td:nth-child(5) {
+      white-space: nowrap;
+    }
+
+    .risk-table col.col-risk-owner {
+      width: 28ch;
+    }
+
+    .risk-table col.col-risk-due {
+      width: 20ch;
+    }
+
+    .risk-table col.col-risk-blocks {
+      width: 10ch;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--accent-soft);
+      font-weight: 600;
+      color: #17324d;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr.row-ok td {
+      background: var(--ok-soft);
+    }
+
+    tbody tr.row-partial td {
+      background: var(--warn-soft);
+    }
+
+    tbody tr.row-no td {
+      background: var(--risk-soft);
+    }
+
+    tbody tr.row-na td {
+      background: var(--neutral-soft);
+    }
+
+    .id-cell {
+      white-space: nowrap;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .field-input,
+    .field-select,
+    .field-textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    .field-textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .field-textarea.owner-textarea {
+      min-height: 72px;
+    }
+
+    .field-input:focus,
+    .field-select:focus,
+    .field-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .field-card .field-input,
+    .field-card .field-select,
+    .field-card .field-textarea {
+      margin-top: 8px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-ok { background: var(--ok-soft); color: var(--ok); }
+    .badge-partial { background: var(--warn-soft); color: var(--warn); }
+    .badge-no { background: var(--risk-soft); color: var(--risk); }
+    .badge-neutral { background: #eef2f7; color: var(--muted); }
+
+    .btn {
+      appearance: none;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: 600 14px/1 "Segoe UI", Arial, sans-serif;
+      transition: 0.16s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #0d3d66;
+    }
+
+    .btn-secondary {
+      border-color: #cbd5e1;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+    }
+
+    .btn-danger {
+      border-color: #fecaca;
+      background: #fff5f5;
+      color: var(--risk);
+    }
+
+    .file-input {
+      max-width: 240px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .save-indicator {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .callout {
+      margin-top: 16px;
+      border-left: 4px solid var(--accent);
+      border-radius: 14px;
+      background: #f8fafc;
+      border-top: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px;
+    }
+
+    .callout p {
+      margin: 0;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .print-only {
+      display: none;
+    }
+
+    .auto-summary {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-alt);
+      padding: 18px;
+    }
+
+    .auto-summary-value {
+      margin-top: 10px;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .auto-summary-value.ok { color: var(--ok); }
+    .auto-summary-value.warn { color: #b45309; }
+    .auto-summary-value.risk { color: var(--warn); }
+    .auto-summary-value.neutral { color: var(--muted); }
+
+    .auto-risk-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .auto-risk-list li + li {
+      margin-top: 10px;
+    }
+
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 1180px) {
+      .summary-grid,
+      .meta-grid,
+      .result-grid,
+      .signature-grid,
+      .meta-preview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-note {
+        margin-top: 8px;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .page { padding: 12px; }
+      .hero, .section, .toolbar { padding: 18px; }
+      h1 { font-size: 28px; }
+      .toolbar-meta {
+        grid-template-columns: 1fr;
+        min-width: 100%;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @page {
+      size: A4 landscape;
+      margin: 8mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        font: 9.5px/1.15 "Segoe UI", Arial, sans-serif;
+      }
+
+      .page {
+        max-width: none;
+        padding: 0;
+      }
+
+      .hero,
+      .section,
+      .toolbar {
+        box-shadow: none;
+        border-radius: 0;
+        border: 1px solid #d1d5db;
+      }
+
+      .toolbar,
+      .no-print {
+        display: none !important;
+      }
+
+      .print-only {
+        display: block;
+      }
+
+      .field-input,
+      .field-select,
+      .field-textarea {
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        box-shadow: none;
+        padding: 6px 8px;
+        font-size: 10px;
+      }
+
+      .hero {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        page-break-after: always;
+      }
+
+      .hero h1 {
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+
+      .lead,
+      .summary-note,
+      .footer-note {
+        font-size: 8.5px;
+      }
+
+      .hint-list,
+      .callout {
+        display: none !important;
+      }
+
+      .summary-grid,
+      .meta-preview-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .summary-card,
+      .meta-preview-card,
+      .field-card {
+        padding: 7px 9px;
+        border-radius: 10px;
+      }
+
+      .summary-value {
+        font-size: 15px;
+      }
+
+      .meta-preview-value {
+        font-size: 9px;
+        line-height: 1.2;
+      }
+
+      .section {
+        padding: 8px 10px;
+        margin-top: 6px;
+        break-inside: auto;
+        page-break-inside: auto;
+      }
+
+      .section-head {
+        margin-bottom: 6px;
+        break-after: avoid-page;
+        page-break-after: avoid;
+      }
+
+      h2 {
+        font-size: 14px;
+      }
+
+      h3 {
+        font-size: 11px;
+      }
+
+      .section-note,
+      .field-label,
+      .section-label,
+      th {
+        font-size: 7.5px;
+      }
+
+      .table-wrap {
+        overflow: visible;
+        border-radius: 10px;
+      }
+
+      table {
+        min-width: 0;
+        table-layout: fixed;
+      }
+
+      th,
+      td {
+        padding: 4px 5px;
+        font-size: 8px;
+        line-height: 1.2;
+      }
+
+      .field-textarea {
+        min-height: 26px;
+      }
+
+      .field-textarea.owner-textarea {
+        min-height: 22px;
+      }
+
+      .result-grid,
+      .signature-grid,
+      .meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      #meta {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        page-break-after: always;
+      }
+
+      #meta .meta-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      #meta .field-card {
+        padding: 6px 8px;
+      }
+
+      #sections-work {
+        page-break-before: auto;
+      }
+
+      #sections-work .section-head {
+        margin-bottom: 4px;
+      }
+
+      #dynamic-sections > section {
+        margin-top: 4px !important;
+        padding-top: 0 !important;
+      }
+
+      #dynamic-sections > section:first-child {
+        margin-top: 0 !important;
+      }
+
+      #signatures {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        page-break-before: always;
+      }
+
+      #signatures .field-card {
+        padding: 6px 8px;
+      }
+
+      #signatures input,
+      #signatures textarea,
+      #results input,
+      #results textarea,
+      #results select {
+        font-size: 8px;
+        padding: 4px 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+        <div class="eyebrow">Чек-лист запуска / Рабочая форма</div>
+        <h1>Чек-лист готовности банка к запуску</h1>
+        <p class="lead">
+          Документ используется за 1-5 рабочих дней до продуктивного старта как отдельный рабочий чек-лист готовности банка к запуску.
+          Его задача не заменить протоколы тестирования и не заменить решение о запуске, а подтвердить, что ранее сданные результаты тестирования
+          и ранее принятое решение о запуске остаются актуальными на дату старта.
+        </p>
+        <ul class="hint-list">
+          <li>Это отдельная ссылка для персонального заполнения менеджером без риска затереть данные в общем шаблоне.</li>
+          <li>Особенно нужен, когда банк самостоятельно выполняет часть настроек и часть функциональной проверки.</li>
+          <li>Используется, когда между завершением тестирования и запуском есть временной разрыв или возможны поздние изменения.</li>
+          <li>Статус <strong>Да</strong> означает подтверждено и актуально, <strong>Нет</strong> означает блокер или высокий риск, <strong>Частично</strong> означает запуск возможен только с условиями, <strong>Не релевантно</strong> означает, что пункт не применяется к данному запуску.</li>
+          <li><strong>Правило для статуса "Не релевантно":</strong> его можно ставить только если пункт объективно отсутствует в контуре запуска. Нельзя использовать этот статус вместо <strong>Нет</strong> или <strong>Частично</strong>, если по пункту есть незавершенная работа, риск, зависимость или спорный вопрос.</li>
+        </ul>
+        <div class="summary-note">Версия страницы: `2026-07-01 manager-link v1`</div>
+      <div class="summary-grid">
+        <article class="summary-card">
+          <div class="section-label">Разделы</div>
+          <div class="summary-value">10</div>
+          <div class="summary-note">Полный рабочий чек-лист</div>
+        </article>
+        <article class="summary-card">
+          <div class="section-label">Статусы</div>
+          <div class="summary-value" id="status-filled">0</div>
+            <div class="summary-note">Пунктов со статусом из 45</div>
+        </article>
+        <article class="summary-card">
+          <div class="section-label">Блокеры</div>
+          <div class="summary-value" id="status-no">0</div>
+          <div class="summary-note">Статус `Нет`</div>
+        </article>
+        <article class="summary-card">
+          <div class="section-label">Частично</div>
+          <div class="summary-value" id="status-partial">0</div>
+            <div class="summary-note">Требует условий запуска</div>
+        </article>
+        </div>
+        <div class="meta-preview-grid">
+          <article class="meta-preview-card">
+            <div class="section-label">Проект</div>
+            <div class="meta-preview-value" id="hero-project">-</div>
+          </article>
+          <article class="meta-preview-card">
+            <div class="section-label">Банк</div>
+            <div class="meta-preview-value" id="hero-bank">-</div>
+          </article>
+          <article class="meta-preview-card">
+            <div class="section-label">Плановая дата запуска</div>
+            <div class="meta-preview-value" id="hero-planned-date">-</div>
+          </article>
+          <article class="meta-preview-card">
+            <div class="section-label">Дата чек-листа</div>
+            <div class="meta-preview-value" id="hero-checklist-date">-</div>
+          </article>
+        </div>
+        <div class="callout">
+          <p><strong>Практика:</strong> все пункты со статусом <strong>Нет</strong> или <strong>Частично</strong> должны быть вынесены в отдельный список рисков к запуску и отражены в итоговом решении. Статус <strong>Не релевантно</strong> допустим только для реально неприменимых пунктов и не должен использоваться для сокрытия риска.</p>
+        </div>
+      </section>
+
+    <main class="content">
+      <section class="toolbar no-print" id="tools">
+            <div class="toolbar-left">
+              <button class="btn btn-primary" id="save-local-btn" type="button">Сохранить в браузере</button>
+              <button class="btn btn-secondary" id="download-json-btn" type="button">Скачать JSON</button>
+              <button class="btn btn-secondary" id="download-risks-btn" type="button">Скачать итоговые риски</button>
+            <label class="btn btn-secondary" for="upload-json">Загрузить JSON</label>
+            <input class="file-input" id="upload-json" type="file" accept=".json,application/json" />
+            <button class="btn btn-secondary" id="export-pdf-btn" type="button">Выгрузить в PDF</button>
+            <button class="btn btn-danger" id="clear-btn" type="button">Очистить форму</button>
+          </div>
+          <div class="toolbar-right">
+              <div class="toolbar-meta">
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Проект</span>
+                  <span class="toolbar-meta-value" id="toolbar-project">-</span>
+                </div>
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Банк</span>
+                  <span class="toolbar-meta-value" id="toolbar-bank">-</span>
+                </div>
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Плановая дата запуска</span>
+                  <span class="toolbar-meta-value" id="toolbar-planned-date">-</span>
+                </div>
+                <div class="toolbar-meta-item">
+                  <span class="toolbar-meta-label">Дата чек-листа</span>
+                  <span class="toolbar-meta-value" id="toolbar-checklist-date">-</span>
+                </div>
+              </div>
+              <div class="summary-badges">
+                <span class="status-badge badge-ok">Да: <span id="badge-ok-count">0</span></span>
+                <span class="status-badge badge-partial">Частично: <span id="badge-partial-count">0</span></span>
+                <span class="status-badge badge-no">Нет: <span id="badge-no-count">0</span></span>
+                <span class="status-badge badge-neutral">Не релевантно: <span id="badge-na-count">0</span></span>
+                <span class="status-badge badge-neutral">Не заполнено: <span id="badge-empty-count">45</span></span>
+              </div>
+            <div class="save-indicator" id="save-indicator">Автосохранение включено</div>
+          </div>
+      </section>
+      <aside class="sidebar no-print">
+        <h2>Содержание</h2>
+        <ul>
+          <li><a href="#tools">Панель действий</a></li>
+          <li><a href="#meta">Основные данные</a></li>
+          <li><a href="#sections-work">Рабочие блоки проверки</a></li>
+          <li><a href="#results">Позиция менеджера</a></li>
+          <li><a href="#signatures">Подписи и решения</a></li>
+          <li><a href="#auto-summary">Автоматический итог</a></li>
+          <li><a href="#interpretation">Правило интерпретации</a></li>
+          <li><a href="#final-wording">Итоговая формулировка</a></li>
+        </ul>
+      </aside>
+
+      <section class="section" id="meta">
+          <div class="section-head">
+            <div>
+              <div class="section-label">Карточка запуска</div>
+              <h2>Основные данные</h2>
+            </div>
+            <div class="section-note">Заполняется перед прохождением чек-листа</div>
+          </div>
+          <div class="meta-grid" id="meta-grid"></div>
+      </section>
+
+      <section class="section" id="sections-work">
+          <div class="section-head">
+            <div>
+              <div class="section-label">Разделы 1-8</div>
+              <h2>Рабочие блоки проверки</h2>
+            </div>
+            <div class="section-note">Статусы, комментарии и владельцы фиксируются по каждой строке</div>
+          </div>
+          <div id="dynamic-sections"></div>
+      </section>
+
+      <section class="section" id="results">
+          <div class="section-head">
+            <div>
+              <div class="section-label">Итоговое заключение</div>
+              <h2>Раздел 9. Позиция менеджера проекта</h2>
+            </div>
+            <div class="section-note">Краткий вывод и итоговый комментарий</div>
+          </div>
+          <div class="result-grid" id="result-grid"></div>
+      </section>
+
+      <section class="section" id="signatures">
+          <div class="section-head">
+            <div>
+              <div class="section-label">Подтверждение сторон</div>
+              <h2>Раздел 10. Подписи и решения</h2>
+            </div>
+            <div class="section-note">Фиксация итогового решения сторон</div>
+          </div>
+          <div class="signature-grid" id="signature-grid"></div>
+      </section>
+
+      <section class="section" id="auto-summary">
+          <div class="section-head">
+            <div>
+              <div class="section-label">Автоматический итог</div>
+              <h2>Рекомендуемый статус и список рисков</h2>
+            </div>
+            <div class="section-note">Формируется автоматически по заполненным статусам</div>
+          </div>
+          <div class="result-grid">
+            <div class="auto-summary">
+              <div class="section-label">Рекомендуемое решение</div>
+              <div class="auto-summary-value neutral" id="auto-decision-value">Недостаточно данных</div>
+              <p class="summary-note" id="auto-decision-note">Заполните статусы по чек-листу, чтобы получить автоматическую рекомендацию.</p>
+              <div class="inline-actions no-print">
+                <button class="btn btn-secondary" id="apply-auto-recommendation-btn" type="button">Подставить в рекомендацию менеджера</button>
+                <button class="btn btn-secondary" id="apply-auto-decision-btn" type="button">Подставить в решение по итогам</button>
+              </div>
+            </div>
+            <div class="auto-summary">
+              <div class="section-label">Автоматически собранные риски</div>
+              <div id="auto-risk-container" class="summary-note">Пока нет пунктов со статусом `Нет`, `Частично` или блокирующих рисков.</div>
+            </div>
+          </div>
+      </section>
+
+      <section class="section" id="interpretation">
+          <div class="section-head">
+            <div>
+              <div class="section-label">Интерпретация</div>
+              <h2>Практическое правило интерпретации</h2>
+            </div>
+            <div class="section-note">Как трактовать результаты заполнения</div>
+          </div>
+          <div class="note-card">
+            <ul class="hint-list" style="color: var(--muted);">
+              <li>Если есть хотя бы один статус <code>Нет</code> в блоках <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> или <code>7</code>, запуск должен отдельно выноситься на решение <code>Не готов к запуску</code> или <code>Готов к запуску с условиями</code>.</li>
+              <li>Если протоколы тестирования положительные, но по внутренним замечаниям банка нет прозрачности, чек-лист не считается пройденным.</li>
+              <li>Если после тестирования были изменения, но нет подтверждения повторной проверки, чек-лист не считается пройденным.</li>
+              <li>Если банк не готов письменно подтвердить актуальность своих результатов тестирования, это считается отдельным риском запуска.</li>
+            </ul>
+          </div>
+      </section>
+
+      <section class="section" id="final-wording">
+          <div class="section-head">
+            <div>
+              <div class="section-label">Короткая форма управленческого вывода</div>
+              <h2>Итоговая формулировка</h2>
+            </div>
+            <div class="section-note">Можно использовать в письме или протоколе</div>
+          </div>
+          <div class="note-card">
+            <p>По состоянию на дату проверки банк подтверждает или не подтверждает, что ранее согласованная готовность к запуску остается актуальной. Решение принимается не только по факту прохождения тестов в прошлом, но и по подтвержденной актуальности этих результатов на текущий момент.</p>
+          </div>
+          <p class="footer-note">Если нужно передать итог вовне, рекомендуется сохранить заполненный результат в JSON и отдельно выгрузить страницу в PDF.</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "bank-go-live-checklist-v2";
+
+    const metaFields = [
+      { key: "project", label: "Проект", type: "text" },
+      { key: "bank", label: "Банк", type: "text" },
+      { key: "plannedDate", label: "Плановая дата запуска", type: "date" },
+      { key: "checklistDate", label: "Дата заполнения чек-листа", type: "date" },
+      { key: "version", label: "Версия чек-листа", type: "text" },
+      { key: "pm", label: "Менеджер проекта", type: "text" },
+      { key: "bankRep", label: "Представитель банка", type: "text" },
+        {
+          key: "decision",
+          label: "Решение по итогам",
+          type: "select",
+          options: ["", "Готов к запуску", "Готов к запуску с условиями", "Не готов к запуску"]
+        }
+      ];
+
+      const checklistSections = [
+        {
+          id: "1",
+          title: "Актуальность ранее завершенного тестирования",
+          note: "Подтверждение, что ранее сданные результаты тестирования остаются актуальными на дату старта",
+          firstColumn: "Контрольный вопрос",
+          rows: [
+            ["1.1", "Подтверждено, что протоколы тестирования по всем направлениям остаются актуальными на дату запуска"],
+            ["1.2", "По направлениям, где были изменения после тестирования, выполнена повторная проверка"],
+            ["1.3", "По другим критичным направлениям банка подтверждено отсутствие новых замечаний после завершения тестов"],
+            ["1.4", "По AML, если модуль в контуре запуска, подтверждено, что результаты тестирования актуальны (опционально)"],
+            ["1.5", "По ИБ, МБ, если модуль в контуре запуска, подтверждено, что результаты тестирования актуальны (опционально)"],
+            ["1.6", "По интеграциям с внешними системами, если интеграции в контуре запуска, подтверждено, что результаты тестирования актуальны (опционально)"],
+            ["1.7", "Произведен обмен сообщениями с основными корреспондентами банка по основным валютам"]
+          ]
+        },
+        {
+          id: "2",
+          title: "Изменения после завершения тестирования",
+          note: "Контроль поздних изменений перед запуском",
+          firstColumn: "Контрольный вопрос",
+          rows: [
+            ["2.1", "После завершения тестирования не менялись критичные настройки маршрутизации, обработки, лимитов, ролей или интеграций"],
+            ["2.2", "Если изменения были, по ним есть перечень, дата, причина и владелец"],
+            ["2.3", "Все изменения после тестирования были согласованы сторонами"],
+            ["2.4", "По изменениям после тестирования проведена повторная проверка затронутых сценариев"],
+            ["2.5", "Нет незарегистрированных или экспериментальных изменений, выполненных банком \"точечно перед запуском\""]
+          ]
+        },
+        {
+          id: "3",
+          title: "Внутренние замечания банка",
+          note: "Замечания, которые могли не попасть в TS",
+          firstColumn: "Контрольный вопрос",
+          rows: [
+            ["3.1", "У банка нет внутренних блокирующих замечаний бизнеса, не отраженных в TS"],
+            ["3.2", "Все замечания, которые могут повлиять на запуск, классифицированы как блокирующие или неблокирующие"],
+            ["3.3", "По всем неблокирующим замечаниям зафиксировано, почему они не мешают запуску"],
+            ["3.4", "Нет новых массовых замечаний, появившихся после последнего цикла тестирования"]
+          ]
+        },
+        {
+          id: "4",
+          title: "Подтверждение по критичным функциональным контурам",
+          note: "Контуры, по которым нужно отдельное подтверждение",
+          firstColumn: "Контур / направление",
+          rows: [
+            ["4.1", "Платежи"],
+            ["4.2", "Международные операции"],
+            ["4.3", "AML / комплаенс"],
+            ["4.4", "Интернет банк, Мобильный банк (опционально)"],
+            ["4.5", "Казначейские операции (опционально)"],
+            ["4.6", "Операционный блок"],
+            ["4.7", "Нестандартные маршруты"],
+            ["4.8", "Кастомизации банка"],
+            ["4.9", "Интеграции в контуре запуска (опционально)"],
+            ["4.10", "Права, роли, доступы"],
+            ["4.11", "Отчетность / печатные формы / выгрузки"],
+            ["4.12", "Иные критичные контуры проекта"]
+          ]
+        },
+        {
+          id: "5",
+          title: "Готовность операционного запуска",
+          note: "Готовность бизнеса и ИТ банка к работе в продуктиве",
+          firstColumn: "Контрольный вопрос",
+          rows: [
+            ["5.1", "Банк подтверждает готовность операционных подразделений к работе в продуктиве"],
+            ["5.2", "Назначены ответственные на день запуска со стороны бизнеса и ИТ банка"],
+            ["5.3", "Подтверждены доступы, роли и рабочие места для участников запуска"],
+            ["5.4", "Подтвержден порядок действий в день запуска и после запуска"],
+            ["5.5", "Подтвержден порядок эскалации при инцидентах в день запуска"]
+          ]
+        },
+        {
+          id: "6",
+          title: "Данные, среда и техническая готовность банка",
+          note: "Проверка технического контура запуска",
+          firstColumn: "Контрольный вопрос",
+          rows: [
+            ["6.1", "Среда, в которой будет запуск, соответствует среде, где подтверждалось тестирование, либо различия формально зафиксированы"],
+            ["6.2", "Миграция данных завершена в требуемом объеме"],
+            ["6.3", "Нет известных проблем с качеством данных, блокирующих запуск"],
+            ["6.4", "Интеграционные каналы, обмены и регламентные задания готовы к запуску"],
+            ["6.5", "Запланированы работы на стороне SWIFT Alliance"],
+            ["6.6", "Произведен обмен ключами с корреспондентами банка"],
+            ["6.7", "У банка нет технических ограничений, из-за которых запуск должен быть перенесен"]
+          ]
+        },
+        {
+          id: "7",
+          title: "Управленческое подтверждение банка",
+          note: "Кто принимает решение и как оно фиксируется",
+          firstColumn: "Контрольный вопрос",
+          rows: [
+            ["7.1", "Подтверждено, кто принимает финальное решение о запуске со стороны банка"],
+            ["7.2", "Указанное лицо ознакомлено с актуальным статусом проекта и открытыми рисками"],
+            ["7.3", "Указанное лицо подтверждает, что на текущий момент запуск возможен"],
+            ["7.4", "Если запуск возможен с условиями, эти условия явно перечислены и согласованы"],
+            ["7.5", "Решение банка по запуску зафиксировано письменно"]
+          ]
+        },
+        {
+          id: "8",
+          title: "Открытые вопросы и условия запуска",
+          note: "Список рисков и условий запуска",
+          firstColumn: "Вопрос / риск",
+          riskMode: true,
+          rows: [
+            ["1", ""],
+            ["2", ""],
+            ["3", ""],
+            ["4", ""]
+          ]
+        }
+      ];
+
+    const resultFields = [
+      {
+        key: "testsActual",
+        label: "Ранее сданные результаты тестирования на дату запуска",
+        type: "select",
+        options: ["", "актуальны", "актуальны с условиями", "неактуальны"]
+      },
+      {
+        key: "bankBlockers",
+        label: "Внутренние блокеры банка",
+        type: "select",
+        options: ["", "отсутствуют", "есть"]
+      },
+      {
+        key: "changesAfterTests",
+        label: "Изменения после тестирования",
+        type: "select",
+        options: ["", "отсутствуют", "есть контролируемые", "есть неконтролируемые"]
+      },
+        {
+          key: "pmRecommendation",
+          label: "Рекомендация менеджера",
+          type: "select",
+          options: ["", "Готов к запуску", "Готов к запуску с условиями", "Не готов к запуску"]
+        },
+      {
+        key: "pmComment",
+        label: "Комментарий менеджера",
+        type: "textarea"
+      }
+    ];
+
+    const signatureFields = [
+      { prefix: "bank", title: "Банк" },
+      { prefix: "vendor", title: "Подрядчик" }
+    ];
+
+    function defaultState() {
+      const state = {
+        meta: {},
+        results: {},
+        sections: {},
+        signatures: {}
+      };
+
+      metaFields.forEach(field => { state.meta[field.key] = ""; });
+      resultFields.forEach(field => { state.results[field.key] = ""; });
+
+      checklistSections.forEach(section => {
+        state.sections[section.id] = {};
+        section.rows.forEach(([rowId]) => {
+          if (section.riskMode) {
+            state.sections[section.id][rowId] = { risk: "", blocks: "", plan: "", due: "", owner: "" };
+          } else {
+            state.sections[section.id][rowId] = { status: "", comment: "", owner: "" };
+          }
+        });
+      });
+
+      signatureFields.forEach(item => {
+        state.signatures[item.prefix] = { fio: "", role: "", decision: "", date: "" };
+      });
+
+      return state;
+    }
+
+    let formState = loadState();
+
+    const criticalSectionIds = new Set(["1", "2", "3", "4", "7"]);
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        return mergeState(defaultState(), JSON.parse(raw));
+      } catch {
+        return defaultState();
+      }
+    }
+
+    function mergeState(base, incoming) {
+      return {
+        meta: { ...base.meta, ...(incoming.meta || {}) },
+        results: { ...base.results, ...(incoming.results || {}) },
+        sections: Object.keys(base.sections).reduce((acc, sectionId) => {
+          acc[sectionId] = {};
+          Object.keys(base.sections[sectionId]).forEach(rowId => {
+            acc[sectionId][rowId] = {
+              ...base.sections[sectionId][rowId],
+              ...((incoming.sections || {})[sectionId] || {})[rowId]
+            };
+          });
+          return acc;
+        }, {}),
+        signatures: Object.keys(base.signatures).reduce((acc, key) => {
+          acc[key] = { ...base.signatures[key], ...((incoming.signatures || {})[key] || {}) };
+          return acc;
+        }, {})
+      };
+    }
+
+    function saveState(showMessage = false) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(formState));
+      if (showMessage) {
+        const indicator = document.getElementById("save-indicator");
+        indicator.textContent = "Сохранено в браузере";
+        setTimeout(() => { indicator.textContent = "Автосохранение включено"; }, 1800);
+      }
+    }
+
+    function displayValue(value) {
+      return value && String(value).trim() ? String(value).trim() : "-";
+    }
+
+    function refreshMetaPreview() {
+      const meta = formState.meta;
+      document.getElementById("hero-project").textContent = displayValue(meta.project);
+      document.getElementById("hero-bank").textContent = displayValue(meta.bank);
+      document.getElementById("hero-planned-date").textContent = displayValue(meta.plannedDate);
+      document.getElementById("hero-checklist-date").textContent = displayValue(meta.checklistDate);
+      document.getElementById("toolbar-project").textContent = displayValue(meta.project);
+      document.getElementById("toolbar-bank").textContent = displayValue(meta.bank);
+      document.getElementById("toolbar-planned-date").textContent = displayValue(meta.plannedDate);
+      document.getElementById("toolbar-checklist-date").textContent = displayValue(meta.checklistDate);
+    }
+
+    function renderMeta() {
+      const container = document.getElementById("meta-grid");
+      container.innerHTML = metaFields.map(field => {
+        const control = renderFieldControl(`meta-${field.key}`, field, formState.meta[field.key], "meta");
+        return `
+          <div class="field-card">
+            <div class="field-label">${field.label}</div>
+            ${control}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderSections() {
+      const container = document.getElementById("dynamic-sections");
+      container.innerHTML = checklistSections.map(section => `
+        <section class="section" style="margin-top:16px; padding:20px 0 0; border:none; box-shadow:none; background:transparent;">
+          <div class="section-head" style="padding:0 0 0 0; margin-bottom:12px;">
+            <div>
+              <div class="section-label">Раздел ${section.id}</div>
+              <h3>${section.title}</h3>
+            </div>
+            <div class="section-note">${section.note}</div>
+          </div>
+          <div class="table-wrap">${renderSectionTable(section)}</div>
+        </section>
+      `).join("");
+    }
+
+    function renderSectionTable(section) {
+      if (section.riskMode) {
+        return `
+          <table class="risk-table">
+            <colgroup>
+              <col class="col-id" />
+              <col class="col-risk-question" />
+              <col class="col-risk-blocks" />
+              <col class="col-risk-plan" />
+              <col class="col-risk-due" />
+              <col class="col-risk-owner" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>${section.firstColumn}</th>
+                <th>Блокирует запуск</th>
+                <th>План закрытия</th>
+                <th>Срок</th>
+                <th>Владелец</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${section.rows.map(([rowId]) => renderRiskRow(section.id, rowId)).join("")}
+            </tbody>
+          </table>
+        `;
+      }
+
+      return `
+        <table class="check-table-standard">
+          <colgroup>
+            <col class="col-id" />
+            <col class="col-question" />
+            <col class="col-status" />
+            <col class="col-comment" />
+            <col class="col-owner" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>${section.firstColumn}</th>
+              <th>Статус</th>
+              <th>Комментарий</th>
+              <th>Владелец</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${section.rows.map(([rowId, text]) => renderStandardRow(section.id, rowId, text)).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function renderStandardRow(sectionId, rowId, text) {
+      const row = formState.sections[sectionId][rowId];
+        const cssClass = row.status === "Да" ? "row-ok" : row.status === "Частично" ? "row-partial" : row.status === "Нет" ? "row-no" : row.status === "Не релевантно" ? "row-na" : "";
+      return `
+        <tr class="${cssClass}">
+          <td class="id-cell">${rowId}</td>
+          <td>${text}</td>
+          <td>
+            <select class="field-select" data-path="sections.${sectionId}.${rowId}.status">
+                <option value="" ${row.status === "" ? "selected" : ""}></option>
+                <option value="Да" ${row.status === "Да" ? "selected" : ""}>Да</option>
+                <option value="Частично" ${row.status === "Частично" ? "selected" : ""}>Частично</option>
+                <option value="Нет" ${row.status === "Нет" ? "selected" : ""}>Нет</option>
+                <option value="Не релевантно" ${row.status === "Не релевантно" ? "selected" : ""}>Не релевантно</option>
+              </select>
+          </td>
+            <td><textarea class="field-textarea" data-path="sections.${sectionId}.${rowId}.comment">${escapeHtml(row.comment)}</textarea></td>
+            <td><textarea class="field-textarea owner-textarea" data-path="sections.${sectionId}.${rowId}.owner">${escapeHtml(row.owner)}</textarea></td>
+        </tr>
+      `;
+    }
+
+    function renderRiskRow(sectionId, rowId) {
+      const row = formState.sections[sectionId][rowId];
+      return `
+        <tr>
+          <td class="id-cell">${rowId}</td>
+          <td><textarea class="field-textarea" data-path="sections.${sectionId}.${rowId}.risk">${escapeHtml(row.risk)}</textarea></td>
+          <td>
+            <select class="field-select" data-path="sections.${sectionId}.${rowId}.blocks">
+              <option value="" ${row.blocks === "" ? "selected" : ""}></option>
+              <option value="Да" ${row.blocks === "Да" ? "selected" : ""}>Да</option>
+              <option value="Нет" ${row.blocks === "Нет" ? "selected" : ""}>Нет</option>
+            </select>
+          </td>
+          <td><textarea class="field-textarea" data-path="sections.${sectionId}.${rowId}.plan">${escapeHtml(row.plan)}</textarea></td>
+          <td><input class="field-input" type="date" data-path="sections.${sectionId}.${rowId}.due" value="${escapeAttribute(row.due)}" /></td>
+            <td><textarea class="field-textarea owner-textarea" data-path="sections.${sectionId}.${rowId}.owner">${escapeHtml(row.owner)}</textarea></td>
+        </tr>
+      `;
+    }
+
+    function renderResults() {
+      const container = document.getElementById("result-grid");
+      container.innerHTML = `
+        <div class="field-card">
+          <div class="field-label">Краткий вывод</div>
+          ${resultFields.filter(f => f.key !== "pmComment").map(field => `
+            <div style="margin-top:12px;">
+              <div class="field-label" style="letter-spacing:0.04em;">${field.label}</div>
+              ${renderFieldControl(`result-${field.key}`, field, formState.results[field.key], "results")}
+            </div>
+          `).join("")}
+        </div>
+        <div class="field-card">
+          <div class="field-label">Комментарий менеджера</div>
+          ${renderFieldControl("result-pmComment", { key: "pmComment", type: "textarea" }, formState.results.pmComment, "results")}
+        </div>
+      `;
+    }
+
+    function renderSignatures() {
+      const container = document.getElementById("signature-grid");
+      container.innerHTML = signatureFields.map(item => {
+        const data = formState.signatures[item.prefix];
+        return `
+          <div class="field-card">
+            <div class="field-label">${item.title}</div>
+            <div style="margin-top:12px;">
+              <div class="field-label" style="letter-spacing:0.04em;">ФИО</div>
+              <input class="field-input" data-path="signatures.${item.prefix}.fio" value="${escapeAttribute(data.fio)}" />
+            </div>
+            <div style="margin-top:12px;">
+              <div class="field-label" style="letter-spacing:0.04em;">Роль</div>
+              <input class="field-input" data-path="signatures.${item.prefix}.role" value="${escapeAttribute(data.role)}" />
+            </div>
+            <div style="margin-top:12px;">
+              <div class="field-label" style="letter-spacing:0.04em;">Решение</div>
+              <input class="field-input" data-path="signatures.${item.prefix}.decision" value="${escapeAttribute(data.decision)}" />
+            </div>
+            <div style="margin-top:12px;">
+              <div class="field-label" style="letter-spacing:0.04em;">Дата</div>
+              <input class="field-input" type="date" data-path="signatures.${item.prefix}.date" value="${escapeAttribute(data.date)}" />
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderFieldControl(id, field, value, rootKey) {
+      const path = `${rootKey}.${field.key}`;
+      if (field.type === "select") {
+        return `
+          <select id="${id}" class="field-select" data-path="${path}">
+            ${field.options.map(option => `<option value="${escapeAttribute(option)}" ${value === option ? "selected" : ""}>${option}</option>`).join("")}
+          </select>
+        `;
+      }
+      if (field.type === "textarea") {
+        return `<textarea id="${id}" class="field-textarea" data-path="${path}">${escapeHtml(value || "")}</textarea>`;
+      }
+      return `<input id="${id}" class="field-input" type="${field.type || "text"}" data-path="${path}" value="${escapeAttribute(value || "")}" />`;
+    }
+
+    function bindInputs() {
+      document.querySelectorAll("[data-path]").forEach(element => {
+        element.addEventListener("input", handleFieldChange);
+        element.addEventListener("change", handleFieldChange);
+      });
+    }
+
+    function syncStateFromDom() {
+      document.querySelectorAll("[data-path]").forEach(element => {
+        setByPath(formState, element.dataset.path, element.value);
+      });
+    }
+
+    function handleFieldChange(event) {
+      const path = event.target.dataset.path;
+      setByPath(formState, path, event.target.value);
+      saveState();
+      refreshDerived();
+      if (path.startsWith("sections.") && event.target.tagName === "SELECT" && path.endsWith(".status")) {
+        const tableContainer = event.target.closest(".table-wrap");
+        if (tableContainer) {
+          renderSections();
+          bindInputs();
+        }
+      }
+    }
+
+    function setByPath(target, path, value) {
+      if (path.startsWith("sections.")) {
+        const parts = path.split(".");
+        const sectionId = parts[1];
+        const field = parts[parts.length - 1];
+        const rowId = parts.slice(2, -1).join(".");
+        target.sections[sectionId][rowId][field] = value;
+        return;
+      }
+
+      const parts = path.split(".");
+      let current = target;
+      for (let i = 0; i < parts.length - 1; i++) {
+        current = current[parts[i]];
+      }
+      current[parts[parts.length - 1]] = value;
+    }
+
+    function refreshDerived() {
+        let ok = 0;
+        let partial = 0;
+        let no = 0;
+        let na = 0;
+        let filled = 0;
+      let total = 0;
+
+      checklistSections.forEach(section => {
+        if (section.riskMode) return;
+        section.rows.forEach(([rowId]) => {
+          total += 1;
+            const status = formState.sections[section.id][rowId].status;
+            if (status) filled += 1;
+            if (status === "Да") ok += 1;
+            if (status === "Частично") partial += 1;
+            if (status === "Нет") no += 1;
+            if (status === "Не релевантно") na += 1;
+          });
+        });
+
+        document.getElementById("status-filled").textContent = filled;
+        document.getElementById("status-no").textContent = no;
+        document.getElementById("status-partial").textContent = partial;
+        document.getElementById("badge-ok-count").textContent = ok;
+        document.getElementById("badge-partial-count").textContent = partial;
+        document.getElementById("badge-no-count").textContent = no;
+        document.getElementById("badge-na-count").textContent = na;
+        document.getElementById("badge-empty-count").textContent = total - filled;
+        refreshMetaPreview();
+        renderAutoSummary();
+      }
+
+    function deriveAutoDecision() {
+      const riskItems = [];
+      let hasCriticalNo = false;
+      let hasAnyNo = false;
+      let hasAnyPartial = false;
+      let hasBlockingRisk = false;
+      let filled = 0;
+      let total = 0;
+
+      checklistSections.forEach(section => {
+        if (section.riskMode) {
+          section.rows.forEach(([rowId]) => {
+            const row = formState.sections[section.id][rowId];
+            if (row.risk || row.blocks || row.plan || row.due || row.owner) {
+              const blocks = row.blocks === "Да";
+              if (blocks) {
+                hasBlockingRisk = true;
+                riskItems.push({
+                  sectionId: section.id,
+                  sectionTitle: section.title,
+                  rowId,
+                  text: row.risk || "Открытый вопрос / риск",
+                  status: "Блокирует запуск",
+                  comment: row.plan,
+                  owner: row.owner
+                });
+              } else if (row.risk) {
+                riskItems.push({
+                  sectionId: section.id,
+                  sectionTitle: section.title,
+                  rowId,
+                  text: row.risk,
+                  status: row.blocks ? `Блокирует запуск: ${row.blocks}` : "Открытый риск",
+                  comment: row.plan,
+                  owner: row.owner
+                });
+              }
+            }
+          });
+          return;
+        }
+
+        section.rows.forEach(([rowId, text]) => {
+          total += 1;
+          const row = formState.sections[section.id][rowId];
+          if (row.status) filled += 1;
+          if (row.status === "Нет") {
+            hasAnyNo = true;
+            if (criticalSectionIds.has(section.id)) hasCriticalNo = true;
+            riskItems.push({
+              sectionId: section.id,
+              sectionTitle: section.title,
+              rowId,
+              text,
+              status: row.status,
+              comment: row.comment,
+              owner: row.owner
+            });
+          }
+          if (row.status === "Частично") {
+            hasAnyPartial = true;
+            riskItems.push({
+              sectionId: section.id,
+              sectionTitle: section.title,
+              rowId,
+              text,
+              status: row.status,
+              comment: row.comment,
+              owner: row.owner
+            });
+          }
+        });
+      });
+
+      let decision = "Недостаточно данных";
+      let tone = "neutral";
+      let note = "Заполните статусы по чек-листу, чтобы получить автоматическую рекомендацию.";
+
+      if (hasCriticalNo || hasBlockingRisk) {
+          decision = "Не готов к запуску";
+          tone = "risk";
+          note = "Обнаружены блокирующие риски или статусы `Нет` в критичных разделах 1, 2, 3, 4 или 7.";
+        } else if (hasAnyNo || hasAnyPartial) {
+          decision = "Готов к запуску с условиями";
+          tone = "warn";
+          note = "Есть пункты со статусом `Нет` или `Частично`, которые нужно явно вынести в условия запуска.";
+        } else if (filled === total && total > 0) {
+          decision = "Готов к запуску";
+          tone = "ok";
+          note = "Все стандартные пункты заполнены без блокирующих и условных статусов.";
+      } else if (filled > 0) {
+        decision = "Недостаточно данных";
+        tone = "neutral";
+        note = "Часть пунктов уже заполнена, но для рекомендации не хватает полного набора статусов.";
+      }
+
+      return { decision, tone, note, riskItems };
+    }
+
+    function renderAutoSummary() {
+      const summary = deriveAutoDecision();
+      const decisionEl = document.getElementById("auto-decision-value");
+      const noteEl = document.getElementById("auto-decision-note");
+      const riskContainer = document.getElementById("auto-risk-container");
+
+      decisionEl.textContent = summary.decision;
+      decisionEl.className = `auto-summary-value ${summary.tone}`;
+      noteEl.textContent = summary.note;
+
+      if (!summary.riskItems.length) {
+        riskContainer.textContent = "Пока нет пунктов со статусом `Нет`, `Частично` или блокирующих рисков.";
+        return;
+      }
+
+      riskContainer.innerHTML = `
+        <ol class="auto-risk-list">
+          ${summary.riskItems.map(item => `
+            <li>
+              <strong>${item.rowId}. ${escapeHtml(item.text)}</strong><br />
+              <span class="muted">${escapeHtml(item.sectionTitle)} • ${escapeHtml(item.status)}</span>
+              ${item.comment ? `<br /><span class="muted">Комментарий: ${escapeHtml(item.comment)}</span>` : ""}
+              ${item.owner ? `<br /><span class="muted">Владелец: ${escapeHtml(item.owner)}</span>` : ""}
+            </li>
+          `).join("")}
+        </ol>
+      `;
+    }
+
+    function buildRisksExport() {
+      const summary = deriveAutoDecision();
+      const lines = [];
+      const meta = formState.meta;
+
+      lines.push("Итоговые риски по чек-листу актуальности готовности банка к запуску");
+      lines.push("");
+      lines.push(`Проект: ${meta.project || "-"}`);
+      lines.push(`Банк: ${meta.bank || "-"}`);
+      lines.push(`Плановая дата запуска: ${meta.plannedDate || "-"}`);
+      lines.push(`Дата заполнения чек-листа: ${meta.checklistDate || "-"}`);
+      lines.push(`Менеджер проекта: ${meta.pm || "-"}`);
+      lines.push(`Представитель банка: ${meta.bankRep || "-"}`);
+      lines.push("");
+      lines.push(`Автоматическая рекомендация: ${summary.decision}`);
+      lines.push(`Комментарий: ${summary.note}`);
+      lines.push("");
+
+      if (!summary.riskItems.length) {
+        lines.push("Проблемные пункты отсутствуют.");
+      } else {
+        lines.push("Проблемные пункты:");
+        lines.push("");
+        summary.riskItems.forEach((item, index) => {
+          lines.push(`${index + 1}. [${item.sectionId}.${item.rowId}] ${item.sectionTitle}`);
+          lines.push(`   Пункт: ${item.text}`);
+          lines.push(`   Статус: ${item.status}`);
+          if (item.comment) lines.push(`   Комментарий: ${item.comment}`);
+          if (item.owner) lines.push(`   Владелец: ${item.owner}`);
+          lines.push("");
+        });
+      }
+
+      return lines.join("\n");
+    }
+
+    function downloadRisks() {
+      const content = buildRisksExport();
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+      link.href = URL.createObjectURL(blob);
+      link.download = `itogovye-riski-checklista-${date}.txt`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function escapeAttribute(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("\"", "&quot;")
+        .replaceAll("<", "&lt;");
+    }
+
+    function downloadJson() {
+      const blob = new Blob([JSON.stringify(formState, null, 2)], { type: "application/json;charset=utf-8" });
+      const link = document.createElement("a");
+      const date = new Date().toISOString().slice(0, 10);
+      link.href = URL.createObjectURL(blob);
+      link.download = `checklist-gotovnosti-banka-${date}.json`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function uploadJson(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          formState = mergeState(defaultState(), parsed);
+          renderAll();
+          saveState(true);
+        } catch {
+          alert("Не удалось прочитать JSON-файл.");
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    function clearForm() {
+      if (!confirm("Очистить все заполненные данные в форме?")) return;
+      formState = defaultState();
+      renderAll();
+      saveState(true);
+    }
+
+    function renderAll() {
+      renderMeta();
+      renderSections();
+      renderResults();
+      renderSignatures();
+      bindInputs();
+      refreshDerived();
+    }
+
+    document.getElementById("save-local-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      saveState(true);
+    });
+    document.getElementById("download-json-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      downloadJson();
+    });
+    document.getElementById("download-risks-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      downloadRisks();
+    });
+    document.getElementById("export-pdf-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      window.print();
+    });
+    document.getElementById("clear-btn").addEventListener("click", clearForm);
+    document.getElementById("apply-auto-recommendation-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      const summary = deriveAutoDecision();
+      formState.results.pmRecommendation = summary.decision === "Недостаточно данных" ? "" : summary.decision;
+      renderResults();
+      bindInputs();
+      saveState(true);
+      refreshDerived();
+    });
+    document.getElementById("apply-auto-decision-btn").addEventListener("click", () => {
+      syncStateFromDom();
+      refreshDerived();
+      const summary = deriveAutoDecision();
+      formState.meta.decision = summary.decision === "Недостаточно данных" ? "" : summary.decision;
+      renderMeta();
+      bindInputs();
+      saveState(true);
+      refreshDerived();
+    });
+    document.getElementById("upload-json").addEventListener("change", event => {
+      const file = event.target.files[0];
+      if (file) uploadJson(file);
+      event.target.value = "";
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
