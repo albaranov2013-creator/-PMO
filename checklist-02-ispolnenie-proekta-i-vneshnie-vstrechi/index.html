@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Чек-лист 02 - Исполнение проекта и внешние встречи</title>
+  <style>
+    :root {
+      --bg: #051b32;
+      --bg-2: #014997;
+      --panel: rgba(255,255,255,0.07);
+      --panel-2: rgba(255,255,255,0.11);
+      --line: rgba(255,255,255,0.14);
+      --text: #ffffff;
+      --muted: #bfd1e2;
+      --accent: #01acff;
+      --ok: #00b050;
+      --warn: #fbae40;
+      --risk: #ff8e8e;
+      --shadow: 0 22px 50px rgba(0,0,0,0.26);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(1, 172, 255, 0.18), transparent 20%),
+        linear-gradient(135deg, #051b32 0%, #08325a 55%, #014997 100%);
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .hero {
+      padding: 26px 28px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.03;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      padding: 22px 24px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.55;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .blocks {
+      display: grid;
+      gap: 16px;
+    }
+
+    .block-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .block-head h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .stop {
+      border-color: rgba(255, 142, 142, 0.28);
+      background: rgba(255, 142, 142, 0.1);
+    }
+
+    .stop h2,
+    .stop li {
+      color: #fff2f2;
+    }
+
+    .stop p,
+    .stop .tag {
+      color: #ffd4d4;
+    }
+
+    .criteria {
+      border-color: rgba(0, 176, 80, 0.24);
+      background: rgba(0, 176, 80, 0.08);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      border: 1px dashed rgba(1, 172, 255, 0.32);
+      color: var(--muted);
+      background: rgba(1, 172, 255, 0.07);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">Checklist / Account / PMO / Delivery</div>
+      <h1>Чек-лист 02. Исполнение проекта и внешние встречи</h1>
+      <div class="meta">Дата подготовки: <code>02.07.2026</code></div>
+    </section>
+
+    <section class="layout">
+      <article class="card">
+        <h2>Когда использовать</h2>
+        <ul>
+          <li>Перед регулярной внешней статусной встречей.</li>
+          <li>На еженедельном синке <code>аккаунт + PM</code>.</li>
+          <li>На review проблемного проекта.</li>
+          <li>На встрече по спорным требованиям клиента.</li>
+          <li>На клиентской эскалации.</li>
+        </ul>
+      </article>
+
+      <article class="card criteria">
+        <h2>Критерий прохождения</h2>
+        <ul>
+          <li>У компании есть единая позиция перед выходом к клиенту.</li>
+          <li>Спорные темы названы заранее.</li>
+          <li>После встречи можно зафиксировать конкретные решения, а не общие формулировки.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="blocks">
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 1. Синхронизация перед встречей</h3>
+          <span class="tag">Подготовка</span>
+        </div>
+        <ul>
+          <li>Синк <code>аккаунт + PM</code> реально проведен.</li>
+          <li>На синке подтвержден фактический статус проекта.</li>
+          <li>Согласовано, что именно говорим клиенту по срокам, объему и рискам.</li>
+          <li>Понятно, кто ведет встречу.</li>
+          <li>Понятно, кто фиксирует итоги и сроки.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 2. Статус и проблемные зоны</h3>
+          <span class="tag">Статус</span>
+        </div>
+        <ul>
+          <li>Есть короткий понятный статус проекта.</li>
+          <li>Понятны текущая фаза и следующий обязательный рубеж.</li>
+          <li>Выделены красные зоны, которые нельзя замалчивать.</li>
+          <li>Понятны блокеры на стороне клиента.</li>
+          <li>Понятны блокеры на стороне delivery.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 3. Спорные требования и scope</h3>
+          <span class="tag">Scope</span>
+        </div>
+        <ul>
+          <li>Все новые требования клиента собраны в явный перечень.</li>
+          <li>По каждому спорному пункту есть проектная оценка влияния.</li>
+          <li>По каждому спорному пункту есть коммерческая позиция.</li>
+          <li>Понятно, что входит в стоимость.</li>
+          <li>Понятно, что считается отдельно или переносится.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 4. Качество клиентского контура</h3>
+          <span class="tag">Контур клиента</span>
+        </div>
+        <ul>
+          <li>Есть доступ к нужным ЛПР и рабочим ролям клиента.</li>
+          <li>Клиент не живет с параллельной картиной сроков и обязательств.</li>
+          <li>Значимые договоренности фиксируются в общем контуре.</li>
+          <li>Клиентские эскалации не остаются на PM без аккаунта.</li>
+          <li>Есть подтверждение, что следующий обязательный шаг клиента понятен и принят.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 5. Выходы встречи</h3>
+          <span class="tag">Результат</span>
+        </div>
+        <ul>
+          <li>Есть протокол с решениями, сроками и ответственными.</li>
+          <li>Есть отдельная фиксация спорных вопросов.</li>
+          <li>Есть дата следующего обязательного события.</li>
+          <li>Есть решение, нужен ли дополнительный review / эскалация.</li>
+          <li>Данные обновлены в сводном контрольном реестре.</li>
+        </ul>
+      </article>
+
+      <article class="card stop">
+        <div class="block-head">
+          <h3>Stop-факторы</h3>
+          <span class="tag">Критично</span>
+        </div>
+        <p>Встреча считается некачественной, если:</p>
+        <ul style="margin-top:14px;">
+          <li>Она прошла без синка <code>аккаунт + PM</code>.</li>
+          <li>Стороны проговорили разные версии статуса.</li>
+          <li>Спорный scope остался без решения.</li>
+          <li>Клиент ушел со встречи с ожиданиями, которых delivery не подтверждает.</li>
+          <li>Итоги не зафиксированы письменно.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="footer-note">
+      Чек-лист переведен в HTML-страницу для просмотра в браузере. Если хотите, мой господин, я следующим шагом
+      так же переведу `Чек-лист 01` и `Чек-лист 03`, чтобы у Вас был единый комплект в одном формате.
+    </section>
+  </main>
+</body>
+</html>
