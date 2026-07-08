@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Чек-лист 01 - Старт проекта и передача в delivery</title>
+  <style>
+    :root {
+      --bg: #051b32;
+      --bg-2: #014997;
+      --panel: rgba(255,255,255,0.07);
+      --line: rgba(255,255,255,0.14);
+      --text: #ffffff;
+      --muted: #bfd1e2;
+      --accent: #01acff;
+      --ok: #00b050;
+      --risk: #ff8e8e;
+      --shadow: 0 22px 50px rgba(0,0,0,0.26);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(1, 172, 255, 0.18), transparent 20%),
+        linear-gradient(135deg, #051b32 0%, #08325a 55%, #014997 100%);
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .hero {
+      padding: 26px 28px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.03;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      padding: 22px 24px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.55;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .blocks {
+      display: grid;
+      gap: 16px;
+    }
+
+    .block-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .block-head h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .stop {
+      border-color: rgba(255, 142, 142, 0.28);
+      background: rgba(255, 142, 142, 0.1);
+    }
+
+    .stop h2,
+    .stop li {
+      color: #fff2f2;
+    }
+
+    .stop p,
+    .stop .tag {
+      color: #ffd4d4;
+    }
+
+    .criteria {
+      border-color: rgba(0, 176, 80, 0.24);
+      background: rgba(0, 176, 80, 0.08);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      border: 1px dashed rgba(1, 172, 255, 0.32);
+      color: var(--muted);
+      background: rgba(1, 172, 255, 0.07);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">Checklist / Project Start / Delivery Handover</div>
+      <h1>Чек-лист 01. Старт проекта и передача в delivery</h1>
+      <div class="meta">Дата подготовки: <code>02.07.2026</code></div>
+    </section>
+
+    <section class="layout">
+      <article class="card">
+        <h2>Когда использовать</h2>
+        <ul>
+          <li>Перед внутренней передачей проекта из коммерческого контура в delivery.</li>
+          <li>Перед внутренним kick-off.</li>
+          <li>Перед клиентским kick-off.</li>
+          <li>При review готовности проекта к старту.</li>
+        </ul>
+      </article>
+
+      <article class="card criteria">
+        <h2>Критерий прохождения</h2>
+        <ul>
+          <li>Нет критичных незакрытых пунктов.</li>
+          <li>Есть единый стартовый пакет для аккаунта, PM и PMO.</li>
+          <li>Клиентский контур описан не хуже проектного.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="blocks">
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 1. Базовая готовность клиента</h3>
+          <span class="tag">Клиент</span>
+        </div>
+        <ul>
+          <li>Подтверждена плановая дата старта.</li>
+          <li>Назначен проектный менеджер со стороны клиента.</li>
+          <li>Понятен состав ключевых ролей клиента.</li>
+          <li>Понятно, кто со стороны клиента принимает решения по спорным вопросам.</li>
+          <li>Понятно, кто со стороны клиента отвечает за инфраструктуру, доступы, приемку и запуск.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 2. Передача вводных из аккаунта в проект</h3>
+          <span class="tag">Handover</span>
+        </div>
+        <ul>
+          <li>Переданы все значимые обещания клиенту.</li>
+          <li>Переданы специальные условия по срокам, составу работ и этапности.</li>
+          <li>Переданы ограничения, чувствительные темы и политические риски по клиенту.</li>
+          <li>Переданы договоренности по обязательным внешним встречам и формату коммуникации.</li>
+          <li>Передана актуальная коммерческая рамка: что входит, что не входит, что считается отдельно.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 3. Готовность проектного контура</h3>
+          <span class="tag">Project</span>
+        </div>
+        <ul>
+          <li>Назначен менеджер проекта.</li>
+          <li>Актуализирован стартовый пакет проекта.</li>
+          <li>Подтвержден базовый план.</li>
+          <li>Подтвержден базовый перечень зависимостей и рисков.</li>
+          <li>Понятен формат статуса проекта и частота встреч.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 4. Совместная модель работы аккаунт + PM</h3>
+          <span class="tag">Account + PM</span>
+        </div>
+        <ul>
+          <li>Назначен регулярный синк <code>аккаунт + PM</code>.</li>
+          <li>Согласовано, кто ведет какие внешние встречи.</li>
+          <li>Согласовано, как поднимаются спорные требования клиента.</li>
+          <li>Согласовано, когда вопрос поднимается на руководителя портфеля / PMO.</li>
+          <li>Зафиксировано правило обязательного синка перед значимыми внешними встречами.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 5. Формальные выходы этапа</h3>
+          <span class="tag">Выходы</span>
+        </div>
+        <ul>
+          <li>Проведена внутренняя передача проекта в delivery.</li>
+          <li>Проведен внутренний kick-off.</li>
+          <li>Назначен клиентский kick-off.</li>
+          <li>Сводный контрольный реестр пополнен по проекту.</li>
+          <li>Чек-лист сохранен как артефакт старта.</li>
+        </ul>
+      </article>
+
+      <article class="card stop">
+        <div class="block-head">
+          <h3>Stop-факторы</h3>
+          <span class="tag">Критично</span>
+        </div>
+        <p>Проект нельзя считать качественно переданным в delivery, если:</p>
+        <ul style="margin-top:14px;">
+          <li>Нет подтвержденных клиентских ролей.</li>
+          <li>Нет ясности по составу обещаний клиенту.</li>
+          <li>Нет регулярного ритма <code>аккаунт + PM</code>.</li>
+          <li>PM узнает чувствительные вводные уже после старта.</li>
+          <li>Коммерческая рамка не может быть проговорена в двух-трех четких фразах.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="footer-note">
+      HTML-версия подготовлена для просмотра в браузере. Чек-лист 02 уже приведен к тому же формату, чтобы пакет
+      выглядел единообразно.
+    </section>
+  </main>
+</body>
+</html>
