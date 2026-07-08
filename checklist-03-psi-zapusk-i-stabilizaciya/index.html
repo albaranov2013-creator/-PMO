@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Чек-лист 03 - ПСИ, запуск и стабилизация</title>
+  <style>
+    :root {
+      --bg: #051b32;
+      --bg-2: #014997;
+      --panel: rgba(255,255,255,0.07);
+      --line: rgba(255,255,255,0.14);
+      --text: #ffffff;
+      --muted: #bfd1e2;
+      --accent: #01acff;
+      --risk: #ff8e8e;
+      --shadow: 0 22px 50px rgba(0,0,0,0.26);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(1, 172, 255, 0.18), transparent 20%),
+        linear-gradient(135deg, #051b32 0%, #08325a 55%, #014997 100%);
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .hero {
+      padding: 26px 28px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.03;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      padding: 22px 24px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.55;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .blocks {
+      display: grid;
+      gap: 16px;
+    }
+
+    .block-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .block-head h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .stop {
+      border-color: rgba(255, 142, 142, 0.28);
+      background: rgba(255, 142, 142, 0.1);
+    }
+
+    .stop h2,
+    .stop li {
+      color: #fff2f2;
+    }
+
+    .stop p,
+    .stop .tag {
+      color: #ffd4d4;
+    }
+
+    .criteria {
+      border-color: rgba(0, 176, 80, 0.24);
+      background: rgba(0, 176, 80, 0.08);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 18px 22px;
+      border-radius: 18px;
+      border: 1px dashed rgba(1, 172, 255, 0.32);
+      color: var(--muted);
+      background: rgba(1, 172, 255, 0.07);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">Checklist / PSI / Launch / Stabilization</div>
+      <h1>Чек-лист 03. ПСИ, запуск и стабилизация</h1>
+      <div class="meta">Дата подготовки: <code>02.07.2026</code></div>
+    </section>
+
+    <section class="layout">
+      <article class="card">
+        <h2>Когда использовать</h2>
+        <ul>
+          <li>Перед стартом ПСИ.</li>
+          <li>На review результатов ПСИ.</li>
+          <li>Перед <code>go / no-go</code>.</li>
+          <li>Перед запуском банка.</li>
+          <li>На разборе хвостов и в начале стабилизации.</li>
+          <li>Перед передачей в сопровождение по клиентской стороне.</li>
+        </ul>
+      </article>
+
+      <article class="card criteria">
+        <h2>Критерий прохождения</h2>
+        <ul>
+          <li>Поздние фазы не идут вслепую.</li>
+          <li>Клиентская сторона подтверждена не только формально.</li>
+          <li>По хвостам и долгам внедрения есть ясное решение.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="blocks">
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 1. Готовность к ПСИ</h3>
+          <span class="tag">ПСИ</span>
+        </div>
+        <ul>
+          <li>Подтверждены клиентские участники приемки.</li>
+          <li>Подтверждены доступы, среда и организационная готовность клиента.</li>
+          <li>Подтвержден перечень модулей и сценариев приемки.</li>
+          <li>Понятно, как фиксируются замечания и кто их подтверждает.</li>
+          <li>Проведен синк <code>аккаунт + PM</code> перед стартом ПСИ.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 2. Разбор результатов ПСИ</h3>
+          <span class="tag">Результаты</span>
+        </div>
+        <ul>
+          <li>Все замечания ПСИ собраны в явный перечень.</li>
+          <li>Замечания отделены от новых требований клиента.</li>
+          <li>По новым требованиям есть решение: <code>входит</code>, <code>не входит</code>, <code>продается отдельно</code>, <code>переносится</code>.</li>
+          <li>Понятно, что блокирует запуск, а что нет.</li>
+          <li>Клиентская позиция по критичным пунктам подтверждена.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 3. Готовность к запуску</h3>
+          <span class="tag">Go / No-Go</span>
+        </div>
+        <ul>
+          <li>Есть подтвержденная клиентская готовность к запуску.</li>
+          <li>Есть подтвержденный состав модулей и опций запуска.</li>
+          <li>Есть подтвержденный режим работы в запусковое окно.</li>
+          <li>Проведен отдельный review <code>go / no-go</code>.</li>
+          <li>До клиента доведена единая позиция компании по рискам и ограничениям.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 4. Хвосты после запуска</h3>
+          <span class="tag">Post-launch</span>
+        </div>
+        <ul>
+          <li>Сформирован список хвостов после запуска.</li>
+          <li>Хвосты разделены на: долги внедрения, новые доработки, сервисные вопросы, special case.</li>
+          <li>По каждому хвосту есть владелец и срок.</li>
+          <li>По каждому спорному хвосту есть клиентское согласование.</li>
+          <li>Аккаунт подключен к чувствительным постзапусковым вопросам.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="block-head">
+          <h3>Блок 5. Переход в стабилизацию и сопровождение</h3>
+          <span class="tag">Stabilization</span>
+        </div>
+        <ul>
+          <li>Понятно, какие вопросы остаются в проектном контуре.</li>
+          <li>Понятно, какие вопросы переходят в сопровождение.</li>
+          <li>Понятно, какие вопросы требуют отдельного коммерческого решения.</li>
+          <li>Клиент понимает модель работы после запуска.</li>
+          <li>Сводный контрольный реестр обновлен по поздним фазам.</li>
+        </ul>
+      </article>
+
+      <article class="card stop">
+        <div class="block-head">
+          <h3>Stop-факторы</h3>
+          <span class="tag">Критично</span>
+        </div>
+        <p>Нельзя считать позднюю фазу управляемой, если:</p>
+        <ul style="margin-top:14px;">
+          <li>Клиентская готовность к запуску не подтверждена.</li>
+          <li>Новые требования ПСИ не отделены от замечаний.</li>
+          <li>Решение <code>go / no-go</code> принимается без единой позиции компании.</li>
+          <li>Хвосты после запуска не разложены по категориям.</li>
+          <li>Клиентская сторона по долгам внедрения осталась неурегулированной.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="footer-note">
+      HTML-версия подготовлена в том же формате, что и `Чек-лист 01` и `Чек-лист 02`, чтобы весь комплект читался
+      как единая серия документов.
+    </section>
+  </main>
+</body>
+</html>
