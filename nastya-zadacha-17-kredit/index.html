@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#051B32">
+  <title>Задача 17 — кредит на 24 месяца</title>
+  <style>
+    :root {
+      --navy:#051b32; --navy-2:#072746; --blue:#1463ae; --cyan:#01acff;
+      --white:#fff; --text:#e9f2f9; --muted:#aec0d0; --line:rgba(255,255,255,.14);
+      --card:rgba(7,34,62,.84); --green:#58d79b; --amber:#ffcb66; --red:#ff8a88;
+      --shadow:0 24px 64px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{
+      margin:0;min-height:100vh;color:var(--text);font-family:Roboto,"Segoe UI",Arial,sans-serif;
+      background:
+        radial-gradient(circle at 84% 4%,rgba(1,172,255,.22),transparent 26rem),
+        radial-gradient(circle at 8% 68%,rgba(20,99,174,.18),transparent 30rem),
+        linear-gradient(135deg,var(--navy),var(--navy-2) 58%,#014997 145%);
+    }
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.15;
+      background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+      background-size:48px 48px;mask-image:linear-gradient(to bottom,#000,transparent 82%)}
+    a{color:inherit}.wrap{width:min(1040px,calc(100% - 32px));margin:auto;position:relative}
+    h1,h2,h3{font-family:Akrobat,"Arial Narrow","Segoe UI",sans-serif}
+    .hero{padding:58px 0 38px}.eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:28px;height:2px;background:var(--cyan)}
+    h1{max-width:850px;margin:16px 0 12px;font-size:clamp(40px,7vw,72px);line-height:.98;letter-spacing:-.035em}
+    .lead{max-width:760px;margin:0;color:var(--muted);font-size:18px;line-height:1.55}
+    .answer-pill{display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:10px 14px;border:1px solid rgba(88,215,155,.42);border-radius:999px;background:rgba(88,215,155,.1);color:#b8f2d3;font-weight:800}
+    .answer-pill span{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 16px var(--green)}
+
+    .task{padding:27px 29px;border:1px solid var(--line);border-radius:21px;background:linear-gradient(145deg,rgba(1,73,151,.62),rgba(5,27,50,.91));box-shadow:var(--shadow)}
+    .task h2{margin:0 0 14px;font-size:28px}.task p,.task li{line-height:1.58}.task ul{margin:12px 0;padding-left:22px}.task li{margin:8px 0}.task li::marker{color:var(--cyan)}.question{margin:18px 0 0;padding:14px 16px;border-left:3px solid var(--amber);background:rgba(255,203,102,.08);color:#ffe8b9;font-weight:700}
+
+    .idea{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;margin:48px 0}.idea-card,.debt-card{padding:27px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+    .tag{display:inline-block;padding:6px 9px;border-radius:999px;background:rgba(1,172,255,.12);border:1px solid rgba(1,172,255,.38);color:#8edcff;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+    .idea h2{margin:15px 0 10px;font-size:31px}.idea p{margin:0;color:var(--muted);line-height:1.55}.key{color:var(--white);font-weight:800}
+    .debt-card h3{margin:0 0 18px;font-size:23px}.debt-row{display:grid;grid-template-columns:54px 1fr 48px;align-items:center;gap:10px;margin:13px 0;font-size:13px;color:var(--muted)}
+    .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+    .debt-row b{color:var(--text);text-align:right}.arrow{margin:3px 0 3px 64px;color:var(--cyan);font-size:12px}
+
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:0 0 20px}.section-head h2{margin:0;font-size:37px}.section-head p{margin:0;color:var(--muted);font-size:14px}
+    .steps{display:grid;gap:14px}.step{display:grid;grid-template-columns:58px 1fr;gap:18px;padding:25px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+    .step-num{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(1,172,255,.48);background:rgba(1,172,255,.08);color:var(--cyan);font:800 24px Akrobat,"Arial Narrow",sans-serif}
+    .step h3{margin:1px 0 8px;font-size:24px}.step p{margin:8px 0;color:var(--muted);line-height:1.55}.step strong{color:var(--white)}
+    .formula{margin:14px 0;padding:15px 17px;border:1px solid rgba(1,172,255,.25);border-radius:13px;background:rgba(1,172,255,.07);color:var(--white);font:600 clamp(16px,2.4vw,21px)/1.5 "Cambria Math",Cambria,serif;text-align:center;overflow-x:auto}
+    .formula.small{font-size:16px}.accent{color:var(--cyan)}
+    .sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.sum-box{padding:15px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.035)}.sum-box b{display:block;margin-bottom:5px;color:var(--white)}.sum-box span{color:var(--muted);font-size:13px}
+
+    .result{margin:44px 0 18px;padding:34px;border:1px solid rgba(88,215,155,.42);border-radius:22px;background:linear-gradient(135deg,rgba(7,70,73,.65),rgba(5,27,50,.9));text-align:center;box-shadow:var(--shadow)}
+    .result .caption{color:#a5d9c0;font-size:13px;letter-spacing:.08em;text-transform:uppercase}.result strong{display:block;margin:8px 0 5px;color:var(--white);font:800 clamp(42px,8vw,72px)/1 Akrobat,"Arial Narrow",sans-serif}.result p{margin:0;color:var(--muted)}
+
+    .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 48px}.panel{padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(5,27,50,.74)}.panel h2{margin:0 0 13px;font-size:25px}.panel p{margin:8px 0;color:var(--muted);line-height:1.52}.panel .mini-formula{color:var(--white);font-family:"Cambria Math",Cambria,serif;font-size:18px}.warning{border-color:rgba(255,203,102,.28)}.warning h2{color:#ffe4a6}.warning strong{color:var(--white)}
+    .exam-note{margin-bottom:48px;padding:24px;border-left:3px solid var(--cyan);background:rgba(1,172,255,.07);border-radius:0 14px 14px 0}.exam-note h2{margin:0 0 9px;font-size:24px}.exam-note p{margin:0;color:var(--muted);line-height:1.55}
+    footer{padding:26px 0 34px;border-top:1px solid var(--line);color:#839cb2;font-size:12px}
+    @media(max-width:760px){.idea,.check-grid{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column;gap:5px}.sum-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.wrap{width:min(100% - 22px,1040px)}.hero{padding-top:42px}h1{font-size:42px}.lead{font-size:16px}.task,.idea-card,.debt-card,.step,.panel{padding:20px}.step{grid-template-columns:42px 1fr;gap:12px}.step-num{width:40px;height:40px;font-size:20px}.formula{text-align:left}.result{padding:27px 18px}}
+    @media print{body{background:#fff;color:#111}body::before,.answer-pill{display:none}.wrap{width:100%}.task,.idea-card,.debt-card,.step,.panel,.result,.exam-note{background:#fff;color:#111;box-shadow:none;border-color:#bbb}.lead,.task p,.task li,.idea p,.step p,.panel p,.result p,.exam-note p,.debt-row{color:#333}.formula,.sum-box{background:#f6f6f6;color:#111;border-color:#ccc}.key,.step strong,.sum-box b,.mini-formula,.result strong{color:#111}}
+  </style>
+</head>
+<body>
+  <main>
+    <header class="hero wrap">
+      <div class="eyebrow">ЕГЭ · финансовая задача</div>
+      <h1>Кредит на 24 месяца</h1>
+      <p class="lead">Понятное решение задачи №17: от смысла условия до ответа без «магических» формул.</p>
+      <div class="answer-pill"><span></span>Ответ: 717 000 рублей</div>
+    </header>
+
+    <section class="task wrap" aria-labelledby="task-title">
+      <h2 id="task-title">Условие задачи</h2>
+      <p>15 января планируется взять кредит в банке на 24 месяца. Условия возврата:</p>
+      <ul>
+        <li>1-го числа каждого месяца долг возрастает на 3%;</li>
+        <li>со 2-го по 14-е число выплачивается часть долга;</li>
+        <li>15-го числа каждого месяца долг должен быть на одну и ту же величину меньше, чем 15-го числа предыдущего месяца.</li>
+      </ul>
+      <p>За первые 12 месяцев нужно вернуть банку 933 тыс. рублей.</p>
+      <div class="question">Сколько нужно вернуть за последние 12 месяцев?</div>
+    </section>
+
+    <section class="idea wrap" aria-label="Главная идея">
+      <article class="idea-card">
+        <span class="tag">Главная идея</span>
+        <h2>Одинаково уменьшается долг, а не платёж</h2>
+        <p>Обозначим ежемесячное уменьшение основного долга через <span class="key">x тысяч рублей</span>. Поскольку кредит закрывается за 24 месяца, первоначальный долг равен <span class="key">24x</span>.</p>
+      </article>
+      <article class="debt-card">
+        <h3>Как снижается основной долг</h3>
+        <div class="debt-row"><span>Старт</span><div class="bar"><span style="width:100%"></span></div><b>24x</b></div>
+        <div class="arrow">↓ минус x</div>
+        <div class="debt-row"><span>1 месяц</span><div class="bar"><span style="width:95.8%"></span></div><b>23x</b></div>
+        <div class="arrow">↓ каждый месяц минус x</div>
+        <div class="debt-row"><span>12 месяцев</span><div class="bar"><span style="width:50%"></span></div><b>12x</b></div>
+        <div class="arrow">↓ ещё 12 платежей</div>
+        <div class="debt-row"><span>Финиш</span><div class="bar"><span style="width:0%"></span></div><b>0</b></div>
+      </article>
+    </section>
+
+    <section class="wrap" aria-labelledby="solution-title">
+      <div class="section-head"><h2 id="solution-title">Решение по шагам</h2><p>Все суммы — в тысячах рублей</p></div>
+      <div class="steps">
+        <article class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h3>Разбираем ежемесячный платёж</h3>
+            <p>Сначала банк начисляет 3% на текущий долг. Затем заёмщик выплачивает эти проценты и ещё <strong>x</strong> основного долга.</p>
+            <div class="formula">Платёж = x + 0,03 · долг до платежа</div>
+            <p>Первый платёж: <strong>x + 0,03 · 24x</strong>. Второй: <strong>x + 0,03 · 23x</strong>. Процентная часть постепенно уменьшается.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h3>Используем данные первого года</h3>
+            <p>В первые 12 месяцев проценты начисляются на долги от <strong>24x</strong> до <strong>13x</strong>. За это же время возвращаются 12 частей основного долга по x.</p>
+            <div class="formula">12x + 0,03x · (24 + 23 + … + 13) = 933</div>
+            <div class="sum-grid">
+              <div class="sum-box"><b>Сумма остатков</b><span>(24 + 13) · 12 / 2 = 222</span></div>
+              <div class="sum-box"><b>Получаем уравнение</b><span>12x + 0,03x · 222 = 933</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h3>Находим x и размер кредита</h3>
+            <div class="formula">12x + 6,66x = 933 → 18,66x = 933 → <span class="accent">x = 50</span></div>
+            <p>Каждый месяц основной долг уменьшается на <strong>50 тыс. рублей</strong>. Значит, первоначальный кредит:</p>
+            <div class="formula small">24 · 50 = 1 200 тыс. рублей</div>
+          </div>
+        </article>
+
+        <article class="step">
+          <div class="step-num">4</div>
+          <div>
+            <h3>Считаем второй год</h3>
+            <p>В последние 12 месяцев проценты начисляются на остатки от <strong>12x</strong> до <strong>x</strong>.</p>
+            <div class="formula">12x + 0,03x · (12 + 11 + … + 1)</div>
+            <p>Сумма чисел от 1 до 12 равна <strong>78</strong>. Подставляем x = 50:</p>
+            <div class="formula">12 · 50 + 0,03 · 50 · 78 = 600 + 117 = <span class="accent">717</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="result wrap" aria-label="Ответ">
+      <div class="caption">Ответ</div>
+      <strong>717 000 ₽</strong>
+      <p>нужно вернуть банку в течение второго года</p>
+    </section>
+
+    <section class="check-grid wrap">
+      <article class="panel">
+        <h2>Проверка</h2>
+        <p>За два года выплачено:</p>
+        <p class="mini-formula">933 + 717 = 1 650 тыс. ₽</p>
+        <p>Кредит составлял 1 200 тыс. ₽, значит проценты равны:</p>
+        <p class="mini-formula">1 650 − 1 200 = 450 тыс. ₽</p>
+      </article>
+      <article class="panel warning">
+        <h2>Типичная ошибка</h2>
+        <p>Нельзя считать, что ежемесячные платежи одинаковы.</p>
+        <p><strong>Одинакова только сумма погашения основного долга — 50 тыс. ₽.</strong> Проценты каждый месяц становятся меньше, поэтому уменьшается и полный платёж.</p>
+      </article>
+    </section>
+
+    <section class="exam-note wrap">
+      <h2>Как увидеть решение на экзамене</h2>
+      <p>Фраза «долг 15-го числа уменьшается на одну и ту же величину» сразу указывает на равномерное погашение основного долга. После этого весь расчёт сводится к двум суммам арифметических прогрессий: 24 + … + 13 для первого года и 12 + … + 1 для второго.</p>
+    </section>
+  </main>
+  <footer><div class="wrap">Проект «Настя» · задача №17 · решение проверено 27 октября 2026</div></footer>
+</body>
+</html>
