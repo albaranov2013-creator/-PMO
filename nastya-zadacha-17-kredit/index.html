@@ -36,7 +36,12 @@
     .task{padding:27px 29px;border:1px solid var(--line);border-radius:21px;background:linear-gradient(145deg,rgba(1,73,151,.62),rgba(5,27,50,.91));box-shadow:var(--shadow)}
     .task h2{margin:0 0 14px;font-size:28px}.task p,.task li{line-height:1.58}.task ul{margin:12px 0;padding-left:22px}.task li{margin:8px 0}.task li::marker{color:var(--cyan)}.question{margin:18px 0 0;padding:14px 16px;border-left:3px solid var(--amber);background:rgba(255,203,102,.08);color:#ffe8b9;font-weight:700}
 
-    .idea{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;margin:48px 0}.idea-card,.debt-card{padding:27px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+    .date-logic{margin:20px auto 48px;padding:27px;border:1px solid var(--line);border-radius:20px;background:rgba(5,27,50,.74)}
+    .date-logic h2{margin:0 0 8px;font-size:29px}.date-logic>p{margin:0 0 20px;color:var(--muted);line-height:1.55}
+    .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.moment{position:relative;padding:16px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035)}
+    .moment:not(:last-child)::after{content:"→";position:absolute;right:-10px;top:50%;z-index:2;color:var(--cyan);font-weight:900;transform:translateY(-50%)}
+    .moment time{display:block;margin-bottom:7px;color:var(--cyan);font-size:12px;font-weight:800;text-transform:uppercase}.moment b{display:block;margin-bottom:6px;color:var(--white);font-size:15px}.moment span{color:var(--muted);font-size:12px;line-height:1.4}
+    .idea{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;margin:0 0 48px}.idea-card,.debt-card{padding:27px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
     .tag{display:inline-block;padding:6px 9px;border-radius:999px;background:rgba(1,172,255,.12);border:1px solid rgba(1,172,255,.38);color:#8edcff;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
     .idea h2{margin:15px 0 10px;font-size:31px}.idea p{margin:0;color:var(--muted);line-height:1.55}.key{color:var(--white);font-weight:800}
     .debt-card h3{margin:0 0 18px;font-size:23px}.debt-row{display:grid;grid-template-columns:54px 1fr 48px;align-items:center;gap:10px;margin:13px 0;font-size:13px;color:var(--muted)}
@@ -46,10 +51,13 @@
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:0 0 20px}.section-head h2{margin:0;font-size:37px}.section-head p{margin:0;color:var(--muted);font-size:14px}
     .steps{display:grid;gap:14px}.step{display:grid;grid-template-columns:58px 1fr;gap:18px;padding:25px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
     .step-num{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(1,172,255,.48);background:rgba(1,172,255,.08);color:var(--cyan);font:800 24px Akrobat,"Arial Narrow",sans-serif}
-    .step h3{margin:1px 0 8px;font-size:24px}.step p{margin:8px 0;color:var(--muted);line-height:1.55}.step strong{color:var(--white)}
+    .step h3{margin:1px 0 8px;font-size:24px}.step p{margin:8px 0;color:var(--muted);line-height:1.58}.step strong{color:var(--white)}
     .formula{margin:14px 0;padding:15px 17px;border:1px solid rgba(1,172,255,.25);border-radius:13px;background:rgba(1,172,255,.07);color:var(--white);font:600 clamp(16px,2.4vw,21px)/1.5 "Cambria Math",Cambria,serif;text-align:center;overflow-x:auto}
     .formula.small{font-size:16px}.accent{color:var(--cyan)}
     .sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.sum-box{padding:15px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.035)}.sum-box b{display:block;margin-bottom:5px;color:var(--white)}.sum-box span{color:var(--muted);font-size:13px}
+    .explain{margin:13px 0;padding:14px 16px;border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;background:rgba(1,172,255,.055);color:#c6d8e6;line-height:1.55}
+    .equations{display:grid;gap:8px;margin:14px 0}.equation{padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.035);font:600 17px/1.45 "Cambria Math",Cambria,serif;color:var(--white);text-align:center}
+    .payment-table{width:100%;margin:16px 0;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--line);border-radius:13px;font-size:13px}.payment-table th,.payment-table td{padding:11px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}.payment-table th:last-child,.payment-table td:last-child{border-right:0}.payment-table tr:last-child td{border-bottom:0}.payment-table th{background:rgba(20,99,174,.24);color:#dff3ff}.payment-table td{color:var(--muted)}.payment-table td strong{color:var(--white)}
 
     .result{margin:44px 0 18px;padding:34px;border:1px solid rgba(88,215,155,.42);border-radius:22px;background:linear-gradient(135deg,rgba(7,70,73,.65),rgba(5,27,50,.9));text-align:center;box-shadow:var(--shadow)}
     .result .caption{color:#a5d9c0;font-size:13px;letter-spacing:.08em;text-transform:uppercase}.result strong{display:block;margin:8px 0 5px;color:var(--white);font:800 clamp(42px,8vw,72px)/1 Akrobat,"Arial Narrow",sans-serif}.result p{margin:0;color:var(--muted)}
@@ -57,8 +65,8 @@
     .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 48px}.panel{padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(5,27,50,.74)}.panel h2{margin:0 0 13px;font-size:25px}.panel p{margin:8px 0;color:var(--muted);line-height:1.52}.panel .mini-formula{color:var(--white);font-family:"Cambria Math",Cambria,serif;font-size:18px}.warning{border-color:rgba(255,203,102,.28)}.warning h2{color:#ffe4a6}.warning strong{color:var(--white)}
     .exam-note{margin-bottom:48px;padding:24px;border-left:3px solid var(--cyan);background:rgba(1,172,255,.07);border-radius:0 14px 14px 0}.exam-note h2{margin:0 0 9px;font-size:24px}.exam-note p{margin:0;color:var(--muted);line-height:1.55}
     footer{padding:26px 0 34px;border-top:1px solid var(--line);color:#839cb2;font-size:12px}
-    @media(max-width:760px){.idea,.check-grid{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column;gap:5px}.sum-grid{grid-template-columns:1fr}}
-    @media(max-width:520px){.wrap{width:min(100% - 22px,1040px)}.hero{padding-top:42px}h1{font-size:42px}.lead{font-size:16px}.task,.idea-card,.debt-card,.step,.panel{padding:20px}.step{grid-template-columns:42px 1fr;gap:12px}.step-num{width:40px;height:40px;font-size:20px}.formula{text-align:left}.result{padding:27px 18px}}
+    @media(max-width:760px){.timeline{grid-template-columns:1fr 1fr}.moment:nth-child(2)::after{display:none}.idea,.check-grid{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column;gap:5px}.sum-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.wrap{width:min(100% - 22px,1040px)}.hero{padding-top:42px}h1{font-size:42px}.lead{font-size:16px}.task,.date-logic,.idea-card,.debt-card,.step,.panel{padding:20px}.timeline{grid-template-columns:1fr}.moment::after{display:none!important}.step{grid-template-columns:42px 1fr;gap:12px}.step-num{width:40px;height:40px;font-size:20px}.formula{text-align:left}.payment-table{font-size:11px}.payment-table th,.payment-table td{padding:9px 6px}.result{padding:27px 18px}}
     @media print{body{background:#fff;color:#111}body::before,.answer-pill{display:none}.wrap{width:100%}.task,.idea-card,.debt-card,.step,.panel,.result,.exam-note{background:#fff;color:#111;box-shadow:none;border-color:#bbb}.lead,.task p,.task li,.idea p,.step p,.panel p,.result p,.exam-note p,.debt-row{color:#333}.formula,.sum-box{background:#f6f6f6;color:#111;border-color:#ccc}.key,.step strong,.sum-box b,.mini-formula,.result strong{color:#111}}
   </style>
 </head>
@@ -67,7 +75,7 @@
     <header class="hero wrap">
       <div class="eyebrow">ЕГЭ · финансовая задача</div>
       <h1>Кредит на 24 месяца</h1>
-      <p class="lead">Понятное решение задачи №17: от смысла условия до ответа без «магических» формул.</p>
+      <p class="lead">Подробное решение задачи №17: разберём даты, устройство каждого платежа, обе арифметические прогрессии и проверку ответа.</p>
       <div class="answer-pill"><span></span>Ответ: 717 000 рублей</div>
     </header>
 
@@ -83,11 +91,23 @@
       <div class="question">Сколько нужно вернуть за последние 12 месяцев?</div>
     </section>
 
+    <section class="date-logic wrap" aria-labelledby="date-title">
+      <h2 id="date-title">Сначала разберём, что происходит внутри месяца</h2>
+      <p>Это ключ к задаче. Проценты начисляются до платежа, а 15-го числа фиксируется уже уменьшившийся основной долг.</p>
+      <div class="timeline">
+        <div class="moment"><time>15 января</time><b>Долг 24x</b><span>Кредит только что получен.</span></div>
+        <div class="moment"><time>1 февраля</time><b>Долг 1,03 · 24x</b><span>Банк добавил 3% к текущему долгу.</span></div>
+        <div class="moment"><time>2–14 февраля</time><b>Вносится платёж</b><span>Погашаются проценты и часть основного долга x.</span></div>
+        <div class="moment"><time>15 февраля</time><b>Долг 23x</b><span>Он стал ровно на x меньше, чем месяц назад.</span></div>
+      </div>
+    </section>
+
     <section class="idea wrap" aria-label="Главная идея">
       <article class="idea-card">
         <span class="tag">Главная идея</span>
         <h2>Одинаково уменьшается долг, а не платёж</h2>
-        <p>Обозначим ежемесячное уменьшение основного долга через <span class="key">x тысяч рублей</span>. Поскольку кредит закрывается за 24 месяца, первоначальный долг равен <span class="key">24x</span>.</p>
+        <p>Обозначим ежемесячное уменьшение основного долга через <span class="key">x тысяч рублей</span>. За 24 месяца таких уменьшений будет 24. После последнего платежа долг станет равен нулю, поэтому первоначальный долг равен <span class="key">24x</span>.</p>
+        <div class="explain">Последовательность долга на 15-е число: 24x до первого платежа, затем 23x, 22x, …, x и наконец 0.</div>
       </article>
       <article class="debt-card">
         <h3>Как снижается основной долг</h3>
@@ -108,9 +128,13 @@
           <div class="step-num">1</div>
           <div>
             <h3>Разбираем ежемесячный платёж</h3>
-            <p>Сначала банк начисляет 3% на текущий долг. Затем заёмщик выплачивает эти проценты и ещё <strong>x</strong> основного долга.</p>
+            <p>Сначала банк начисляет 3% на текущий долг. Затем заёмщик выплачивает начисленные проценты и ещё <strong>x</strong> основного долга. Именно поэтому платёж состоит из двух частей.</p>
             <div class="formula">Платёж = x + 0,03 · долг до платежа</div>
-            <p>Первый платёж: <strong>x + 0,03 · 24x</strong>. Второй: <strong>x + 0,03 · 23x</strong>. Процентная часть постепенно уменьшается.</p>
+            <p><strong>Первый месяц.</strong> До начисления процентов долг равен 24x. После начисления — 1,03 · 24x. Чтобы к 15-му числу осталось 23x, платёж должен быть равен:</p>
+            <div class="formula small">1,03 · 24x − 23x = 24,72x − 23x = 1,72x = x + 0,03 · 24x</div>
+            <p><strong>Второй месяц.</strong> Исходный долг уже 23x. После начисления процентов он равен 1,03 · 23x, а после платежа должен стать 22x:</p>
+            <div class="formula small">1,03 · 23x − 22x = x + 0,03 · 23x</div>
+            <div class="explain">Часть x каждый месяц одинакова. Процентная часть снижается, потому что 3% начисляются на всё меньший остаток.</div>
           </div>
         </article>
 
@@ -119,11 +143,23 @@
           <div>
             <h3>Используем данные первого года</h3>
             <p>В первые 12 месяцев проценты начисляются на долги от <strong>24x</strong> до <strong>13x</strong>. За это же время возвращаются 12 частей основного долга по x.</p>
+            <table class="payment-table" aria-label="Структура платежей первого года">
+              <thead><tr><th>Месяц</th><th>Долг до процентов</th><th>Проценты</th><th>Платёж</th></tr></thead>
+              <tbody>
+                <tr><td>1-й</td><td>24x</td><td>0,03 · 24x</td><td><strong>x + 0,03 · 24x</strong></td></tr>
+                <tr><td>2-й</td><td>23x</td><td>0,03 · 23x</td><td><strong>x + 0,03 · 23x</strong></td></tr>
+                <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+                <tr><td>12-й</td><td>13x</td><td>0,03 · 13x</td><td><strong>x + 0,03 · 13x</strong></td></tr>
+              </tbody>
+            </table>
+            <p>Складываем эти 12 платежей. Слагаемое x встречается 12 раз, а для процентов нужно сложить остатки долга:</p>
             <div class="formula">12x + 0,03x · (24 + 23 + … + 13) = 933</div>
+            <p>В скобках — арифметическая прогрессия из 12 чисел. Её сумма равна произведению полусуммы первого и последнего членов на количество членов:</p>
             <div class="sum-grid">
               <div class="sum-box"><b>Сумма остатков</b><span>(24 + 13) · 12 / 2 = 222</span></div>
               <div class="sum-box"><b>Получаем уравнение</b><span>12x + 0,03x · 222 = 933</span></div>
             </div>
+            <div class="explain">Почему последний остаток первого года — 13x? Перед 12-м платежом долг равен 13x, а после этого платежа он уменьшится до 12x. Проценты же начисляются до платежа, поэтому в сумму входит именно 13x.</div>
           </div>
         </article>
 
@@ -131,9 +167,17 @@
           <div class="step-num">3</div>
           <div>
             <h3>Находим x и размер кредита</h3>
-            <div class="formula">12x + 6,66x = 933 → 18,66x = 933 → <span class="accent">x = 50</span></div>
+            <p>Решаем полученное уравнение последовательно:</p>
+            <div class="equations">
+              <div class="equation">12x + 0,03x · 222 = 933</div>
+              <div class="equation">12x + 6,66x = 933</div>
+              <div class="equation">18,66x = 933</div>
+              <div class="equation"><span class="accent">x = 933 / 18,66 = 50</span></div>
+            </div>
             <p>Каждый месяц основной долг уменьшается на <strong>50 тыс. рублей</strong>. Значит, первоначальный кредит:</p>
             <div class="formula small">24 · 50 = 1 200 тыс. рублей</div>
+            <p>После первого года останется ровно половина основного долга:</p>
+            <div class="formula small">12 · 50 = 600 тыс. рублей</div>
           </div>
         </article>
 
@@ -143,8 +187,15 @@
             <h3>Считаем второй год</h3>
             <p>В последние 12 месяцев проценты начисляются на остатки от <strong>12x</strong> до <strong>x</strong>.</p>
             <div class="formula">12x + 0,03x · (12 + 11 + … + 1)</div>
-            <p>Сумма чисел от 1 до 12 равна <strong>78</strong>. Подставляем x = 50:</p>
-            <div class="formula">12 · 50 + 0,03 · 50 · 78 = 600 + 117 = <span class="accent">717</span></div>
+            <p>Сумма чисел от 1 до 12 — ещё одна арифметическая прогрессия:</p>
+            <div class="formula small">12 + 11 + … + 1 = (12 + 1) · 12 / 2 = 78</div>
+            <p>Теперь подставляем x = 50 и отдельно считаем основной долг и проценты:</p>
+            <div class="equations">
+              <div class="equation">Основной долг: 12 · 50 = 600</div>
+              <div class="equation">Проценты: 0,03 · 50 · 78 = 117</div>
+              <div class="equation">Всего: 600 + 117 = <span class="accent">717</span></div>
+            </div>
+            <div class="explain">Во втором году сумма меньше, чем в первом, потому что основной долг погашается одинаковыми частями, а проценты начисляются уже на меньшие остатки.</div>
           </div>
         </article>
       </div>
@@ -163,6 +214,9 @@
         <p class="mini-formula">933 + 717 = 1 650 тыс. ₽</p>
         <p>Кредит составлял 1 200 тыс. ₽, значит проценты равны:</p>
         <p class="mini-formula">1 650 − 1 200 = 450 тыс. ₽</p>
+        <p>Можно проверить проценты отдельно. За 24 месяца они начислялись на остатки 24x, 23x, …, x:</p>
+        <p class="mini-formula">0,03 · 50 · (24 + 23 + … + 1) = 1,5 · 300 = 450</p>
+        <p>Результат совпал — расчёт согласован.</p>
       </article>
       <article class="panel warning">
         <h2>Типичная ошибка</h2>
@@ -176,6 +230,6 @@
       <p>Фраза «долг 15-го числа уменьшается на одну и ту же величину» сразу указывает на равномерное погашение основного долга. После этого весь расчёт сводится к двум суммам арифметических прогрессий: 24 + … + 13 для первого года и 12 + … + 1 для второго.</p>
     </section>
   </main>
-  <footer><div class="wrap">Проект «Настя» · задача №17 · решение проверено 27 октября 2026</div></footer>
+  <footer><div class="wrap">Проект «Настя» · задача №17 · подробное решение проверено 27 октября 2026</div></footer>
 </body>
 </html>
