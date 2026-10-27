@@ -41,12 +41,22 @@
     .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.moment{position:relative;padding:16px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035)}
     .moment:not(:last-child)::after{content:"→";position:absolute;right:-10px;top:50%;z-index:2;color:var(--cyan);font-weight:900;transform:translateY(-50%)}
     .moment time{display:block;margin-bottom:7px;color:var(--cyan);font-size:12px;font-weight:800;text-transform:uppercase}.moment b{display:block;margin-bottom:6px;color:var(--white);font-size:15px}.moment span{color:var(--muted);font-size:12px;line-height:1.4}
-    .idea{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;margin:0 0 48px}.idea-card,.debt-card{padding:27px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+    .concept{position:relative;margin:0 auto 48px;padding:30px 32px 32px;overflow:hidden;border:1px solid rgba(64,154,232,.28);border-radius:22px;background:linear-gradient(135deg,rgba(10,45,82,.92),rgba(5,27,50,.94));box-shadow:var(--shadow)}
+    .concept::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
+    .concept::after{content:"24";position:absolute;right:22px;top:-30px;color:rgba(89,184,255,.055);font:800 190px/1 Akrobat,"Arial Narrow",sans-serif;pointer-events:none}
+    .concept-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:23px}
     .tag{display:inline-block;padding:6px 9px;border-radius:999px;background:rgba(1,172,255,.12);border:1px solid rgba(1,172,255,.38);color:#8edcff;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
-    .idea h2{margin:15px 0 10px;font-size:31px}.idea p{margin:0;color:var(--muted);line-height:1.55}.key{color:var(--white);font-weight:800}
-    .debt-card h3{margin:0 0 18px;font-size:23px}.debt-row{display:grid;grid-template-columns:54px 1fr 48px;align-items:center;gap:10px;margin:13px 0;font-size:13px;color:var(--muted)}
-    .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--blue),var(--cyan))}
-    .debt-row b{color:var(--text);text-align:right}.arrow{margin:3px 0 3px 64px;color:var(--cyan);font-size:12px}
+    .concept-note{color:#86a4bd;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+    .concept-body{position:relative;z-index:1;display:grid;grid-template-columns:minmax(260px,.82fr) minmax(430px,1.18fr);align-items:center;gap:42px}
+    .concept-copy h2{margin:0 0 13px;max-width:470px;font-size:34px;line-height:1.06}.concept-copy p{margin:0;color:var(--muted);line-height:1.58}.key{color:var(--white);font-weight:800}
+    .concept-formula{display:flex;align-items:center;gap:15px;margin-top:22px;padding:16px 18px;border:1px solid rgba(1,172,255,.24);border-radius:14px;background:rgba(1,172,255,.065)}
+    .concept-formula .symbol{color:var(--cyan);font:800 42px/1 Akrobat,"Arial Narrow",sans-serif}.concept-formula .meaning{color:#dcebf5;font-size:14px;line-height:1.35}.concept-formula .meaning strong{display:block;color:var(--white);font-size:18px}
+    .debt-sequence{padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:17px;background:rgba(1,13,27,.25)}
+    .debt-sequence h3{margin:0 0 5px;font-size:20px}.debt-sequence>p{margin:0 0 19px;color:#86a4bd;font-size:13px}
+    .sequence-track{display:flex;align-items:center;justify-content:space-between;gap:7px}
+    .debt-node{min-width:48px;padding:10px 8px;border:1px solid rgba(82,173,246,.24);border-radius:11px;background:rgba(22,91,158,.19);color:#e8f5ff;font:800 18px/1 Akrobat,"Arial Narrow",sans-serif;text-align:center}
+    .debt-node.start{border-color:rgba(1,172,255,.58);background:rgba(1,172,255,.15);color:#fff}.debt-node.finish{border-color:rgba(88,215,155,.42);background:rgba(88,215,155,.1);color:#a8ebc9}.sequence-arrow{color:var(--cyan);font-weight:900}.sequence-gap{color:#66839b;font-weight:800;letter-spacing:.12em}
+    .sequence-rule{display:flex;align-items:center;gap:10px;margin-top:18px;color:#9db5c8;font-size:13px}.sequence-rule::before,.sequence-rule::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(1,172,255,.38))}.sequence-rule::after{background:linear-gradient(90deg,rgba(1,172,255,.38),transparent)}.sequence-rule strong{color:var(--cyan);white-space:nowrap}
 
     .section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:0 0 20px}.section-head h2{margin:0;font-size:37px}.section-head p{margin:0;color:var(--muted);font-size:14px}
     .steps{display:grid;gap:14px}.step{display:grid;grid-template-columns:58px 1fr;gap:18px;padding:25px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
@@ -59,15 +69,15 @@
     .equations{display:grid;gap:8px;margin:14px 0}.equation{padding:11px 14px;border-radius:11px;background:rgba(255,255,255,.035);font:600 17px/1.45 "Cambria Math",Cambria,serif;color:var(--white);text-align:center}
     .payment-table{width:100%;margin:16px 0;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--line);border-radius:13px;font-size:13px}.payment-table th,.payment-table td{padding:11px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}.payment-table th:last-child,.payment-table td:last-child{border-right:0}.payment-table tr:last-child td{border-bottom:0}.payment-table th{background:rgba(20,99,174,.24);color:#dff3ff}.payment-table td{color:var(--muted)}.payment-table td strong{color:var(--white)}
 
-    .result{margin:44px 0 18px;padding:34px;border:1px solid rgba(88,215,155,.42);border-radius:22px;background:linear-gradient(135deg,rgba(7,70,73,.65),rgba(5,27,50,.9));text-align:center;box-shadow:var(--shadow)}
+    .result{margin:44px auto 18px;padding:34px;border:1px solid rgba(88,215,155,.42);border-radius:22px;background:linear-gradient(135deg,rgba(7,70,73,.65),rgba(5,27,50,.9));text-align:center;box-shadow:var(--shadow)}
     .result .caption{color:#a5d9c0;font-size:13px;letter-spacing:.08em;text-transform:uppercase}.result strong{display:block;margin:8px 0 5px;color:var(--white);font:800 clamp(42px,8vw,72px)/1 Akrobat,"Arial Narrow",sans-serif}.result p{margin:0;color:var(--muted)}
 
-    .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 48px}.panel{padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(5,27,50,.74)}.panel h2{margin:0 0 13px;font-size:25px}.panel p{margin:8px 0;color:var(--muted);line-height:1.52}.panel .mini-formula{color:var(--white);font-family:"Cambria Math",Cambria,serif;font-size:18px}.warning{border-color:rgba(255,203,102,.28)}.warning h2{color:#ffe4a6}.warning strong{color:var(--white)}
+    .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px auto 48px}.panel{padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(5,27,50,.74)}.panel h2{margin:0 0 13px;font-size:25px}.panel p{margin:8px 0;color:var(--muted);line-height:1.52}.panel .mini-formula{color:var(--white);font-family:"Cambria Math",Cambria,serif;font-size:18px}.warning{border-color:rgba(255,203,102,.28)}.warning h2{color:#ffe4a6}.warning strong{color:var(--white)}
     .exam-note{margin-bottom:48px;padding:24px;border-left:3px solid var(--cyan);background:rgba(1,172,255,.07);border-radius:0 14px 14px 0}.exam-note h2{margin:0 0 9px;font-size:24px}.exam-note p{margin:0;color:var(--muted);line-height:1.55}
     footer{padding:26px 0 34px;border-top:1px solid var(--line);color:#839cb2;font-size:12px}
-    @media(max-width:760px){.timeline{grid-template-columns:1fr 1fr}.moment:nth-child(2)::after{display:none}.idea,.check-grid{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column;gap:5px}.sum-grid{grid-template-columns:1fr}}
-    @media(max-width:520px){.wrap{width:min(100% - 22px,1040px)}.hero{padding-top:42px}h1{font-size:42px}.lead{font-size:16px}.task,.date-logic,.idea-card,.debt-card,.step,.panel{padding:20px}.timeline{grid-template-columns:1fr}.moment::after{display:none!important}.step{grid-template-columns:42px 1fr;gap:12px}.step-num{width:40px;height:40px;font-size:20px}.formula{text-align:left}.payment-table{font-size:11px}.payment-table th,.payment-table td{padding:9px 6px}.result{padding:27px 18px}}
-    @media print{body{background:#fff;color:#111}body::before,.answer-pill{display:none}.wrap{width:100%}.task,.idea-card,.debt-card,.step,.panel,.result,.exam-note{background:#fff;color:#111;box-shadow:none;border-color:#bbb}.lead,.task p,.task li,.idea p,.step p,.panel p,.result p,.exam-note p,.debt-row{color:#333}.formula,.sum-box{background:#f6f6f6;color:#111;border-color:#ccc}.key,.step strong,.sum-box b,.mini-formula,.result strong{color:#111}}
+    @media(max-width:840px){.concept-body{grid-template-columns:1fr;gap:24px}.concept-copy h2{max-width:none}.concept::after{font-size:150px}.timeline{grid-template-columns:1fr 1fr}.moment:nth-child(2)::after{display:none}.check-grid{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column;gap:5px}.sum-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.wrap{width:min(100% - 22px,1040px)}.hero{padding-top:42px}h1{font-size:42px}.lead{font-size:16px}.task,.date-logic,.concept,.step,.panel{padding:20px}.concept-head{align-items:flex-start;flex-direction:column;gap:8px}.concept-copy h2{font-size:29px}.concept::after{display:none}.debt-sequence{padding:17px}.sequence-track{flex-wrap:wrap;justify-content:flex-start}.sequence-arrow{font-size:12px}.timeline{grid-template-columns:1fr}.moment::after{display:none!important}.step{grid-template-columns:42px 1fr;gap:12px}.step-num{width:40px;height:40px;font-size:20px}.formula{text-align:left}.payment-table{font-size:11px}.payment-table th,.payment-table td{padding:9px 6px}.result{padding:27px 18px}}
+    @media print{body{background:#fff;color:#111}body::before,.answer-pill{display:none}.wrap{width:100%}.task,.concept,.step,.panel,.result,.exam-note{background:#fff;color:#111;box-shadow:none;border-color:#bbb}.concept::after{display:none}.lead,.task p,.task li,.concept-copy p,.step p,.panel p,.result p,.exam-note p{color:#333}.debt-sequence,.concept-formula,.formula,.sum-box{background:#f6f6f6;color:#111;border-color:#ccc}.key,.step strong,.sum-box b,.mini-formula,.result strong,.concept-formula .meaning,.concept-formula .meaning strong,.debt-node{color:#111}}
   </style>
 </head>
 <body>
@@ -102,23 +112,34 @@
       </div>
     </section>
 
-    <section class="idea wrap" aria-label="Главная идея">
-      <article class="idea-card">
+    <section class="concept wrap" aria-labelledby="concept-title">
+      <div class="concept-head">
         <span class="tag">Главная идея</span>
-        <h2>Одинаково уменьшается долг, а не платёж</h2>
-        <p>Обозначим ежемесячное уменьшение основного долга через <span class="key">x тысяч рублей</span>. За 24 месяца таких уменьшений будет 24. После последнего платежа долг станет равен нулю, поэтому первоначальный долг равен <span class="key">24x</span>.</p>
-        <div class="explain">Последовательность долга на 15-е число: 24x до первого платежа, затем 23x, 22x, …, x и наконец 0.</div>
-      </article>
-      <article class="debt-card">
-        <h3>Как снижается основной долг</h3>
-        <div class="debt-row"><span>Старт</span><div class="bar"><span style="width:100%"></span></div><b>24x</b></div>
-        <div class="arrow">↓ минус x</div>
-        <div class="debt-row"><span>1 месяц</span><div class="bar"><span style="width:95.8%"></span></div><b>23x</b></div>
-        <div class="arrow">↓ каждый месяц минус x</div>
-        <div class="debt-row"><span>12 месяцев</span><div class="bar"><span style="width:50%"></span></div><b>12x</b></div>
-        <div class="arrow">↓ ещё 12 платежей</div>
-        <div class="debt-row"><span>Финиш</span><div class="bar"><span style="width:0%"></span></div><b>0</b></div>
-      </article>
+        <span class="concept-note">24 месяца = 24 одинаковых уменьшения</span>
+      </div>
+      <div class="concept-body">
+        <div class="concept-copy">
+          <h2 id="concept-title">Долг уменьшается каждый месяц на одну и ту же величину</h2>
+          <p>Обозначим это уменьшение через <span class="key">x тысяч рублей</span>. Платежи будут разными из-за процентов, но основной долг каждый раз сокращается ровно на <span class="key">x</span>.</p>
+          <div class="concept-formula">
+            <span class="symbol">S = 24x</span>
+            <span class="meaning"><strong>первоначальный долг</strong>24 одинаковых шага по x</span>
+          </div>
+        </div>
+        <div class="debt-sequence" aria-label="Последовательность остатков долга">
+          <h3>Остаток долга на 15-е число</h3>
+          <p>После каждого платежа из основного долга исчезает ровно x.</p>
+          <div class="sequence-track">
+            <span class="debt-node start">24x</span><span class="sequence-arrow">→</span>
+            <span class="debt-node">23x</span><span class="sequence-arrow">→</span>
+            <span class="debt-node">22x</span><span class="sequence-arrow">→</span>
+            <span class="sequence-gap">…</span><span class="sequence-arrow">→</span>
+            <span class="debt-node">x</span><span class="sequence-arrow">→</span>
+            <span class="debt-node finish">0</span>
+          </div>
+          <div class="sequence-rule"><strong>каждый переход: −x</strong></div>
+        </div>
+      </div>
     </section>
 
     <section class="wrap" aria-labelledby="solution-title">
